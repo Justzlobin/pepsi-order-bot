@@ -1,6 +1,6 @@
 from aiogram.utils import executor
 
-from handlers import update_order_handler
+
 from create_bot import dp
 from handlers import *
 from datadase import sqlite_db
