@@ -12,16 +12,16 @@ checkin = False
 
 
 async def command_start(message: types.Message):
-    if not message.from_user.id in sqlite_db.user_exist():
-        await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                             'Бот створений для прийому заявок.'
-                                                             'Якщо ви вперше тут,\n'
-                                                             'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                             'щоб <b>PepsiBot</b> розумів,\n'
-                                                             'кому і куди відправляти замовлення!',
-
-                                       reply_markup=kb_menu, parse_mode='HTML')
-    else:
+    # if not message.from_user.id in sqlite_db.user_exist():
+    #     await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+    #                                                          'Бот створений для прийому заявок.'
+    #                                                          'Якщо ви вперше тут,\n'
+    #                                                          'прошу натиснути 📋 <b>Реєстрація</b>\n'
+    #                                                          'щоб <b>PepsiBot</b> розумів,\n'
+    #                                                          'кому і куди відправляти замовлення!',
+    #
+    #                                    reply_markup=kb_menu, parse_mode='HTML')
+    # else:
         await message.bot.send_message(message.from_user.id, 'З повернення, друже!\n'
                                                              'Зробимо замовлення?', reply_markup=kb_menu)
         await message.bot.pin_chat_message(chat_id=message.chat.id, message_id=message.message_id)
