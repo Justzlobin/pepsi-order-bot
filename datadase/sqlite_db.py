@@ -1,6 +1,7 @@
-import sqlite3
+import psycopg2
+from config import DB_TOKEN
 
-conn = sqlite3.connect('C:\PepsiBot\datadase\pepsi_data.db')
+conn = psycopg2.connect(DB_TOKEN, sslmode='require')
 cur = conn.cursor()
 
 
