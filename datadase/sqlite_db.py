@@ -15,8 +15,7 @@ def user_exist():
 
 
 def get_user_id(user_id):
-    result = cur.execute("SELECT id FROM users WHERE 'user_id' = ?", (user_id,))
-    return result.fetchone()[0]
+    return cur.execute("SELECT id FROM users WHERE 'user_id' = ?", (user_id,)).fetchone()[0]
 
 
 async def add_user(state, user_id):
@@ -45,23 +44,21 @@ def select_all_categories():
 
 
 def select_brand(cat_id) -> list:
-    brands = cur.execute("""
+    return cur.execute("""
                             SELECT brand_id, brand_title FROM brand_cat 
                              WHERE   cat_id = (?)""", (cat_id,)).fetchall()
-    return brands
 
 
 def select_position(brand_id):
-    positions = cur.execute("""
+    return cur.execute("""
                                 SELECT tasty_id , tasty_title
                                 FROM   tasty
                                 WHERE brand_id = (?)""", (brand_id,)).fetchall()
-    return positions
 
 
 def select_product(brand_id) -> list:
     product_list = []
-    product = cur.execute("""
+    for i in cur.execute("""
                             SELECT brand_title, size, type, tasty_title, tasty_desc, pos_id
                             FROM position p, brand_cat b, size s, tasty t
                             WHERE p.brand_id = (?)
@@ -69,8 +66,7 @@ def select_product(brand_id) -> list:
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id
 
-                            """, (brand_id,)).fetchall()
-    for i in product:
+                            """, (brand_id,)).fetchall():
         product_list.append((i[5], f'{i[0]} {i[1]} {i[2]} {i[3]} {i[4]}'))
     return product_list
 
@@ -84,14 +80,12 @@ def select_brand_id(pos_id):
 
 
 def select_one_position(pos_id):
-    position = cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price
+    return cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price
                             FROM position p, brand_cat b, size s, tasty t
                             WHERE p.pos_id = (?)
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id""", (pos_id,)).fetchone()
-
-    return position
 
 
 def add_in_order(order_id, pos_id, quantity, price, user_id):
@@ -112,7 +106,7 @@ def list_from_order(order_id, user_id):
 
 
 def select_from_order(order_id, user_id):
-    lis = cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, 'order'.pos_id
+    return cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, 'order'.pos_id
                         FROM position p, brand_cat b, tasty t, 'order', size s
                         WHERE 'order'.'order_id' = (?)
                         AND 'order'.user_id = (?)
@@ -121,7 +115,6 @@ def select_from_order(order_id, user_id):
                         AND p.pos_id = 'order'.pos_id
                         AND p.size_id = s.size_id 
                         """, (order_id, user_id)).fetchall()
-    return lis
 
 
 def add_in_list_orders(order_id, user_id):
@@ -133,8 +126,7 @@ def add_in_list_orders(order_id, user_id):
 
 
 def check_list_order_id():
-    order_id = cur.execute("""SELECT list_id FROM list """).fetchall()[-1][0]
-    return order_id
+    return cur.execute("""SELECT list_id FROM list """).fetchall()[-1][0]
 
 
 def select_address_from_users(user_id):
@@ -143,10 +135,8 @@ def select_address_from_users(user_id):
 
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
-    cur.execute("""INSERT INTO list (list_id, user_id) VALUES (?,?)""",
-                (new_custom, user_id))
-    conn.commit()
-    return new_custom
+    return cur.execute("""INSERT INTO list (list_id, user_id) VALUES (?,?)""",
+                       (new_custom, user_id))
 
 
 def delete_from_order(order_id):
