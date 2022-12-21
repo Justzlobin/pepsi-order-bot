@@ -11,7 +11,7 @@ def start_db():
 
 
 def user_exist():
-    return [i[0] for i in cur.execute("SELECT user_id FROM users").fetchall()]
+    return cur.execute("SELECT user_id FROM users").fetchall()
 
 
 def get_user_id(user_id):
