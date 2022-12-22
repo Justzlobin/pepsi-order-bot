@@ -60,7 +60,7 @@ def select_position(brand_id):
 
 def select_product(brand_id) -> list:
     product_list = []
-    for i in cur.execute("""
+    cur.execute("""
                             SELECT brand_title, size, type, tasty_title, tasty_desc, pos_id
                             FROM position p, brand_cat b, size s, tasty t
                             WHERE p.brand_id = %s
@@ -68,7 +68,8 @@ def select_product(brand_id) -> list:
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id
 
-                            """, (brand_id,)).fetchall():
+                            """, (brand_id,))
+    for i in cur.fetchall():
         product_list.append((i[5], f'{i[0]} {i[1]} {i[2]} {i[3]} {i[4]}'))
     return product_list
 
@@ -172,7 +173,7 @@ def select_multiplicity_and_box_size(pos_id):
 
 def select_order_to_admin(order_id):
     liste = []
-    text = cur.execute("""
+    cur.execute("""
                 SELECT  brand_title, tasty_title, size, quantity
                 FROM position p, 'order' o, brand_cat b, tasty t, size s
                 WHERE o.order_id = %s 
@@ -180,7 +181,8 @@ def select_order_to_admin(order_id):
                 AND p.brand_id = b.brand_id
                 AND p.tasty_id = t.tasty_id
                 AND p.size_id = s.size_id
-                """, (order_id,)).fetchall()
+                """, (order_id,))
+    text = cur.fetchall()
     for i in text:
         liste.append(f'{i[0]} {i[1]} {i[2]} - <b>{i[3]}</b> \n')
     for l in order_user_name_and_comment(order_id):
@@ -208,7 +210,7 @@ def select_last_order(user_id):
 
 #
 def last_order(user_id) -> list:
-    text = cur.execute("""
+    cur.execute("""
             SELECT order_pos_id, brand_title, tasty_title, size, quantity, full_price
             FROM 'order' o, brand_cat b, tasty t, size s, position p
             WHERE order_id = (SELECT MAX(order_id) FROM 'order' WHERE user_id = %s)
@@ -216,8 +218,8 @@ def last_order(user_id) -> list:
                 AND p.brand_id = b.brand_id
                 AND p.tasty_id = t.tasty_id
                 AND p.size_id = s.size_id
-             """, (user_id,)).fetchall()
-
+             """, (user_id,))
+    text = cur.fetchall()
     return [list((a[0], f'{a[1]} {a[2]} {a[3]} {a[4]}', round(a[5]))) for a in text]
 
 
@@ -226,7 +228,8 @@ def update_order_pos_id(quantity, order_id, pos_id):
         cur.execute("""DELETE FROM 'order' WHERE order_id= %s AND pos_id= %s""", (order_id, pos_id))
         return conn.commit()
     else:
-        amount = cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (pos_id,)).fetchone()[0] * quantity
+        cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (pos_id,))
+        amount = cur.fetchone()[0] * quantity
         cur.execute("""
                 UPDATE 'order'
                 SET quantity = %s, full_price = %s
