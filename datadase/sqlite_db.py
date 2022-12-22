@@ -112,8 +112,8 @@ def list_from_order(order_id, user_id):
 
 
 def select_from_order(order_id, user_id):
-    cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, orders.pos_id
-                        FROM position p, brand_cat b, tasty t, orders o, size s
+    cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, "order".pos_id
+                        FROM position p, brand_cat b, tasty t, "order" o, size s
                         WHERE o.order_id = %s
                         AND o.user_id = %s
                         AND p.brand_id = b.brand_id
@@ -150,7 +150,7 @@ def create_new_custom(user_id):
 
 
 def delete_from_order(order_id):
-    cur.execute("""DELETE FROM orders WHERE order_id = %s""", (order_id,))
+    cur.execute("""DELETE FROM "order" WHERE order_id = %s""", (order_id,))
     cur.execute("""DELETE FROM list WHERE list_id = %s""", (order_id,))
     return conn.commit()
 
@@ -158,7 +158,7 @@ def delete_from_order(order_id):
 def sum_order(order_id) -> float:
     try:
         return round(
-            cur.execute("""SELECT SUM(full_price) FROM orders WHERE order_id = %s""", (order_id,)).fetchone()[0],
+            cur.execute("""SELECT SUM(full_price) FROM "order" WHERE order_id = %s""", (order_id,)).fetchone()[0],
             2)
     except TypeError:
         return 0
@@ -175,7 +175,7 @@ def select_order_to_admin(order_id):
     liste = []
     cur.execute("""
                 SELECT  brand_title, tasty_title, size, quantity
-                FROM position p, orders o, brand_cat b, tasty t, size s
+                FROM position p, "order" o, brand_cat b, tasty t, size s
                 WHERE o.order_id = %s 
                 AND o.pos_id = p.pos_id 
                 AND p.brand_id = b.brand_id
@@ -188,7 +188,7 @@ def select_order_to_admin(order_id):
     for l in order_user_name_and_comment(order_id):
         liste.append(f'{l}\n')
     liste.append(
-        f'Сумма: {cur.execute("""SELECT SUM(full_price) FROM  orders WHERE order_id= %s""", (order_id,)).fetchone()[0]}'
+        f'Сумма: {cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,)).fetchone()[0]}'
         '\n')
     liste.append(f'Номер: {order_id}')
     st = ''.join(liste)
@@ -212,8 +212,8 @@ def select_last_order(user_id):
 def last_order(user_id) -> list:
     cur.execute("""
             SELECT order_pos_id, brand_title, tasty_title, size, quantity, full_price
-            FROM orders o, brand_cat b, tasty t, size s, position p
-            WHERE order_id = (SELECT MAX(order_id) FROM orders WHERE user_id = %s)
+            FROM "order" o, brand_cat b, tasty t, size s, position p
+            WHERE order_id = (SELECT MAX(order_id) FROM "order" WHERE user_id = %s)
             AND o.pos_id = p.pos_id 
                 AND p.brand_id = b.brand_id
                 AND p.tasty_id = t.tasty_id
@@ -225,13 +225,13 @@ def last_order(user_id) -> list:
 
 def update_order_pos_id(quantity, order_id, pos_id):
     if quantity == 0:
-        cur.execute("""DELETE FROM orders WHERE order_id= %s AND pos_id= %s""", (order_id, pos_id))
+        cur.execute("""DELETE FROM "order" WHERE order_id= %s AND pos_id= %s""", (order_id, pos_id))
         return conn.commit()
     else:
         cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (pos_id,))
         amount = cur.fetchone()[0] * quantity
         cur.execute("""
-                UPDATE orders
+                UPDATE "order"
                 SET quantity = %s, full_price = %s
                 WHERE order_id = %s
                 AND pos_id = %s""", (quantity, amount, order_id, pos_id))
