@@ -47,7 +47,7 @@ def select_all_categories():
 
 
 def select_brand(cat_id) -> list:
-    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = '?'""", (cat_id,))
+    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = '?'""", (int(cat_id),))
     return cur.fetchall()
 
 
@@ -55,7 +55,7 @@ def select_position(brand_id):
     cur.execute("""
                                 SELECT tasty_id , tasty_title
                                 FROM   tasty
-                                WHERE brand_id = '?'""", (brand_id,))
+                                WHERE brand_id = '?'""", (int(brand_id),))
     return cur.fetchall()
 
 
