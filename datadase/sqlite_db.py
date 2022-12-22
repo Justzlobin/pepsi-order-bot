@@ -96,7 +96,7 @@ def select_one_position(pos_id):
 
 def add_in_order(order_id, pos_id, quantity, price, user_id):
     if quantity != 0:
-        cur.execute("""INSERT INTO "orders" (order_id, pos_id, quantity, full_price, user_id)
+        cur.execute("""INSERT INTO "order" (order_id, pos_id, quantity, full_price, user_id)
                 VALUES (%s, %s, %s, %s, %s)""",
                     (order_id, pos_id, quantity, price, user_id))
         conn.commit()
