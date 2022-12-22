@@ -52,10 +52,9 @@ def select_brand(cat_id) -> list:
 
 
 def select_position(brand_id):
-    cur.execute("""
-                                SELECT tasty_id , tasty_title
+    cur.execute("""             SELECT tasty_id , tasty_title
                                 FROM   tasty
-                                WHERE brand_id = '?'""", (int(brand_id),))
+                                WHERE brand_id = %s""", (brand_id,))
     return cur.fetchall()
 
 
@@ -75,19 +74,19 @@ def select_product(brand_id) -> list:
 
 
 def select_cat_id(brand_id):
-    cur.execute("""SELECT cat_id FROM brand_cat WHERE brand_id = (?)""", (brand_id,))
+    cur.execute("""SELECT cat_id FROM brand_cat WHERE brand_id = %s""", (brand_id,))
     return cur.fetchone()[0]
 
 
 def select_brand_id(pos_id):
-    cur.execute("""SELECT brand_id FROM position WHERE pos_id = (?)""", (pos_id,))
+    cur.execute("""SELECT brand_id FROM position WHERE pos_id = %s""", (pos_id,))
     return cur.fetchone()[0]
 
 
 def select_one_position(pos_id):
     cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price
                             FROM position p, brand_cat b, size s, tasty t
-                            WHERE p.pos_id = (?)
+                            WHERE p.pos_id = %s
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id""", (pos_id,))
@@ -138,7 +137,7 @@ def check_list_order_id():
 
 
 def select_address_from_users(user_id):
-    cur.execute("""SELECT user_address FROM users WHERE user_id = (?)""", (user_id,))
+    cur.execute("""SELECT user_address FROM users WHERE user_id = %s""", (user_id,))
     return cur.fetchall()
 
 
@@ -150,15 +149,15 @@ def create_new_custom(user_id):
 
 
 def delete_from_order(order_id):
-    cur.execute("""DELETE FROM 'order' WHERE order_id = (?)""", (order_id,))
-    cur.execute("""DELETE FROM list WHERE list_id = (?)""", (order_id,))
+    cur.execute("""DELETE FROM 'order' WHERE order_id = %s""", (order_id,))
+    cur.execute("""DELETE FROM list WHERE list_id = %s""", (order_id,))
     return conn.commit()
 
 
 def sum_order(order_id) -> float:
     try:
         return round(
-            cur.execute("""SELECT SUM(full_price) FROM 'order' WHERE order_id =(?)""", (order_id,)).fetchone()[0],
+            cur.execute("""SELECT SUM(full_price) FROM 'order' WHERE order_id =%s""", (order_id,)).fetchone()[0],
             2)
     except TypeError:
         return 0
@@ -166,7 +165,7 @@ def sum_order(order_id) -> float:
 
 def select_multiplicity_and_box_size(pos_id):
     cur.execute("""SELECT multiplicity, box_size FROM size s, position p
-                            WHERE p.pos_id = (?)
+                            WHERE p.pos_id = %s
                             AND p.size_id = s.size_id""", (pos_id,))
     return cur.fetchone()
 
@@ -176,7 +175,7 @@ def select_order_to_admin(order_id):
     text = cur.execute("""
                 SELECT  brand_title, tasty_title, size, quantity
                 FROM position p, 'order' o, brand_cat b, tasty t, size s
-                WHERE o.order_id = ? 
+                WHERE o.order_id = %s 
                 AND o.pos_id = p.pos_id 
                 AND p.brand_id = b.brand_id
                 AND p.tasty_id = t.tasty_id
@@ -198,12 +197,12 @@ def order_user_name_and_comment(order_id):
     cur.execute("""
                         SELECT user_full_name, comment, status FROM users, list
                         WHERE list.user_id = users.user_id
-                        AND list.list_id = (?)""", (order_id,))
+                        AND list.list_id = %s""", (order_id,))
     return cur.fetchone()
 
 
 def select_last_order(user_id):
-    cur.execute("""SELECT MAX(list_id) FROM list WHERE user_id = (?)""", (user_id,))
+    cur.execute("""SELECT MAX(list_id) FROM list WHERE user_id = %s""", (user_id,))
     return cur.fetchone()[0]
 
 
@@ -212,7 +211,7 @@ def last_order(user_id) -> list:
     text = cur.execute("""
             SELECT order_pos_id, brand_title, tasty_title, size, quantity, full_price
             FROM 'order' o, brand_cat b, tasty t, size s, position p
-            WHERE order_id = (SELECT MAX(order_id) FROM 'order' WHERE user_id = (?))
+            WHERE order_id = (SELECT MAX(order_id) FROM 'order' WHERE user_id = %s)
             AND o.pos_id = p.pos_id 
                 AND p.brand_id = b.brand_id
                 AND p.tasty_id = t.tasty_id
@@ -262,7 +261,7 @@ def list_order_to_admin():
 def list_order_to_user(user_id):
     cur.execute("""SELECT date, payment, list_id
                         FROM list l 
-                        WHERE l.user_id = (?)
+                        WHERE l.user_id = %s
                         """, (user_id,))
     return cur.fetchall()
 
