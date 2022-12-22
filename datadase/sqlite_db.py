@@ -40,7 +40,8 @@ def add_position_in_order(id, user_value, position):
 
 
 def select_all_categories():
-    return cur.execute("""SELECT * FROM category""").fetchall()
+    cur.execute("""SELECT * FROM category""")
+    return cur.fetchall()
 
 
 def select_brand(cat_id) -> list:
