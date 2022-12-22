@@ -36,7 +36,7 @@ async def add_user(state, user_id):
 
 
 def add_position_in_order(id, user_value, position):
-    cur.execute("""INSERT INTO orders (order_id, quantity, position ) VALUES (%s, %s, %s) """,
+    cur.execute("""INSERT INTO "order" (order_id, quantity, position ) VALUES (%s, %s, %s) """,
                 (id, int(user_value), str(position)))
     return conn.commit()
 
