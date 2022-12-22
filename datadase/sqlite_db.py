@@ -47,7 +47,7 @@ def select_all_categories():
 
 
 def select_brand(cat_id) -> list:
-    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = $1""", (cat_id,))
+    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = $s""", (cat_id,))
     return cur.fetchall()
 
 
