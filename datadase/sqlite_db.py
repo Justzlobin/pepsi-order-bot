@@ -16,7 +16,7 @@ def user_exist():
 
 
 def get_user_id(user_id):
-    cur.execute("SELECT id FROM users WHERE 'user_id' = ?", (user_id,))
+    cur.execute("SELECT id FROM users WHERE 'user_id' = %s", (user_id,))
     return cur.fetchone()[0]
 
 
@@ -24,19 +24,19 @@ async def add_user(state, user_id):
     async with state.proxy() as data:
         val = data.values()
         if user_id not in user_exist():
-            cur.execute("INSERT INTO 'users' (user_id, user_full_name, user_address) VALUES (?, ?, ?)",
+            cur.execute("INSERT INTO 'users' (user_id, user_full_name, user_address) VALUES (%s, %s, %s)",
                         (user_id, tuple(val)[0],
                          tuple(val)[1]))
         else:
             cur.execute("""UPDATE users
-            SET  user_full_name = ?, user_address = ?
-            WHERE user_id = ?""", (tuple(val)[0], tuple(val)[1], user_id))
+            SET  user_full_name = %s, user_address = %s
+            WHERE user_id = %s""", (tuple(val)[0], tuple(val)[1], user_id))
         print(val)
         return conn.commit()
 
 
 def add_position_in_order(id, user_value, position):
-    cur.execute("""INSERT INTO 'order' ('order_id', 'quantity', 'position' ) VALUES (?,?,?) """,
+    cur.execute("""INSERT INTO 'order' ('order_id', 'quantity', 'position' ) VALUES (%s, %s, %s) """,
                 (id, int(user_value), str(position)))
     return conn.commit()
 
@@ -63,7 +63,7 @@ def select_product(brand_id) -> list:
     for i in cur.execute("""
                             SELECT brand_title, size, type, tasty_title, tasty_desc, pos_id
                             FROM position p, brand_cat b, size s, tasty t
-                            WHERE p.brand_id = (?)
+                            WHERE p.brand_id = %s
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id
@@ -96,7 +96,7 @@ def select_one_position(pos_id):
 def add_in_order(order_id, pos_id, quantity, price, user_id):
     if quantity != 0:
         cur.execute("""INSERT INTO 'order' ('order_id', pos_id, quantity, full_price, user_id)
-                VALUES (?,?,?,?,?)  """,
+                VALUES (%s, %s, %s, %s, %s)  """,
                     (order_id, pos_id, quantity, price, user_id))
         conn.commit()
 
@@ -113,8 +113,8 @@ def list_from_order(order_id, user_id):
 def select_from_order(order_id, user_id):
     cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, 'order'.pos_id
                         FROM position p, brand_cat b, tasty t, 'order', size s
-                        WHERE 'order'.'order_id' = (?)
-                        AND 'order'.user_id = (?)
+                        WHERE 'order'.'order_id' = %s
+                        AND 'order'.user_id = %s
                         AND p.brand_id = b.brand_id
                         AND p.tasty_id = t.tasty_id      
                         AND p.pos_id = 'order'.pos_id
@@ -126,7 +126,7 @@ def select_from_order(order_id, user_id):
 def add_in_list_orders(order_id, user_id):
     cur.execute("""
                     INSERT INTO list
-                    VALUES (?,?, CURDATE())""",
+                    VALUES (%s, %s, CURDATE())""",
                 (order_id, user_id))
     conn.commit()
 
@@ -143,7 +143,7 @@ def select_address_from_users(user_id):
 
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
-    cur.execute("""INSERT INTO list (list_id, user_id) VALUES (?,?)""",
+    cur.execute("""INSERT INTO list (list_id, user_id) VALUES (%s, %s)""",
                 (new_custom, user_id))
     return conn.commit()
 
@@ -157,7 +157,7 @@ def delete_from_order(order_id):
 def sum_order(order_id) -> float:
     try:
         return round(
-            cur.execute("""SELECT SUM(full_price) FROM 'order' WHERE order_id =%s""", (order_id,)).fetchone()[0],
+            cur.execute("""SELECT SUM(full_price) FROM 'order' WHERE order_id = %s""", (order_id,)).fetchone()[0],
             2)
     except TypeError:
         return 0
@@ -186,7 +186,7 @@ def select_order_to_admin(order_id):
     for l in order_user_name_and_comment(order_id):
         liste.append(f'{l}\n')
     liste.append(
-        f'Сумма: {cur.execute("""SELECT SUM(full_price) FROM "order" WHERE order_id=(?)""", (order_id,)).fetchone()[0]}'
+        f'Сумма: {cur.execute("""SELECT SUM(full_price) FROM "order" WHERE order_id= %s""", (order_id,)).fetchone()[0]}'
         '\n')
     liste.append(f'Номер: {order_id}')
     st = ''.join(liste)
@@ -223,20 +223,20 @@ def last_order(user_id) -> list:
 
 def update_order_pos_id(quantity, order_id, pos_id):
     if quantity == 0:
-        cur.execute("""DELETE FROM 'order' WHERE order_id=(?) AND pos_id=(?)""", (order_id, pos_id))
+        cur.execute("""DELETE FROM 'order' WHERE order_id= %s AND pos_id= %s""", (order_id, pos_id))
         return conn.commit()
     else:
-        amount = cur.execute("""SELECT price FROM position WHERE pos_id = (?)""", (pos_id,)).fetchone()[0] * quantity
+        amount = cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (pos_id,)).fetchone()[0] * quantity
         cur.execute("""
                 UPDATE 'order'
-                SET quantity = (?), full_price = (?)
-                WHERE order_id = (?)
-                AND pos_id = (?)""", (quantity, amount, order_id, pos_id))
+                SET quantity = %s, full_price = %s
+                WHERE order_id = %s
+                AND pos_id = %s""", (quantity, amount, order_id, pos_id))
         return conn.commit()
 
 
 def update_payment(user_id, payment):
-    cur.execute("""UPDATE list SET payment = (?) WHERE list_id = (?) AND user_id = (?)""",
+    cur.execute("""UPDATE list SET payment = %s WHERE list_id = %s AND user_id = %s""",
                 (payment, select_last_order(user_id), user_id))
     return conn.commit()
 
@@ -245,7 +245,7 @@ async def update_comment(user_id, state):
     async with state.proxy() as data:
         dit = data.values()
         print(dit)
-    cur.execute("""UPDATE list SET comment = (?) WHERE list_id = (?) AND user_id = (?)""",
+    cur.execute("""UPDATE list SET comment = %s WHERE list_id = %s AND user_id = %s""",
                 (tuple(dit)[0], select_last_order(user_id), user_id))
 
     return conn.commit()
@@ -267,7 +267,7 @@ def list_order_to_user(user_id):
 
 
 def update_order_state(order_id, state):
-    cur.execute("""UPDATE list SET status = (?) WHERE list_id = (?)""", (state, order_id))
+    cur.execute("""UPDATE list SET status = %s WHERE list_id = %s""", (state, order_id))
     return conn.commit()
 
 
