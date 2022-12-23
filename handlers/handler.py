@@ -96,7 +96,7 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
     print('user_value:' + user_value)
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
     user_data[callback_data['id']] = result
-    print('user_data' + result)
+    print('user_data' + str(result))
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
