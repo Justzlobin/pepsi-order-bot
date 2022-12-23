@@ -96,7 +96,8 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
     print('user_value:' + str(user_value))
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
     user_data[callback_data['id']] = result
-    print('user_data' + str(result))
+    print('user_data ' + str(result))
+    print(user_data)
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
@@ -177,6 +178,7 @@ async def new_custom(message: types.Message):
     new_custom = sqlite_db.create_new_custom(message.from_user.id)
     order_data[f'{message.from_user.id}'] = new_custom
     print(order_data)
+    print(f'new custom: {new_custom}')
 
 async def delete_from_order(query: types.CallbackQuery):
     sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
