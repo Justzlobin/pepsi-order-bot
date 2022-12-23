@@ -288,7 +288,7 @@ async def payment_bank(query: types.CallbackQuery):
 
 
 async def admin_test(message: types.Message):
-    if message.from_user.id == ADMIN:
+    if message.from_user.id == int(ADMIN):
         await message.answer(reply_markup=order_for_admin(), text='working')
     else:
         await message.answer('у вас немає доступу!')
