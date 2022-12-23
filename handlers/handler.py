@@ -143,7 +143,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
             await dp.bot.send_message(text='Чуєш ти, блядь, замов щось', chat_id=chat_id)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Головне меню:', reply_markup=kb_menu())
+                                                         'Головне меню:', reply_markup=kb_menu)
 
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду', chat_id=chat_id,
