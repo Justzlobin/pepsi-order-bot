@@ -186,8 +186,9 @@ def select_order_to_admin(order_id):
         liste.append(f'{i[0]} {i[1]} {i[2]} - <b>{i[3]}</b> \n')
     for l in order_user_name_and_comment(order_id):
         liste.append(f'{l}\n')
+    cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,))
     liste.append(
-        f'Сумма: {cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,)).fetchone()[0]}'
+        f'Сумма: {cur.fetchone()[0]}'
         '\n')
     liste.append(f'Номер: {order_id}')
     st = ''.join(liste)
