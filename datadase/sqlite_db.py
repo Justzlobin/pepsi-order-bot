@@ -98,8 +98,8 @@ def add_in_order(order_id, pos_id, quantity, price, user_id):
     if quantity != 0:
         cur.execute("""INSERT INTO "order" (order_id, pos_id, quantity, full_price, user_id)
                 VALUES (%s, %s, %s, %s, %s)""",
-                    (order_id, pos_id, quantity, price, user_id))
-        conn.commit()
+                    (order_id[0], pos_id, quantity, price, user_id))
+        return conn.commit()
 
 
 def list_from_order(order_id, user_id):
@@ -140,7 +140,7 @@ def select_address_from_users(user_id):
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
     cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
-                VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT )
+                VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT)
                 """,
                 (new_custom, user_id))
     return new_custom, conn.commit()
