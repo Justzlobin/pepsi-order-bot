@@ -157,9 +157,8 @@ def delete_from_order(order_id):
 
 def sum_order(order_id) -> float:
     try:
-        return round(
-            cur.execute("""SELECT SUM(full_price) FROM "order" WHERE order_id = %s""", (order_id,)).fetchone()[0],
-            2)
+        cur.execute("""SELECT SUM(full_price) FROM "order" WHERE order_id = %s""", (order_id,))
+        return round(cur.fetchone()[0], 2)
     except TypeError:
         return 0
 
