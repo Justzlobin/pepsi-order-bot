@@ -112,7 +112,7 @@ def list_from_order(order_id, user_id):
 
 
 def select_from_order(order_id, user_id):
-    cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, "order".pos_id
+    cur.execute("""SELECT DISTINCT brand_title, size, tasty_title, quantity, full_price, o.pos_id
                         FROM position p, brand_cat b, tasty t, "order" o, size s
                         WHERE o.order_id = %s
                         AND o.user_id = %s
