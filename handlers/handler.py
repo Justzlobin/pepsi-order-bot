@@ -180,6 +180,7 @@ async def new_custom(message: types.Message):
     print(order_data)
     print(f'new custom: {new_custom}')
     print(str(sqlite_db.check_list_order_id()))
+    print(str(sqlite_db.create_new_custom(496056946).new_custom))
 
 async def delete_from_order(query: types.CallbackQuery):
     sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
