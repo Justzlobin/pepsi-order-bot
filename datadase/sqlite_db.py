@@ -132,11 +132,6 @@ def add_in_list_orders(order_id, user_id):
     conn.commit()
 
 
-def check_list_order_id():
-    cur.execute("""SELECT list_id FROM list """)
-    return cur.fetchall()[-1][0]
-
-
 def select_address_from_users(user_id):
     cur.execute("""SELECT user_address FROM users WHERE user_id = %s""", (user_id,))
     return cur.fetchall()
@@ -147,6 +142,11 @@ def create_new_custom(user_id):
     cur.execute("""INSERT INTO list (list_id, user_id) VALUES (%s, %s)""",
                 (new_custom, user_id))
     return conn.commit()
+
+
+def check_list_order_id():
+    cur.execute("""SELECT list_id FROM list """)
+    return cur.fetchall()[-1][0]
 
 
 def delete_from_order(order_id):
