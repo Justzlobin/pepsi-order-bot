@@ -88,6 +88,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
                                     f'Кількість: 0, Ціна: {text[5]}'
                                , reply_markup=keyboard(callback_data['id']))
     await query.message.delete()
+    print(user_data)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
@@ -174,7 +175,7 @@ async def new_custom(message: types.Message):
                          reply_markup=kb_custom, parse_mode='HTML')
     new_custom = sqlite_db.create_new_custom(message.from_user.id)
     order_data[f'{message.from_user.id}'] = new_custom
-
+    print(order_data)
 
 async def delete_from_order(query: types.CallbackQuery):
     sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
