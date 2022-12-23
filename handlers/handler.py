@@ -1,5 +1,3 @@
-import types
-
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -22,10 +20,9 @@ async def command_start(message: types.Message):
     #
     #                                    reply_markup=kb_menu, parse_mode='HTML')
     # else:
-        await message.bot.send_message(message.from_user.id, 'З повернення, друже!\n'
-                                                             'Зробимо замовлення?', reply_markup=kb_menu)
-        await message.bot.pin_chat_message(chat_id=message.chat.id, message_id=message.message_id)
-
+    await message.bot.send_message(message.from_user.id, 'З повернення, друже!\n'
+                                                         'Зробимо замовлення?', reply_markup=kb_menu)
+    await message.bot.pin_chat_message(chat_id=message.chat.id, message_id=message.message_id)
 
 
 async def command_ascort(message: types.Message):
@@ -139,7 +136,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                    query.from_user.id)
 
         else:
-            await dp.bot.send_photo(chat_id=chat_id, photo=types.InputFile('C:\PepsiBot\image\моль.png'))
             await dp.bot.send_message(text='Чуєш ти, блядь, замов щось', chat_id=chat_id)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
