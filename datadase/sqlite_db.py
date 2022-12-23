@@ -139,9 +139,9 @@ def select_address_from_users(user_id):
 
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
-    cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
+    cur.execute("""INSERT INTO main.list (list_id, user_id, date, payment, comment, status)
                 VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT )
-                RETURNING *""",
+                """,
                 (new_custom, user_id))
     conn.commit()
     return new_custom
