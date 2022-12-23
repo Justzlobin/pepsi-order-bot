@@ -140,7 +140,8 @@ def select_address_from_users(user_id):
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
     cur.execute("""INSERT INTO list (list_id, user_id) VALUES (%s, %s)""",
-                (str(new_custom), str(user_id)))
+                (new_custom, user_id))
+    conn.commit()
     return new_custom
 
 
