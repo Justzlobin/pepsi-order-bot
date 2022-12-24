@@ -175,12 +175,11 @@ async def new_custom(message: types.Message):
                               '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                               '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                          reply_markup=kb_custom, parse_mode='HTML')
-    new_custom = sqlite_db.create_new_custom(message.from_user.id) + 1
+    new_custom = sqlite_db.create_new_custom(message.from_user.id)
     order_data[f'{message.from_user.id}'] = new_custom
     print(order_data)
     print(f'new custom: {new_custom}')
-    print(str(sqlite_db.check_list_order_id()))
-    print(str(sqlite_db.create_new_custom(496056946)))
+
 
 async def delete_from_order(query: types.CallbackQuery):
     sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
