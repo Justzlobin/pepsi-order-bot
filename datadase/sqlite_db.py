@@ -124,19 +124,6 @@ def select_from_order(order_id, user_id):
     return cur.fetchall()
 
 
-def add_in_list_orders(order_id, user_id):
-    cur.execute("""
-                    INSERT INTO list
-                    VALUES (%s, %s, CURDATE())""",
-                (order_id, user_id))
-    conn.commit()
-
-
-def select_address_from_users(user_id):
-    cur.execute("""SELECT user_address FROM users WHERE user_id = %s""", (user_id,))
-    return cur.fetchall()
-
-
 def create_new_custom(user_id):
     new_custom = check_list_order_id() + 1
     cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
@@ -208,21 +195,6 @@ def order_user_name_and_comment(order_id):
 def select_last_order(user_id):
     cur.execute("""SELECT MAX(list_id) FROM list WHERE user_id = %s""", (user_id,))
     return cur.fetchone()[0]
-
-
-#
-def last_order(user_id) -> list:
-    cur.execute("""
-            SELECT order_pos_id, brand_title, tasty_title, size, quantity, full_price
-            FROM "order" o, brand_cat b, tasty t, size s, position p
-            WHERE order_id = (SELECT MAX(order_id) FROM "order" WHERE user_id = %s)
-            AND o.pos_id = p.pos_id 
-                AND p.brand_id = b.brand_id
-                AND p.tasty_id = t.tasty_id
-                AND p.size_id = s.size_id
-             """, (user_id,))
-    text = cur.fetchall()
-    return [list((a[0], f'{a[1]} {a[2]} {a[3]} {a[4]}', round(a[5]))) for a in text]
 
 
 def update_order_pos_id(quantity, order_id, pos_id):
