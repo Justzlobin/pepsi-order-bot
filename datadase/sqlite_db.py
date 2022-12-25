@@ -107,7 +107,7 @@ def list_from_order(order_id, user_id):
     text_order = select_from_order(order_id, user_id)
     for i in text_order:
         text_order_list.append(
-            (i[5], f'Бренд: {i[0]}, Смак: {i[2]}, Розмір: {i[1]},\nК-ть:{str(i[3])}, Ціна: {str(i[4])}'))
+            (i[5], f'{i[0]} {i[2]} {i[1]},\nК-ть:{str(i[3])}, Ціна: {str(i[4])}'))
     return text_order_list
 
 
@@ -236,7 +236,7 @@ def list_order_to_admin():
 
 
 def list_order_to_user(user_id):
-    cur.execute("""SELECT date, payment, list_id
+    cur.execute("""SELECT date,  list_id
                     FROM list l WHERE l.user_id = %s""", (user_id,))
     return cur.fetchall()
 
