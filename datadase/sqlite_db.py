@@ -246,5 +246,18 @@ def update_order_state(order_id, state):
     return conn.commit()
 
 
+def empty_list_id():
+    cur.execute("""SELECT list_id FROM list""")
+    list_list_id = [i[0] for i in cur.fetchall()]
+    cur.execute("""SELECT order_id FROM 'order'""")
+    list_order_id = [i[0] for i in cur.fetchall()]
+    return list(set(list_list_id) - set(list_order_id))
+
+
+def delete_empty_orders():
+    for i in empty_list_id():
+        cur.execute("""DELETE FROM list WHERE list_id = %s""", (i,))
+    return conn.commit()
+
 def close(self):
     self.close()
