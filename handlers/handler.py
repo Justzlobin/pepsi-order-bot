@@ -202,6 +202,7 @@ async def multi(query: types.CallbackQuery):
 
 
 async def last_order(message: types.Message):
+    sqlite_db.delete_empty_orders()
     await message.answer(text='Last orders',
                          reply_markup=order_for_user(message.from_user.id))
 
