@@ -16,7 +16,7 @@ kb_menu.add(kb_menu_new_custom, kb_last_order, kb_menu_register)
 cat_cb = CallbackData('title', 'id', 'action')
 
 kb_custom = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-kb_custom.add([kb_menu_asort, kb_menu_basket], [kb_order_settings, kb_back_to_menu])
+kb_custom.add([[kb_menu_asort, kb_menu_basket], [kb_order_settings, kb_back_to_menu]])
 
 
 def cat_markup():
