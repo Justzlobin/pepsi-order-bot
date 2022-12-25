@@ -232,7 +232,7 @@ def list_order_to_admin():
     cur.execute("""SELECT list_id, user_full_name, date, payment
                     FROM list, users
                     WHERE list.user_id = users.user_id""")
-    return cur.fetchall()
+    return cur.fetchall()[:-20]
 
 
 def list_order_to_user(user_id):
