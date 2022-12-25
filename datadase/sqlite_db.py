@@ -125,17 +125,17 @@ def select_from_order(order_id, user_id):
 
 
 def create_new_custom(user_id):
-    new_custom = check_list_order_id()
+    new_custom = check_list_order_id() + 1
     cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
                 VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT)
                 """,
-                (new_custom + 1, user_id))
+                (new_custom, user_id))
     return new_custom
 
 
 def check_list_order_id():
     cur.execute("""SELECT MAX(list_id) FROM list """)
-    return cur.fetchone()
+    return cur.fetchone()[0]
 
 
 def delete_from_order(order_id):
