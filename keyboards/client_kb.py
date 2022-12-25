@@ -10,7 +10,7 @@ kb_menu_basket = KeyboardButton('🛒 Корзина')
 kb_menu_new_custom = KeyboardButton('❎ Сформувати замовлення')
 kb_last_order = KeyboardButton('Останнє замовлення')
 kb_order_settings = KeyboardButton('⚙ Налаштування')
-kb_menu.add(kb_menu_new_custom, kb_last_order,kb_menu_asort, kb_menu_register)
+kb_menu.add(kb_menu_new_custom, kb_last_order, kb_menu_asort, kb_menu_register)
 # kb_menu.add(kb_menu_asort, kb_menu_register)
 
 cat_cb = CallbackData('title', 'id', 'action')
@@ -137,7 +137,7 @@ def order_for_admin():
 def order_for_user(user_id):
     order_to_user_markup = InlineKeyboardMarkup()
     for i in sqlite_db.list_order_to_user(user_id):
-        order_to_user_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {i[3]}',
+        order_to_user_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {sqlite_db.sum_order(i[2])}',
                                                       callback_data=cat_cb.new(id=i[2], action='order_user')))
     return order_to_user_markup
 
