@@ -335,6 +335,11 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
     await query.message.delete()
 
 
+async def back_to_menu_from_order(message: types.Message):
+    user_data[f'{message.from_user.id}'] = None
+    await message.answer(reply_markup=kb_menu, text='Ви повернулись в меню!')
+
+
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
@@ -342,6 +347,7 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(new_custom, text='❎ Сформувати замовлення')
     dp.register_message_handler(last_order, text='📄 Останнє замовлення')
     dp.register_message_handler(order_settings, text='⚙ Налаштування')
+    dp.register_message_handler(back_to_menu_from_order, text='🔙 Назад до меню')
     #
     dp.register_callback_query_handler(show_brand, cat_cb.filter(action='cat->brand'))
     dp.register_callback_query_handler(show_position, cat_cb.filter(action='brand->pos'))
