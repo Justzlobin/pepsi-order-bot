@@ -337,9 +337,9 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
     await query.message.delete()
 
 
-async def back_to_menu_from_order(message: types.Message):
+async def back_to_menu_from_order(message: types.Message, query: types.CallbackQuery):
     user_data[f'{message.from_user.id}'] = None
-    await message.delete()
+    await query.message.delete()
     await message.answer(reply_markup=kb_menu, text='Ви повернулись в меню!')
 
 
