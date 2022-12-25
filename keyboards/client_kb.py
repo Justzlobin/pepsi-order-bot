@@ -166,8 +166,8 @@ def order_update_user_kb(order_id):
         [
             types.InlineKeyboardButton(text='Внести корективи',
                                        callback_data=cat_cb.new(id=order_id, action='order_correct')),
-            types.InlineKeyboardButton(text='Згорнути',
-                                       callback_data=cat_cb.new(id=order_id, action='order_close'))
+            # types.InlineKeyboardButton(text='Згорнути',
+            #                            callback_data=cat_cb.new(id=order_id, action='order_close'))
         ]
     ]
     order_update_user_kb_markup = types.InlineKeyboardMarkup(inline_keyboard=buttons)
