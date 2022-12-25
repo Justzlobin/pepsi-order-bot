@@ -259,5 +259,6 @@ def delete_empty_orders():
         cur.execute("""DELETE FROM list WHERE list_id = %s""", (i,))
     return conn.commit()
 
+
 def close(self):
     self.close()
