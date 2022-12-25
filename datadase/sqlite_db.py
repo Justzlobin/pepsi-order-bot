@@ -236,7 +236,7 @@ def list_order_to_admin():
 
 
 def list_order_to_user(user_id):
-    cur.execute("""SELECT date, payment, list_id, SUM(full_price)
+    cur.execute("""SELECT date, payment, list_id, (SELECT SUM full_price FROM o )
                         FROM list l, "order" o
                         WHERE l.user_id = %s
                         and l.list_id = o.order_id
