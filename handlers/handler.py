@@ -268,6 +268,7 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
 
 async def order_settings(message: types.Message):
     user_id = message.from_user.id
+    await message.delete()
     await message.answer(text='Налаштування замовлення:',
                          reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)))
 
@@ -281,6 +282,7 @@ async def payment(query: types.CallbackQuery):
     await dp.bot.send_message(text='Оберіть спосіб оплати:',
                               chat_id=query.message.chat.id,
                               reply_markup=chose_payment(query.from_user.id))
+    await query.message.delete()
 
 
 async def payment_cash(query: types.CallbackQuery):
@@ -337,6 +339,7 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
 
 async def back_to_menu_from_order(message: types.Message):
     user_data[f'{message.from_user.id}'] = None
+    await message.delete()
     await message.answer(reply_markup=kb_menu, text='Ви повернулись в меню!')
 
 
