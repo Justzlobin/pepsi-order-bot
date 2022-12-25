@@ -8,10 +8,10 @@ kb_menu_asort = KeyboardButton('🛍️ Асортимент')
 kb_menu_register = KeyboardButton('📋 Реєстрація')
 kb_menu_basket = KeyboardButton('🛒 Корзина')
 kb_menu_new_custom = KeyboardButton('❎ Сформувати замовлення')
-kb_last_order = KeyboardButton('Останнє замовлення')
+kb_last_order = KeyboardButton('📄 Останнє замовлення')
 kb_order_settings = KeyboardButton('⚙ Налаштування')
-kb_menu.add(kb_menu_new_custom, kb_last_order, kb_menu_asort, kb_menu_register)
-# kb_menu.add(kb_menu_asort, kb_menu_register)
+kb_menu.add(kb_menu_new_custom, kb_last_order, kb_menu_register)
+
 
 cat_cb = CallbackData('title', 'id', 'action')
 
