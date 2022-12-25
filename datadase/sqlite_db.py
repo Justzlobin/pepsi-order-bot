@@ -249,7 +249,7 @@ def update_order_state(order_id, state):
 def empty_list_id():
     cur.execute("""SELECT list_id FROM list""")
     list_list_id = [i[0] for i in cur.fetchall()]
-    cur.execute("""SELECT order_id FROM 'order'""")
+    cur.execute("""SELECT order_id FROM "order" """)
     list_order_id = [i[0] for i in cur.fetchall()]
     return list(set(list_list_id) - set(list_order_id))
 
