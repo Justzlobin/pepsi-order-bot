@@ -344,9 +344,11 @@ async def back_to_menu_from_order(message: types.Message):
 
 
 async def order_delete(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.delete_order(callback_data['id'])
-    await dp.bot.send_message(text='Заявка видалена',
-                              chat_id=query.message.chat.id)
+    if sqlite_db.delete_order(callback_data['id']):
+        await dp.bot.send_message(text='Заявка видалена',
+                                  chat_id=query.message.chat.id)
+    else:
+        pass
 
 
 def register_handlers_handler(dp: Dispatcher):
