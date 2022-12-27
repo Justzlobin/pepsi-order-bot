@@ -47,14 +47,14 @@ def select_all_categories():
 
 
 def select_brand(cat_id) -> list:
-    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = %s""", (cat_id,))
+    cur.execute("""SELECT brand_id, brand_title FROM brand_cat WHERE cat_id = %s  ORDER BY brand_title""", (cat_id,))
     return cur.fetchall()
 
 
 def select_position(brand_id):
     cur.execute("""             SELECT tasty_id , tasty_title
                                 FROM   tasty
-                                WHERE brand_id = %s""", (brand_id,))
+                                WHERE brand_id = %s  ORDER BY tasty_title""", (brand_id,))
     return cur.fetchall()
 
 
@@ -67,7 +67,7 @@ def select_product(brand_id) -> list:
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id
-
+                            ORDER BY size 
                             """, (brand_id,))
     for i in cur.fetchall():
         product_list.append((i[5], f'{i[0]} {i[1]} {i[2]} {i[3]} {i[4]}'))
