@@ -128,7 +128,7 @@ def create_new_custom(user_id):
     if check_list_order_id():
         new_custom = check_list_order_id() + 1
     else:
-        new_custom = 0
+        new_custom = 1
     cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
                 VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT)
                 """,
