@@ -327,7 +327,7 @@ async def order_status_agreed_but(query: types.CallbackQuery, callback_data: dic
 
 async def order_status_blocked_debt(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='Заблоковано (Дебіт)')
-    await query.answer(text='статус змінено на Заблоковано(Дебіт)')
+    await query.answer(text='статус змінено на Заблоковано(дебіт)')
     await query.message.delete()
 
 

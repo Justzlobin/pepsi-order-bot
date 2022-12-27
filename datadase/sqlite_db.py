@@ -125,7 +125,10 @@ def select_from_order(order_id, user_id):
 
 
 def create_new_custom(user_id):
-    new_custom = check_list_order_id() + 1
+    if check_list_order_id():
+        new_custom = check_list_order_id() + 1
+    else:
+        new_custom = 0
     cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
                 VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT)
                 """,
@@ -232,7 +235,7 @@ def list_order_to_admin():
     cur.execute("""SELECT list_id, user_full_name, date, payment
                     FROM list, users
                     WHERE list.user_id = users.user_id""")
-    return cur.fetchall()[:-20]
+    return cur.fetchall()[-20:]
 
 
 def list_order_to_user(user_id):
