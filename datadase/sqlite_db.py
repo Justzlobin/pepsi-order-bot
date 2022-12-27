@@ -263,5 +263,10 @@ def delete_empty_orders():
     return conn.commit()
 
 
+def delete_order(order_id):
+    cur.execute("""DELETE FROM order WHERE order_id = %s""", (order_id,))
+    return conn.commit()
+
+
 def close(self):
     self.close()

@@ -141,7 +141,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                    query.from_user.id)
 
         else:
-            await dp.bot.send_message(text='Чуєш ти, блядь, замов щось', chat_id=chat_id)
+            pass
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                                          'Головне меню:', reply_markup=kb_menu)
@@ -341,6 +341,12 @@ async def back_to_menu_from_order(message: types.Message):
     user_data[f'{message.from_user.id}'] = None
     await message.delete()
     await message.answer(reply_markup=kb_menu, text='Ви повернулись в меню!')
+
+
+async def order_delete(query: types.CallbackQuery, callback_data: dict):
+    sqlite_db.delete_order(callback_data['id'])
+    await dp.bot.send_message(text='Заявка видалена',
+                              chat_id=query.message.chat.id)
 
 
 def register_handlers_handler(dp: Dispatcher):

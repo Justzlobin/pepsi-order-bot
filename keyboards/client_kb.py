@@ -167,8 +167,8 @@ def order_state_kb(order_id):
 def order_update_user_kb(order_id):
     buttons = [
         [
-            # types.InlineKeyboardButton(text='Внести корективи',
-            #                            callback_data=cat_cb.new(id=order_id, action='order_correct')),
+            types.InlineKeyboardButton(text='Видалити',
+                                       callback_data=cat_cb.new(id=order_id, action='order_delete')),
             types.InlineKeyboardButton(text='Згорнути',
                                        callback_data=cat_cb.new(id=order_id, action='order_close'))
         ]
