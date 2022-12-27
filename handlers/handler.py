@@ -396,3 +396,4 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_agreed_but, cat_cb.filter(action='order_agreed_but'))
     dp.register_callback_query_handler(order_status_blocked_debt, cat_cb.filter(action='order_blocked_debt'))
     dp.register_callback_query_handler(order_status_blocked_limit, cat_cb.filter(action='order_blocked_limit'))
+    dp.register_callback_query_handler(order_delete, cat_cb.filter(action='order_delete'))
