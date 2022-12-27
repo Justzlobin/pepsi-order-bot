@@ -12,7 +12,7 @@ def start_db():
 
 def user_exist():
     cur.execute("SELECT user_id FROM users")
-    return cur.fetchall()
+    return [i[0] for i in cur.fetchall()]
 
 
 def get_user_id(user_id):
