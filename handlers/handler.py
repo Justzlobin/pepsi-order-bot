@@ -11,7 +11,7 @@ checkin = False
 
 async def command_start(message: types.Message):
     print(sqlite_db.user_exist())
-    if message.from_user.id in [i[0] for i in sqlite_db.user_exist()]:
+    if message.from_user.id in sqlite_db.user_exist():
         await message.bot.send_message(message.from_user.id, 'З повернення, друже!\n'
                                                              'Зробимо замовлення?', reply_markup=kb_menu)
     else:
