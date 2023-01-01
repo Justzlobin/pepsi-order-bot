@@ -283,7 +283,7 @@ def order_verification(order_id):
 
 
 def delete_not_verification():
-    cur.execute("""DELETE FROM list l, "order" o WHERE l.list_id = o.order_id AND check_order = %s""", (False,))
+    cur.execute("""DELETE FROM list  WHERE check_order = %s""", (False,))
     return conn.commit()
 
 
