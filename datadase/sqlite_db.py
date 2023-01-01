@@ -274,7 +274,7 @@ def select_price_of_box(pos_id, amount):
                     AND p.pos_id = %s""", (pos_id,))
     box_size = cur.fetchone()
 
-    return round(amount / box_size)
+    return round(amount / box_size[0])
 
 
 def close(self):
