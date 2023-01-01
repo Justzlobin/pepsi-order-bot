@@ -272,9 +272,9 @@ def select_price_of_box(pos_id, amount):
     cur.execute("""SELECT box_size FROM size s, position p WHERE 
                     p.size_id = s.size_id
                     AND p.pos_id = %s""", (pos_id,))
-    box_size = cur.fetchone()
+    box_size = cur.fetchone()[0]
 
-    return round(amount / box_size[0])
+    return round(amount / box_size, 1)
 
 
 def close(self):
