@@ -278,7 +278,7 @@ def select_price_of_box(pos_id, amount):
 
 
 def order_verification(order_id):
-    cur.execute("""UPDATE list SET = %s WHERE list_id = %s""", (True, order_id))
+    cur.execute("""UPDATE list SET check_order = %s WHERE list_id = %s""", (True, order_id))
     return conn.commit()
 
 
