@@ -282,5 +282,10 @@ def order_verification(order_id):
     return conn.commit()
 
 
+def delete_not_verification():
+    cur.execute("""DELETE FROM list WHERE NOT check_order = %s""", (True,))
+    return conn.commit()
+
+
 def close(self):
     self.close()
