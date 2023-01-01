@@ -66,10 +66,10 @@ def keyboard_order(order_id, user_id):
         keyboard_order_markup.add(InlineKeyboardButton(f'🛒 {order_title}',
                                                        callback_data=cat_cb.new(id=pos_id, action='position_order')))
     keyboard_order_markup.add(InlineKeyboardButton(f'✅ Пітдвердити замовення',
-                                                   callback_data=cat_cb.new(id=user_id,
+                                                   callback_data=cat_cb.new(id=order_id,
                                                                             action='add_full_order')))
     keyboard_order_markup.add(InlineKeyboardButton(f'❌ Скавувати замовлення',
-                                                   callback_data=cat_cb.new(id=user_id,
+                                                   callback_data=cat_cb.new(id=order_id,
                                                                             action='delete_from_order')))
     return keyboard_order_markup
 

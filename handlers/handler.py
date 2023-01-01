@@ -77,7 +77,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
     text = sqlite_db.select_one_position(pos_id)
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     await message.edit_text(text=f'{full_text}\n'
-                                 f'К-ть: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)},'
+                                 f'К-ть: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)}, '
                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
                             , reply_markup=keyboard(pos_id))
 
@@ -167,8 +167,9 @@ async def order_view(message: types.Message):
                                        , reply_markup=kb_menu)
 
 
-async def add_in_list_orders(query: types.CallbackQuery):
+async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
     await query.answer(text='Замовлення збережено!')
+    sqlite_db.order_verification(callback_data['id'])
     await query.message.delete()
     await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id, reply_markup=kb_menu)
 
