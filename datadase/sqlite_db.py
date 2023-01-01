@@ -268,5 +268,14 @@ def delete_order(order_id):
     return conn.commit()
 
 
+def select_price_of_box(pos_id, amount):
+    cur.execute("""SELECT box_size FROM size s, position p WHERE 
+                    p.size_id = s.size_id
+                    AND p.pos_id = %s""", (pos_id,))
+    box_size = cur.fetchone()
+
+    return round(amount / box_size)
+
+
 def close(self):
     self.close()
