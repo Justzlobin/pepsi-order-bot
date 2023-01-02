@@ -153,7 +153,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 
 async def order_view(message: types.Message):
-    await message.delete()
     try:
         if sqlite_db.sum_order(order_data[f'{message.from_user.id}']) == 0:
             await message.answer(text='Корзина пуста')
