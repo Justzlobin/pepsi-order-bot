@@ -162,7 +162,7 @@ def select_multiplicity_and_box_size(pos_id):
     return cur.fetchone()
 
 
-def select_order_to_admin(order_id):
+def select_order_to_user(order_id):
     liste = []
     cur.execute("""
                 SELECT  brand_title, tasty_title, size, quantity
@@ -177,7 +177,8 @@ def select_order_to_admin(order_id):
     for i in text:
         liste.append(f'{i[0]} {i[1]} {i[2]} - <b>{i[3]}</b> \n')
     for l in order_user_name_and_comment(order_id):
-        liste.append(f'{l}\n')
+        liste.append(f'{l[1]}\n'
+                     f'{l[2]}')
     cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,))
     liste.append(
         f'Сумма: {cur.fetchone()[0]}'

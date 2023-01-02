@@ -7,7 +7,7 @@ from keyboards import *
 
 
 async def view_order_for_user(query: types.CallbackQuery, callback_data: dict):
-    await dp.bot.send_message(text=f'{sqlite_db.select_order_to_admin(callback_data["id"])}',
+    await dp.bot.send_message(text=f'{sqlite_db.select_order_to_user(callback_data["id"])}',
                               chat_id=query.message.chat.id,
                               reply_markup=order_update_user_kb(callback_data['id']),
                               parse_mode='HTML')
