@@ -18,6 +18,7 @@ async def cm_start(message: types.Message):
 
 async def write_full_name(message: types.Message, state: FSMContext):
     if check_message(message.text):
+        print(message.text)
         await state.finish()
     else:
         async with state.proxy() as data:
@@ -47,7 +48,7 @@ async def write_address(message: types.Message, state: FSMContext):
 
 def check_message(message):
     if message == '🔙 Назад до меню':
-
+        print(message)
         return True
     else:
         pass
