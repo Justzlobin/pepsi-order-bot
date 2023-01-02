@@ -11,6 +11,16 @@ class UserRegister(StatesGroup):
     address = State()
 
 
+async def cancel(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+
+    await state.clear()
+    await message.answer(
+        "Cancelled.")
+
+
 async def cm_start(message: types.Message):
     await UserRegister.full_name.set()
     await message.reply("Введіть прізвище, ім'я, по-батькові ФОП", reply_markup=back_from_register_markup())
@@ -32,8 +42,6 @@ async def write_address(message: types.Message, state: FSMContext):
     await sqlite_db.add_user(state, message.from_user.id)
     await state.finish()
     await message.answer(text='Тепер можна робити замовлення', reply_markup=kb_menu)
-
-
 
 
 def register_admin_handlers(dp: Dispatcher):
