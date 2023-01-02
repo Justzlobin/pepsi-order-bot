@@ -182,7 +182,6 @@ def select_order_to_admin(order_id):
     liste.append(
         f'Сумма: {cur.fetchone()[0]}'
         '\n')
-    liste.append(f'Номер: {order_id}')
     st = ''.join(liste)
     return st
 
