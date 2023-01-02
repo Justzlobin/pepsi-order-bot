@@ -269,12 +269,15 @@ def delete_empty_orders():
 
 
 def delete_order(order_id) -> bool:
-    if cur.execute("""DELETE FROM list WHERE list_id = %s AND status = %s""", (order_id, 'Очікування')):
+    cur.execute("""SELECT status FROM list WHERE list_id = %s""", (order_id,))
+    if cur.fetchone()[0] == 'Очікування':
+        cur.execute("""DELETE FROM list WHERE list_id = %s""", (order_id,))
         cur.execute("""DELETE FROM "order" WHERE order_id = %s""", (order_id,))
         conn.commit()
         return True
     else:
         return False
+
 
 def select_price_of_box(pos_id, amount):
     cur.execute("""SELECT box_size FROM size s, position p WHERE 
