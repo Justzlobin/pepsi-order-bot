@@ -35,8 +35,9 @@ async def write_address(message: types.Message, state: FSMContext):
 
 
 async def fsc_close(query: types.CallbackQuery, state: FSMContext):
-    await query.message.answer(reply_markup=kb_menu, text='Ви повернулись в меню')
     await state.finish()
+    await query.message.answer(reply_markup=kb_menu, text='Ви повернулись в меню')
+
 
 
 def register_admin_handlers(dp: Dispatcher):
