@@ -47,7 +47,7 @@ async def write_address(message: types.Message, state: FSMContext):
 
 
 def check_message(message):
-    if message == '🔙 Назад до меню':
+    if message == 'відміна':
         print(message)
         return True
     else:
