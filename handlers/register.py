@@ -1,4 +1,5 @@
 from aiogram.dispatcher import FSMContext
+import logging
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types
 from aiogram import Dispatcher
@@ -13,10 +14,12 @@ class UserRegister(StatesGroup):
 
 async def cancel(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
+    print(state.get_state())
     if current_state is None:
         return
+    logging.info("Cancelling state %r", current_state)
 
-    await state.clear()
+    await state.finish()
     await message.answer(
         "Cancelled.")
 
