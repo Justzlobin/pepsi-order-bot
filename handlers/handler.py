@@ -205,7 +205,7 @@ async def multi(query: types.CallbackQuery):
 
 async def last_order(message: types.Message):
     sqlite_db.delete_empty_orders()
-    sqlite_db.delete_not_verification(message.from_user.id)
+    sqlite_db.delete_not_verification(user_id=message.from_user.id)
     await message.answer(text='Останні замовлення:',
                          reply_markup=order_for_user(message.from_user.id))
 
@@ -302,7 +302,7 @@ async def payment_bank(query: types.CallbackQuery):
 
 async def admin_test(message: types.Message):
     if message.from_user.id == int(ADMIN):
-        sqlite_db.delete_not_verification(message.from_user.id)
+        sqlite_db.delete_not_verification()
         await message.answer(reply_markup=order_for_admin(), text='working')
     else:
         await message.answer('у вас немає доступу!')
