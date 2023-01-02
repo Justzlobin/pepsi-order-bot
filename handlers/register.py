@@ -19,10 +19,8 @@ async def cm_start(message: types.Message):
 
 async def write_full_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        if message.text == 'відмінити':
-            await state.reset_data()
-        else:
-            data['full_name'] = message.text
+
+        data['full_name'] = message.text
         print(data)
     await UserRegister.next()
     await message.reply('І ще адресу доставки:\n Приклад: "м.Вінниця, Пирогова, 119"',
@@ -42,4 +40,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(cm_start, text='📋 Реєстрація', state=None)
     dp.register_message_handler(write_full_name, state=UserRegister.full_name)
     dp.register_message_handler(write_address, state=UserRegister.address)
-    dp.register_message_handler(cancel, text='cancel')
+
