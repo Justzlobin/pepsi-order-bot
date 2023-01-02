@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types
 from aiogram import Dispatcher
 from datadase import sqlite_db
-from keyboards import kb_menu, back_from_register_kb
+from keyboards import *
 
 
 class UserRegister(StatesGroup):
@@ -34,7 +34,14 @@ async def write_address(message: types.Message, state: FSMContext):
     await message.answer(text='Тепер можна робити замовлення', reply_markup=kb_menu)
 
 
+async def fsc_close(query: types.CallbackQuery, state: FSMContext):
+    await query.message.answer(reply_markup=kb_menu, text='Ви повернулись в меню')
+    await state.finish()
+
+
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(cm_start, text='📋 Реєстрація', state=None)
     dp.register_message_handler(write_full_name, state=UserRegister.full_name)
     dp.register_message_handler(write_address, state=UserRegister.address)
+    dp.register_callback_query_handler(fsc_close,
+                                       back_from_register.filter(action='back_to_menu_from_register'))
