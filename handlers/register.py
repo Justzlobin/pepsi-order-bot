@@ -13,7 +13,7 @@ class UserRegister(StatesGroup):
 
 async def cm_start(message: types.Message):
     await UserRegister.full_name.set()
-    await message.reply("Введіть прізвище, ім'я, по-батькові ФОП", reply_markup=back_from_register_kb)
+    await message.reply("Введіть прізвище, ім'я, по-батькові ФОП", reply_markup=back_from_register_markup())
 
 
 async def write_full_name(message: types.Message, state: FSMContext):
@@ -22,7 +22,7 @@ async def write_full_name(message: types.Message, state: FSMContext):
         print(data)
     await UserRegister.next()
     await message.reply('І ще адресу доставки:\n Приклад: "м.Вінниця, Пирогова, 119"',
-                        reply_markup=back_from_register_kb)
+                        reply_markup=back_from_register_markup())
 
 
 async def write_address(message: types.Message, state: FSMContext):
