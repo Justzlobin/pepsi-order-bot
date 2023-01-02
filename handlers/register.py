@@ -48,3 +48,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(cm_start, text='📋 Реєстрація', state=None)
     dp.register_message_handler(write_full_name, state=UserRegister.full_name)
     dp.register_message_handler(write_address, state=UserRegister.address)
+    dp.register_message_handler(cancel, text='cancel')
