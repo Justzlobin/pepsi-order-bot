@@ -350,20 +350,12 @@ async def back_to_menu_from_order(message: types.Message):
 
 async def order_delete(query: types.CallbackQuery, callback_data: dict):
     if sqlite_db.delete_order(callback_data['id']):
+
         await dp.bot.send_message(text='Заявка видалена',
                                   chat_id=query.message.chat.id)
     else:
         await dp.bot.send_message(text='Заявка вже проведена',
                                   chat_id=query.message.chat.id)
-    await query.message.delete()
-
-
-from aiogram.dispatcher import FSMContext
-
-
-async def fsc_close(query: types.CallbackQuery, state: FSMContext):
-    await state.reset_state()
-    await query.message.answer(reply_markup=kb_menu, text='Ви повернулись в меню')
 
 
 def register_handlers_handler(dp: Dispatcher):
@@ -414,6 +406,3 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_blocked_debt, cat_cb.filter(action='order_blocked_debt'))
     dp.register_callback_query_handler(order_status_blocked_limit, cat_cb.filter(action='order_blocked_limit'))
     dp.register_callback_query_handler(order_delete, cat_cb.filter(action='order_delete'))
-    #
-    dp.register_callback_query_handler(fsc_close,
-                                       cat_cb.filter(action='back_to_menu_from_register'))
