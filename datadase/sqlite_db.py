@@ -176,9 +176,9 @@ def select_order_to_user(order_id):
     text = cur.fetchall()
     for i in text:
         liste.append(f'{i[0]} {i[1]} {i[2]} - <b>{i[3]}</b> \n')
-    comment =  order_user_name_and_comment(order_id)
+    comment = order_user_name_and_comment(order_id)
     liste.append(f'{comment[1]}\n'
-                     f'{comment[2]}')
+                 f'{comment[2]}\n')
     cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,))
     liste.append(
         f'Сумма: {cur.fetchone()[0]}'
