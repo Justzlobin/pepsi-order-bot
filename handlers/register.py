@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types
 from aiogram import Dispatcher
 from datadase import sqlite_db
-from keyboards import kb_menu
+from keyboards import kb_menu, back_from_register_kb
 
 
 class UserRegister(StatesGroup):
@@ -13,7 +13,7 @@ class UserRegister(StatesGroup):
 
 async def cm_start(message: types.Message):
     await UserRegister.full_name.set()
-    await message.reply("Введіть прізвище, ім'я, по-батькові ФОП")
+    await message.reply("Введіть прізвище, ім'я, по-батькові ФОП", reply_markup=back_from_register_kb)
 
 
 async def write_full_name(message: types.Message, state: FSMContext):
@@ -21,7 +21,8 @@ async def write_full_name(message: types.Message, state: FSMContext):
         data['full_name'] = message.text
         print(data)
     await UserRegister.next()
-    await message.reply('І ще адресу доставки:\n Приклад: "м.Вінниця, Пирогова, 119"')
+    await message.reply('І ще адресу доставки:\n Приклад: "м.Вінниця, Пирогова, 119"',
+                        reply_markup=back_from_register_kb)
 
 
 async def write_address(message: types.Message, state: FSMContext):
