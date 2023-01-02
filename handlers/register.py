@@ -1,27 +1,15 @@
 from aiogram.dispatcher import FSMContext
-import logging
+
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram import types
+
 from aiogram import Dispatcher
-from datadase import sqlite_db
+
 from keyboards import *
 
 
 class UserRegister(StatesGroup):
     full_name = State()
     address = State()
-
-
-async def cancel(message: types.Message, state: FSMContext):
-    current_state = await state.get_state()
-    print(state.get_state())
-    if current_state is None:
-        return
-    logging.info("Cancelling state %r", current_state)
-
-    await state.finish()
-    await message.answer(
-        "Cancelled.")
 
 
 async def cm_start(message: types.Message):
@@ -31,7 +19,10 @@ async def cm_start(message: types.Message):
 
 async def write_full_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['full_name'] = message.text
+        if message.text == 'відмінити':
+            await state.reset_data()
+        else:
+            data['full_name'] = message.text
         print(data)
     await UserRegister.next()
     await message.reply('І ще адресу доставки:\n Приклад: "м.Вінниця, Пирогова, 119"',
