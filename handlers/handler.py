@@ -358,6 +358,14 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
     await query.message.delete()
 
 
+from aiogram.dispatcher import FSMContext
+
+
+async def fsc_close(query: types.CallbackQuery, state: FSMContext):
+    await state.reset_state()
+    await query.message.answer(reply_markup=kb_menu, text='Ви повернулись в меню')
+
+
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
@@ -406,3 +414,6 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_blocked_debt, cat_cb.filter(action='order_blocked_debt'))
     dp.register_callback_query_handler(order_status_blocked_limit, cat_cb.filter(action='order_blocked_limit'))
     dp.register_callback_query_handler(order_delete, cat_cb.filter(action='order_delete'))
+    #
+    dp.register_callback_query_handler(fsc_close,
+                                       cat_cb.filter(action='back_to_menu_from_register'))
