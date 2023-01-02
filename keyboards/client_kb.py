@@ -21,11 +21,13 @@ kb_custom.add(kb_menu_asort, kb_menu_basket, kb_order_settings, kb_back_to_menu)
 kb_menu_first_user = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 kb_menu_first_user.add(kb_menu_register)
 
-back_from_register = CallbackData('title', 'action')
-back_from_register_kb = InlineKeyboardMarkup()
-back_from_register_kb.add(InlineKeyboardButton(
-    'Відмінити',
-    callback_data=back_from_register.new(action='back_to_menu_from_register')))
+
+def back_from_register_markup():
+    back_from_register_kb = InlineKeyboardMarkup()
+    back_from_register_kb.add(InlineKeyboardButton(
+        'Відмінити',
+        callback_data=cat_cb.new(id=1, action='back_to_menu_from_register')))
+    return back_from_register_kb
 
 
 def cat_markup():

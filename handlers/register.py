@@ -45,4 +45,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(write_full_name, state=UserRegister.full_name)
     dp.register_message_handler(write_address, state=UserRegister.address)
     dp.register_callback_query_handler(fsc_close,
-                                       back_from_register.filter(action='back_to_menu_from_register'))
+                                       cat_cb.filter(action='back_to_menu_from_register'))
