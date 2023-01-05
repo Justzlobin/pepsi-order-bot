@@ -20,11 +20,11 @@ async def name_chosen(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['user_choosing_name'] = message.text
     print(data)
+
+    await state.finish()
     await message.answer(
         text="дякую",
     )
-    await state.finish()
-
 
 def register_register_handlers(dp: Dispatcher):
     dp.register_message_handler(user_register, text='📋 Реєстрація')
