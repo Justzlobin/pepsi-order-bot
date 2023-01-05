@@ -11,14 +11,15 @@ async def user_register(message: types.Message):
     await message.answer(text='register: ', reply_markup=user_register_kb())
 
 
-async def user_register_name(query: types.CallbackQuery, state: FSMContext):
+async def user_register_name(query: types.CallbackQuery):
     await query.message.answer(text='Введіть імя')
-    await state.set_state(UserRegisterName.user_choosing_name)
+    await UserRegisterName.user_choosing_name.set()
 
 
 async def name_chosen(message: types.Message, state: FSMContext):
-    await state.update_data(user_name=message.text.lower())
-    print(state.get_data())
+    async with state.proxy() as data:
+        data['user_choosing_name'] = message.text
+    print(data)
     await message.answer(
         text="дякую",
     )
