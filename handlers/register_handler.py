@@ -1,10 +1,7 @@
 from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
-import aiogram.utils.exceptions
 from aiogram import Dispatcher
-from create_bot import dp
 from keyboards import *
-from config import ADMIN
 
 
 async def user_register(message: types.Message):
@@ -12,6 +9,7 @@ async def user_register(message: types.Message):
 
 
 async def user_register_name(query: types.CallbackQuery):
+    await query.message.delete()
     await query.message.answer(text='Введіть імя')
     await UserRegisterName.user_choosing_name.set()
 
@@ -22,9 +20,8 @@ async def name_chosen(message: types.Message, state: FSMContext):
     print(data)
 
     await state.finish()
-    await message.answer(
-        text="дякую",
-    )
+    await message.answer(text="дякую")
+    await message.delete()
 
 def register_register_handlers(dp: Dispatcher):
     dp.register_message_handler(user_register, text='📋 Реєстрація')
