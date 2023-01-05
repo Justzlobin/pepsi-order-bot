@@ -13,7 +13,7 @@ async def on_startup(_):
 
 handler.register_handlers_handler(dp)
 
-
+register_handler.register_register_handlers(dp)
 comment.comment_order_handlers(dp)
 update_order_handler.register_update_order_handler(dp)
 
