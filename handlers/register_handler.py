@@ -5,7 +5,7 @@ from keyboards import *
 
 
 async def user_register(message: types.Message):
-    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb())
+    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
 async def user_register_name(query: types.CallbackQuery):
@@ -24,7 +24,7 @@ async def name_enter(message: types.Message, state: FSMContext):
         data['user_choosing_name'] = message.text
     print(data)
     await state.finish()
-    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb())
+    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -32,7 +32,7 @@ async def address_enter(message: types.Message, state: FSMContext):
         data['user_address'] = message.text
     print(data)
     await state.finish()
-    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb())
+    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
 def register_register_handlers(dp: Dispatcher):
