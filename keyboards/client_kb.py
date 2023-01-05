@@ -187,9 +187,9 @@ def order_update_user_kb(order_id):
 
 def user_register_kb(user_id):
     if sqlite_db.user_exist():
-        list_kb= [i for i in user_db.select_name_and_address_from_users(user_id)]
+        list_kb = user_db.select_name_and_address_from_users(user_id)
     else:
-        list_kb = ['ПІБ ФОПа', 'АДРЕСА']
+        list_kb = ('ПІБ ФОПа', 'АДРЕСА')
     buttons = [
         [
             types.InlineKeyboardButton(text=list_kb[0],
