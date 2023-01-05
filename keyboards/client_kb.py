@@ -185,4 +185,16 @@ def order_update_user_kb(order_id):
     return order_update_user_kb_markup
 
 
+def user_register_kb():
+    buttons = [
+        [
+            types.InlineKeyboardButton(text='name',
+                                       callback_data=cat_cb.new(id=1, action='register_user_name')),
+            types.InlineKeyboardButton(text='address',
+                                       callback_data=cat_cb.new(id=2, acyion='register_user_address'))
+        ]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
