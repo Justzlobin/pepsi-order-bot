@@ -1,4 +1,3 @@
-
 from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 import aiogram.utils.exceptions
@@ -15,11 +14,11 @@ async def user_register(message: types.Message):
 async def user_register_name(query: types.CallbackQuery, state: FSMContext):
     await query.message.answer(text='Введіть імя')
     await state.set_state(UserRegisterName.user_choosing_name)
-    print(state.get_state())
 
 
 async def name_chosen(message: types.Message, state: FSMContext):
     await state.update_data(user_name=message.text.lower())
+    print(state.get_data())
     await message.answer(
         text="дякую",
     )
