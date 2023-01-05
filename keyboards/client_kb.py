@@ -1,5 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
-from datadase import sqlite_db
+from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
@@ -185,13 +185,17 @@ def order_update_user_kb(order_id):
     return order_update_user_kb_markup
 
 
-def user_register_kb():
+def user_register_kb(user_id, user_in_kb=True):
+    if not user_in_kb:
+        list_kb= [i for i in user_db.select_name_and_address_from_users(user_id)]
+    else:
+        list_kb = ['ПІБ ФОПа', 'АДРЕСА']
     buttons = [
         [
-            types.InlineKeyboardButton(text='name',
-                                       callback_data=cat_cb.new(id=1, action='register_user_name')),
-            types.InlineKeyboardButton(text='address',
-                                       callback_data=cat_cb.new(id=2, action='register_user_address'))
+            types.InlineKeyboardButton(text=list_kb[0],
+                                       callback_data=cat_cb.new(id=user_id, action='register_user_name')),
+            types.InlineKeyboardButton(text=list_kb[1],
+                                       callback_data=cat_cb.new(id=user_id, action='register_user_address'))
         ]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
