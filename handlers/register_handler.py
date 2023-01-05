@@ -29,4 +29,4 @@ async def name_chosen(message: types.Message, state: FSMContext):
 def register_register_handlers(dp: Dispatcher):
     dp.register_message_handler(user_register, text='📋 Реєстрація')
     dp.register_callback_query_handler(user_register_name, cat_cb.filter(action='register_user_name'))
-    dp.register_message_handler(name_chosen)
+    dp.register_message_handler(name_chosen, state=UserRegisterName.user_choosing_name)
