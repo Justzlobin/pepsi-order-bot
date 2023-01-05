@@ -185,8 +185,8 @@ def order_update_user_kb(order_id):
     return order_update_user_kb_markup
 
 
-def user_register_kb(user_id, user_in_kb=True):
-    if not user_in_kb:
+def user_register_kb(user_id):
+    if sqlite_db.user_exist():
         list_kb= [i for i in user_db.select_name_and_address_from_users(user_id)]
     else:
         list_kb = ['ПІБ ФОПа', 'АДРЕСА']
