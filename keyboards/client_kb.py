@@ -191,7 +191,7 @@ def user_register_kb():
             types.InlineKeyboardButton(text='name',
                                        callback_data=cat_cb.new(id=1, action='register_user_name')),
             types.InlineKeyboardButton(text='address',
-                                       callback_data=cat_cb.new(id=2, acyion='register_user_address'))
+                                       callback_data=cat_cb.new(id=2, action='register_user_address'))
         ]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
