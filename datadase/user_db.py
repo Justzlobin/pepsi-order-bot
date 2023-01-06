@@ -21,9 +21,9 @@ def check_user_for_registration(user_id):
 def register_or_update_user_data(user_id, value, name=False, address=False, register=False):
     if register:
         if name:
-            cur.execute("""INSERT INTO users (user_full_name) VALUES (%s) WHERE user_id = %s""", (value, user_id))
+            cur.execute("""INSERT INTO users (user_id, user_full_name) VALUES (%s, %s)""", (user_id, value))
         if address:
-            cur.execute("""INSERT INTO users (user_address) VALUES (%s) WHERE user_id = %s""", (value, user_id))
+            cur.execute("""INSERT INTO users (user_id, user_address) VALUES (%s, %s)""", (user_id, value))
     else:
         if name:
             cur.execute("""UPDATE users SET user_full_name = %s WHERE user_id = %s""", (value, user_id))
