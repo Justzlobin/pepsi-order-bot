@@ -18,7 +18,7 @@ def check_user_for_registration(user_id):
         return False
 
 
-def register_or_update_user_data(user_id, value, name=True, address=True, register=False):
+def register_or_update_user_data(user_id, value, name=False, address=False, register=False):
     if register:
         if name:
             cur.execute("""INSERT INTO users (user_full_name) VALUES %s WHERE user_id = %s""", (value, user_id))
