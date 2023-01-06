@@ -12,7 +12,7 @@ def select_name_and_address_from_users(user_id):
 
 
 def check_user_for_registration(user_id):
-    if str(user_id) in sqlite_db.user_exist():
+    if user_id in sqlite_db.user_exist():
         return True
     else:
         return False
