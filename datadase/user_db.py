@@ -22,6 +22,6 @@ def register_or_update_user_data(user_id, column_name, value, register=False):
     if register:
         cur.execute("""INSERT INTO users (%s) VALUES %s WHERE user_id = %s""", (column_name, value, user_id))
     else:
-        cur.execute("""UPDATE users SET (%s) = %s WHERE user_id = %s""", (column_name, value, user_id))
+        cur.execute("""UPDATE users SET %s = %s WHERE user_id = %s""", (column_name, value, user_id))
     conn.commit()
     return True
