@@ -21,7 +21,7 @@ async def user_register_address(query: types.CallbackQuery):
 
 async def name_enter(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['user_choosing_name'] = message.text
+        data['user_name'] = message.text
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
@@ -30,6 +30,7 @@ async def name_enter(message: types.Message, state: FSMContext):
 async def address_enter(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['user_address'] = message.text
+    user_db.register_or_update_user_data(message.from_user.id, 'user_address', data['user_address'])
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
