@@ -197,12 +197,7 @@ def user_register_kb(user_id):
 
 
 def stop_register():
-    pass
-    # button = [
-    #     [types.InlineKeyboardButton(text='Відмінити',
-    #                                 callback_data=cat_cb.new(id=1, command='/cancel'))]
-    # ]
-    # return types.InlineKeyboardMarkup(inline_keyboard=button)
+    return ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton(text='cancel'))
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')

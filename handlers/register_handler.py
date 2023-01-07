@@ -1,7 +1,13 @@
 from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 from aiogram import Dispatcher
+from aiogram.dispatcher.filters import Text
 from keyboards import *
+
+
+async def stop_register(message: types.Message, state: FSMContext):
+    await state.finish()
+    await message.answer('end')
 
 
 async def user_register(message: types.Message):
@@ -49,3 +55,4 @@ def register_register_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(user_register_address, cat_cb.filter(action='register_user_address'))
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)
     dp.register_message_handler(address_enter, state=UserRegisterName.user_enter_address)
+    dp.register_message_handler(stop_register, Text(equals='cancel'))
