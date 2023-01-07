@@ -22,14 +22,6 @@ kb_menu_first_user = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 kb_menu_first_user.add(kb_menu_register)
 
 
-def back_from_register_markup():
-    back_from_register_kb = InlineKeyboardMarkup()
-    back_from_register_kb.add(InlineKeyboardButton(
-        'Відмінити',
-        callback_data=cat_cb.new(id=1, action='back_to_menu_from_register')))
-    return back_from_register_kb
-
-
 def cat_markup():
     global cat_cb
 
@@ -79,6 +71,9 @@ def keyboard_order(order_id, user_id):
     keyboard_order_markup.add(InlineKeyboardButton(f'❌ Скавувати замовлення',
                                                    callback_data=cat_cb.new(id=order_id,
                                                                             action='delete_from_order')))
+    keyboard_order_markup.add(InlineKeyboardButton(f'📝 Продовжити замовлення',
+                                                   callback_data=cat_cb.new(id=order_id,
+                                                                            action='continue_from_order')))
     return keyboard_order_markup
 
 
@@ -127,9 +122,9 @@ def keyboard_settings(order_id):
 
 def chose_payment(user_id):
     buttons = [
-        [types.InlineKeyboardButton(text='Готівкою',
+        [types.InlineKeyboardButton(text='💰 Готівкою',
                                     callback_data=cat_cb.new(id=user_id, action='cash'))],
-        [types.InlineKeyboardButton(text='Банк',
+        [types.InlineKeyboardButton(text='💳 Банк',
                                     callback_data=cat_cb.new(id=user_id, action='bank'))]
     ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)

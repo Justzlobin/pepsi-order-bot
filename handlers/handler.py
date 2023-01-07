@@ -356,6 +356,10 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
         await query.answer(text='Заявка вже проведена')
 
 
+async def order_continue(query: types.CallbackQuery):
+    await query.message.delete()
+
+
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
@@ -383,6 +387,7 @@ def register_handlers_handler(dp: Dispatcher):
     #
     dp.register_callback_query_handler(add_in_list_orders, cat_cb.filter(action='add_full_order'))
     dp.register_callback_query_handler(delete_from_order, cat_cb.filter(action='delete_from_order'))
+    dp.register_callback_query_handler(order_continue, cat_cb.filter(action='continue_from_order'))
     #
     dp.register_callback_query_handler(update_numbers, cat_cb.filter(action='position_order'))
 
