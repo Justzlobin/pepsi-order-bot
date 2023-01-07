@@ -270,7 +270,7 @@ def delete_empty_orders():
 
 def delete_order(order_id) -> bool:
     cur.execute("""SELECT status FROM list WHERE list_id = %s""", (order_id,))
-    if cur.fetchone()[0] == 'Очікування':
+    if cur.fetchone()[0] == '🕤 Очікування':
         cur.execute("""DELETE FROM list WHERE list_id = %s""", (order_id,))
         cur.execute("""DELETE FROM "order" WHERE order_id = %s""", (order_id,))
         conn.commit()
