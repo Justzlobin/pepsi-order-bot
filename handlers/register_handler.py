@@ -16,14 +16,14 @@ async def user_register(message: types.Message):
 
 async def user_register_name(query: types.CallbackQuery):
     await query.message.answer(text='Введіть ПІБ ФОП',
-                               reply_markup=stop_register())
+                               reply_markup=cancel_register())
     await UserRegisterName.user_enter_name.set()
 
 
 async def user_register_address(query: types.CallbackQuery):
     await query.message.answer(text='Введіть адресу\n'
                                     'Приклад: м.Вінниця, Пирогова, 100',
-                               reply_markup=stop_register())
+                               reply_markup=cancel_register())
     await UserRegisterName.user_enter_address.set()
 
 

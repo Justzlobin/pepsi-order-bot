@@ -196,7 +196,7 @@ def user_register_kb(user_id):
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def stop_register():
+def cancel_register():
     return ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton(text='cancel'))
 
 
