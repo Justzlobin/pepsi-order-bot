@@ -7,8 +7,9 @@ from keyboards import *
 async def stop_register(message: types.Message, state: FSMContext):
     current_state = state.get_state()
     if current_state is None:
-        await state.finish()
+
         return
+    await state.finish()
     await message.answer('end')
 
 

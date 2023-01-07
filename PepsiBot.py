@@ -10,10 +10,10 @@ async def on_startup(_):
     print("Бот вийшов онлайн")
     sqlite_db.start_db()
 
-
+register_handler.register_register_handlers(dp)
 handler.register_handlers_handler(dp)
 
-register_handler.register_register_handlers(dp)
+
 comment.comment_order_handlers(dp)
 update_order_handler.register_update_order_handler(dp)
 
