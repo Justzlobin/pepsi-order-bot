@@ -319,14 +319,14 @@ async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='✔ Погоджено')
-    await query.answer(text='статус змінено на ✔ Погоджено')
+    sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено')
+    await query.answer(text='статус змінено на ✅ Погоджено')
     await query.message.delete()
 
 
 async def order_status_agreed_but(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='✔ Погоджено (зі змінами)')
-    await query.answer(text='статус змінено на ✔ Погоджено(зі змінами)')
+    sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено (зі змінами)')
+    await query.answer(text='статус змінено на ✅ Погоджено(зі змінами)')
     await query.message.delete()
 
 
@@ -351,11 +351,9 @@ async def back_to_menu_from_order(message: types.Message):
 async def order_delete(query: types.CallbackQuery, callback_data: dict):
     if sqlite_db.delete_order(callback_data['id']):
 
-        await dp.bot.send_message(text='Заявка видалена',
-                                  chat_id=query.message.chat.id)
+        await query.answer(text='Заявка видалена')
     else:
-        await dp.bot.send_message(text='Заявка вже проведена',
-                                  chat_id=query.message.chat.id)
+        await query.answer(text='Заявка вже проведена')
 
 
 def register_handlers_handler(dp: Dispatcher):
