@@ -319,26 +319,26 @@ async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='Погоджено')
-    await query.answer(text='статус змінено на Погоджено')
+    sqlite_db.update_order_state(callback_data['id'], state='✔ Погоджено')
+    await query.answer(text='статус змінено на ✔ Погоджено')
     await query.message.delete()
 
 
 async def order_status_agreed_but(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='Погоджено (зі змінами)')
-    await query.answer(text='статус змінено на Погоджено(зі змінами)')
+    sqlite_db.update_order_state(callback_data['id'], state='✔ Погоджено (зі змінами)')
+    await query.answer(text='статус змінено на ✔ Погоджено(зі змінами)')
     await query.message.delete()
 
 
 async def order_status_blocked_debt(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='Заблоковано (Дебіт)')
-    await query.answer(text='статус змінено на Заблоковано(дебіт)')
+    sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Дебіт)')
+    await query.answer(text='статус змінено на ❌ Заблоковано(дебіт)')
     await query.message.delete()
 
 
 async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='Заблоковано (Ліміт)')
-    await query.answer(text='статус змінено на Заблоковано(ліміт)')
+    sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Ліміт)')
+    await query.answer(text='статус змінено на ❌ Заблоковано(ліміт)')
     await query.message.delete()
 
 

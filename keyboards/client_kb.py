@@ -156,15 +156,15 @@ def order_for_user(user_id):
 def order_state_kb(order_id):
     buttons = [
         [
-            types.InlineKeyboardButton(text='Проведено',
+            types.InlineKeyboardButton(text='✅ Проведено',
                                        callback_data=cat_cb.new(id=order_id, action='order_agreed')),
-            types.InlineKeyboardButton(text='Проведено (зі змінами)',
+            types.InlineKeyboardButton(text='✅ Проведено (зі змінами)',
                                        callback_data=cat_cb.new(id=order_id, action='order_agreed_but'))
         ],
         [
-            types.InlineKeyboardButton(text='Заблоковано (Дебіторка)',
+            types.InlineKeyboardButton(text='❌ Заблоковано (Дебіторка)',
                                        callback_data=cat_cb.new(id=order_id, action='order_blocked_debt')),
-            types.InlineKeyboardButton(text='Заблоковано (Кредитний ліміт)',
+            types.InlineKeyboardButton(text='❌ Заблоковано (Кредитний ліміт)',
                                        callback_data=cat_cb.new(id=order_id, action='order_blocked_limit'))
         ]
     ]
