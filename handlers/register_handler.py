@@ -43,15 +43,9 @@ async def address_enter(message: types.Message, state: FSMContext):
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
-async def cancel_register(message: types.Message, state: FSMContext):
-    await state.reset_state()
-    await message.answer(text='Дія скасована')
-
-
 def register_register_handlers(dp: Dispatcher):
     dp.register_message_handler(user_register, text='📋 Реєстрація')
     dp.register_callback_query_handler(user_register_name, cat_cb.filter(action='register_user_name'))
     dp.register_callback_query_handler(user_register_address, cat_cb.filter(action='register_user_address'))
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)
     dp.register_message_handler(address_enter, state=UserRegisterName.user_enter_address)
-    dp.register_message_handler(cancel_register, text='відміна')
