@@ -198,7 +198,7 @@ def user_register_kb(user_id):
 
 def stop_register():
     button = [types.InlineKeyboardButton(text='Відмінити',
-                                         callback_data=cat_cb.new(id=None, action='stop_register'))]
+                                         callback_data=cat_cb.new(id=1, action='stop_register'))]
     return types.InlineKeyboardMarkup(inline_keyboard=button)
 
 
