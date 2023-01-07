@@ -350,10 +350,10 @@ async def back_to_menu_from_order(message: types.Message):
 
 async def order_delete(query: types.CallbackQuery, callback_data: dict):
     if sqlite_db.delete_order(callback_data['id']):
-
         await query.answer(text='Заявка видалена')
     else:
         await query.answer(text='Заявка вже проведена')
+    await query.message.delete()
 
 
 async def order_continue(query: types.CallbackQuery):
