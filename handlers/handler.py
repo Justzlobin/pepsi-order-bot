@@ -152,11 +152,12 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
-async def order_view(message: types.Message):
+async def order_view(message: types.Message, query: types.CallbackQuery):
     try:
         if sqlite_db.sum_order(order_data[f'{message.from_user.id}']) == 0:
             await message.answer(text='Корзина пуста')
         else:
+            await query.message.delete()
             await message.answer(
                 text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{message.from_user.id}"])}</b>',
                 reply_markup=keyboard_order(order_data[f'{message.from_user.id}'],
@@ -289,14 +290,14 @@ async def payment(query: types.CallbackQuery):
 
 
 async def payment_cash(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "Готівка"')
-    sqlite_db.update_payment(query.from_user.id, payment='cash')
+    await query.answer(text='Обрано: "💰 Готівка"')
+    sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
     await query.message.delete()
 
 
 async def payment_bank(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "Банк"')
-    sqlite_db.update_payment(query.from_user.id, payment='bank')
+    await query.answer(text='Обрано: "💳 Банк"')
+    sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
     await query.message.delete()
 
 
@@ -305,7 +306,7 @@ async def admin_test(message: types.Message):
         sqlite_db.delete_not_verification()
         await message.answer(reply_markup=order_for_admin(), text='working')
     else:
-        await message.answer('у вас немає доступу!')
+        await message.answer('У вас немає доступу!')
 
 
 async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
