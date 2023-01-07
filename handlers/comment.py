@@ -1,10 +1,8 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import Dispatcher
-from aiogram import types
-from datadase import sqlite_db
 from create_bot import dp
-from keyboards import cat_cb, kb_custom
+from keyboards import *
 
 
 class CommentToOrder(StatesGroup):
@@ -27,7 +25,8 @@ async def comment(query: types.CallbackQuery):
                                    'Приклад:\n'
                                    '"Штрих" - штрихкоди\n'
                                    '"Серт" - сертифікат\n'
-                                   '"ттн" - товаро-транспортна накладна\n')
+                                   '"ттн" - товаро-транспортна накладна\n',
+                              reply_markup=cancel_state())
 
 
 async def write_comment(message: types.Message, state: FSMContext):
