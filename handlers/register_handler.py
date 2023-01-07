@@ -12,20 +12,21 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
     await query.answer(text='Дію скасовано!')
     await query.message.delete()
 
+
 async def user_register(message: types.Message):
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
 async def user_register_name(query: types.CallbackQuery):
     await query.message.answer(text='Введіть ПІБ ФОП',
-                               reply_markup=cancel_register())
+                               reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
 
 
 async def user_register_address(query: types.CallbackQuery):
     await query.message.answer(text='Введіть адресу\n'
                                     'Приклад: м.Вінниця, Пирогова, 100',
-                               reply_markup=cancel_register())
+                               reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_address.set()
 
 

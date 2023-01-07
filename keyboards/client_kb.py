@@ -196,10 +196,12 @@ def user_register_kb(user_id):
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def cancel_register():
+def cancel_state(register=False):
+    action = 'stop_register' if register else 'stop_comment'
     button = [
-        [types.InlineKeyboardButton(text='Відмінити', callback_data=cat_cb.new(id=1, action='stop_register'))]
+        [types.InlineKeyboardButton(text='Відмінити', callback_data=cat_cb.new(id=1, action=action))]
     ]
+
     return types.InlineKeyboardMarkup(inline_keyboard=button)
 
 
