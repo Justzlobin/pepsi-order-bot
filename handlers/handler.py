@@ -152,12 +152,11 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
-async def order_view(message: types.Message, query: types.CallbackQuery):
+async def order_view(message: types.Message):
     try:
         if sqlite_db.sum_order(order_data[f'{message.from_user.id}']) == 0:
             await message.answer(text='Корзина пуста')
         else:
-            await query.message.delete()
             await message.answer(
                 text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{message.from_user.id}"])}</b>',
                 reply_markup=keyboard_order(order_data[f'{message.from_user.id}'],
