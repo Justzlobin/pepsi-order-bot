@@ -24,6 +24,8 @@ async def user_register_address(query: types.CallbackQuery):
 async def name_enter(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['user_name'] = message.text
+    if data['user_name'] == 'cancel':
+        await state.reset_state()
     if not user_db.check_user_for_registration(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True, register=True)
     user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
