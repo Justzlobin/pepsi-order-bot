@@ -9,13 +9,15 @@ async def user_register(message: types.Message):
 
 
 async def user_register_name(query: types.CallbackQuery):
-    await query.message.answer(text='Введіть ПІБ ФОП')
+    await query.message.answer(text='Введіть ПІБ ФОП',
+                               reply_markup=stop_register())
     await UserRegisterName.user_enter_name.set()
 
 
 async def user_register_address(query: types.CallbackQuery):
     await query.message.answer(text='Введіть адресу\n'
-                                    'Приклад: м.Вінниця, Пирогова, 100')
+                                    'Приклад: м.Вінниця, Пирогова, 100',
+                               reply_markup=stop_register())
     await UserRegisterName.user_enter_address.set()
 
 
@@ -41,9 +43,15 @@ async def address_enter(message: types.Message, state: FSMContext):
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
 
 
+async def cancel_register(query: types.CallbackQuery, state: FSMContext):
+    await state.reset_state()
+    await query.answer(text='Дія скасована')
+
+
 def register_register_handlers(dp: Dispatcher):
     dp.register_message_handler(user_register, text='📋 Реєстрація')
     dp.register_callback_query_handler(user_register_name, cat_cb.filter(action='register_user_name'))
     dp.register_callback_query_handler(user_register_address, cat_cb.filter(action='register_user_address'))
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)
     dp.register_message_handler(address_enter, state=UserRegisterName.user_enter_address)
+    dp.register_callback_query_handler(cancel_register, cat_cb.filter(action='stop_register'))
