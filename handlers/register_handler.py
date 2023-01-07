@@ -10,7 +10,7 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await query.answer(text='Дію скасовано!')
-
+    await query.message.delete()
 
 async def user_register(message: types.Message):
     await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
