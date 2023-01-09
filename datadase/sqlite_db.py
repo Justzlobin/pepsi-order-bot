@@ -90,7 +90,8 @@ def select_one_position(pos_id):
                             WHERE p.pos_id = %s
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
-                            AND p.tasty_id = t.tasty_id""", (pos_id,))
+                            AND p.tasty_id = t.tasty_id
+                            AND p.in_stock = %s""", (pos_id, True))
     return cur.fetchone()
 
 
