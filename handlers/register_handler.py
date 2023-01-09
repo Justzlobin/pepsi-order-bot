@@ -38,7 +38,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     print(data)
     await state.finish()
-    await message.answer(text='Ваші данн оновлені', reply_markup=kb_menu)
+    await message.answer(text='Ваші дані оновлені', reply_markup=kb_menu)
 
 
 async def address_enter(message: types.Message, state: FSMContext):
