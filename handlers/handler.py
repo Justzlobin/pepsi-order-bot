@@ -23,9 +23,7 @@ async def command_start(message: types.Message):
                                                          'щоб <b>PepsiBot</b> розумів,\n'
                                                          'кому і куди відправляти замовлення!',
 
-                                   reply_markup=kb_menu, parse_mode='HTML' )
-
-    await message.bot.pin_chat_message(chat_id=message.chat.id, message_id=message.message_id)
+                                   reply_markup=kb_menu, parse_mode='HTML')
 
 
 async def command_ascort(message: types.Message):
