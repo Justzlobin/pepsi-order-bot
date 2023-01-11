@@ -28,4 +28,4 @@
     * Доступний тільки торговому спеціалісту
 
 ---
-![](//C:/PepsiBoPepsiBott/Gif.gif)
+![overview](PepsiBotGif.gif)
