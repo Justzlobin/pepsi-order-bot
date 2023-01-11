@@ -366,7 +366,7 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
     dp.register_message_handler(order_view, text='🛒 Корзина')
     dp.register_message_handler(new_custom, text='❎ Сформувати замовлення')
-    dp.register_message_handler(last_order, text='📄 Останнє замовлення')
+    dp.register_message_handler(last_order, text='📄 Останні замовлення')
     dp.register_message_handler(order_settings, text='⚙ Налаштування')
     dp.register_message_handler(back_to_menu_from_order, text='🔙 Назад до меню')
     #
