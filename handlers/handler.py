@@ -1,5 +1,3 @@
-import types
-
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -155,7 +153,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
             pass
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Головне меню:', reply_markup=kb_menu)
+                                                         'Головне меню:', reply_markup=menu_kb())
 
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду', chat_id=chat_id,
@@ -174,14 +172,14 @@ async def order_view(message: types.Message):
                 parse_mode='HTML')
     except KeyError:
         await message.bot.send_message(message.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                       , reply_markup=kb_menu)
+                                       , reply_markup=menu_kb())
 
 
 async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
     await query.answer(text='Замовлення збережено!')
     sqlite_db.order_verification(callback_data['id'])
     await query.message.delete()
-    await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id, reply_markup=kb_menu)
+    await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id, reply_markup=menu_kb())
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -357,7 +355,7 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
 async def back_to_menu_from_order(message: types.Message):
     user_data[f'{message.from_user.id}'] = None
     await message.delete()
-    await message.answer(reply_markup=kb_menu, text='Ви повернулись в меню!')
+    await message.answer(reply_markup=menu_kb(), text='Ви повернулись в меню!')
 
 
 async def order_delete(query: types.CallbackQuery, callback_data: dict):

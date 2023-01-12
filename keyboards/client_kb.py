@@ -2,26 +2,9 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
-from .menu_kb import *
-
-kb_menu = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-kb_menu_asort = KeyboardButton('🛍️ Асортимент')
-kb_menu_register = KeyboardButton('📋 Реєстрація')
-kb_menu_basket = KeyboardButton('🛒 Корзина')
-kb_menu_new_custom = KeyboardButton('❎ Сформувати замовлення')
-kb_last_order = KeyboardButton('📄 Останні замовлення')
-kb_order_settings = KeyboardButton('⚙ Налаштування')
-kb_back_to_menu = KeyboardButton('🔙 Назад до меню')
-kb_menu.add(kb_menu_new_custom, kb_last_order, kb_menu_register)
+from . import *
 
 cat_cb = CallbackData('title', 'id', 'action')
-order_kb = CallbackData('title', 'action')
-
-kb_custom = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-kb_custom.add(kb_menu_asort, kb_menu_basket, kb_order_settings, kb_back_to_menu)
-
-kb_menu_first_user = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-kb_menu_first_user.add(kb_menu_register)
 
 
 def cat_markup():
@@ -203,14 +186,6 @@ def cancel_state(register=False):
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
-
-
-def order_inline_kb():
-    buttons = [
-        [types.InlineKeyboardButton(text='Асортимент', callback_data=order_kb.new(action='assort'))],
-        [types.InlineKeyboardButton(text='Корзина', callback_data=order_kb.new(action='basket'))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
