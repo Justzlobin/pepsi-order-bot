@@ -286,28 +286,7 @@ async def order_settings(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def calendar(query: types.CallbackQuery):
-    await dp.bot.send_message(text='select date', chat_id=query.message.chat.id,
-                              reply_markup=start_calendar())
 
-
-async def payment(query: types.CallbackQuery):
-    await dp.bot.send_message(text='Оберіть спосіб оплати:',
-                              chat_id=query.message.chat.id,
-                              reply_markup=chose_payment(query.from_user.id))
-    await query.message.delete()
-
-
-async def payment_cash(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "💰 Готівка"')
-    sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
-    await query.message.delete()
-
-
-async def payment_bank(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "💳 Банк"')
-    sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
-    await query.message.delete()
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
@@ -330,9 +309,9 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     #
     dp.register_callback_query_handler(back_to_menu_from_order, Menu_KB.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(command_assort, order_kb.filter(action='assort'))
-    dp.register_callback_query_handler(order_view, order_kb.filter(action='basket'))
-    dp.register_callback_query_handler(order_settings, order_kb.filter(action='settings'))
+    dp.register_callback_query_handler(command_assort, Order_KB.filter(action='assort'))
+    dp.register_callback_query_handler(order_view, Order_KB.filter(action='basket'))
+    dp.register_callback_query_handler(order_settings, Order_KB.filter(action='settings'))
     #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
@@ -343,7 +322,7 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(back_to_cat, cat_cb.filter(action='back_to_cat'))
     dp.register_callback_query_handler(back_to_position, cat_cb.filter(action='back_to_position'))
-    dp.register_callback_query_handler(back_to_order_menu, order_kb.filter(action='back_to_order_menu'))
+    dp.register_callback_query_handler(back_to_order_menu, Order_KB.filter(action='back_to_order_menu'))
     #
     dp.register_callback_query_handler(order_position_plus, cat_cb.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, cat_cb.filter(action='desc'))
@@ -365,7 +344,3 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(update_minus, cat_cb.filter(action='update_desc'))
     dp.register_callback_query_handler(update_zero, cat_cb.filter(action='update_zero'))
 
-    dp.register_callback_query_handler(calendar, cat_cb.filter(action='date_deliver'))
-    dp.register_callback_query_handler(payment, cat_cb.filter(action='payment'))
-    dp.register_callback_query_handler(payment_cash, cat_cb.filter(action='cash'))
-    dp.register_callback_query_handler(payment_bank, cat_cb.filter(action='bank'))
