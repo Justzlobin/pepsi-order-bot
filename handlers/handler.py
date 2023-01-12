@@ -1,3 +1,5 @@
+import types
+
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -24,10 +26,10 @@ async def command_start(message: types.Message):
 async def command_ascort(query: types.CallbackQuery):
     await query.message.delete()
     try:
-        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=combo_menu_kb())
+        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Оберіть цікаву вам категорію:', reply_markup=combo_menu_kb())
+                                                         'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
 
 
 async def back_to_cat(query: types.CallbackQuery):

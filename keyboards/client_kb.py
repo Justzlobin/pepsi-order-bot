@@ -2,6 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
+from .menu_kb import *
 
 kb_menu = ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 kb_menu_asort = KeyboardButton('🛍️ Асортимент')
@@ -24,13 +25,11 @@ kb_menu_first_user.add(kb_menu_register)
 
 
 def cat_markup():
-    global cat_cb
-
     cat_cb_markup = InlineKeyboardMarkup()
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_cb_markup.add(InlineKeyboardButton(category_title, callback_data=cat_cb.new(id=cat_id,
                                                                                         action='cat->brand')))
-
+    cat_cb_markup.add(back_to_menu())
     return cat_cb_markup
 
 
@@ -205,11 +204,13 @@ def cancel_state(register=False):
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
 
+
 def order_inline_kb():
     buttons = [
         [types.InlineKeyboardButton(text='Асортимент', callback_data=order_kb.new(action='assort'))],
         [types.InlineKeyboardButton(text='Корзина', callback_data=order_kb.new(action='basket'))]
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons)
+
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
