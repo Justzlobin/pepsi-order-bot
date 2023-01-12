@@ -35,13 +35,13 @@ async def to_start_from_order(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def command_ascort(query: types.CallbackQuery):
+async def command_assort(query: types.CallbackQuery):
     await query.message.delete()
     try:
-        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+                                                         'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -325,7 +325,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     #
     dp.register_callback_query_handler(to_start_from_order, Menu_KB.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
+    dp.register_callback_query_handler(command_assort, order_kb.filter(action='assort'))
     dp.register_callback_query_handler(order_view, order_kb.filter(action='basket'))
     #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
