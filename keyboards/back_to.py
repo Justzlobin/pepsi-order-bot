@@ -9,5 +9,5 @@ def back_to_menu():
     return types.InlineKeyboardButton('Назад до меню', callback_data=Back_to.new(action='back_to_menu'))
 
 
-def back_to_order():
+def back_to_order_menu():
     return types.InlineKeyboardButton('Назад', callback_data=Back_to.new(action='back_to_order'))

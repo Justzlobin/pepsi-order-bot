@@ -34,6 +34,7 @@ async def to_start_from_order(query: types.CallbackQuery):
                                  reply_markup=menu_kb(), parse_mode='HTML')
     await query.message.delete()
 
+
 async def command_ascort(query: types.CallbackQuery):
     await query.message.delete()
     try:
@@ -186,7 +187,7 @@ async def new_custom(query: types.CallbackQuery):
     await query.bot.send_message(text='1. Натисність <b>🛍️ Асортимент</b>, щоб почати формувати замовлення.\n'
                                       '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                       '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                                 reply_markup=order_inline_kb(), parse_mode='HTML', chat_id=query.message.chat.id)
+                                 reply_markup=order_menu_kb(), parse_mode='HTML', chat_id=query.message.chat.id)
     new_custom = sqlite_db.create_new_custom(query.from_user.id)
     order_data[f'{query.from_user.id}'] = new_custom
     await query.message.delete()
@@ -310,67 +311,17 @@ async def payment_bank(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def admin_test(message: types.Message):
-    if message.from_user.id == int(ADMIN):
-        sqlite_db.delete_not_verification()
-        await message.answer(reply_markup=order_for_admin(), text='working')
-    else:
-        await message.answer('У вас немає доступу!')
-
-
-async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
-    try:
-        await dp.bot.send_message(
-            text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
-            chat_id=query.message.chat.id,
-            parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
-    except aiogram.utils.exceptions.MessageTextIsEmpty:
-        await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
-
-
-async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено')
-    await query.answer(text='статус змінено на ✅ Погоджено')
-    await query.message.delete()
-
-
-async def order_status_agreed_but(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено (зі змінами)')
-    await query.answer(text='статус змінено на ✅ Погоджено(зі змінами)')
-    await query.message.delete()
-
-
-async def order_status_blocked_debt(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Дебіт)')
-    await query.answer(text='статус змінено на ❌ Заблоковано(дебіт)')
-    await query.message.delete()
-
-
-async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Ліміт)')
-    await query.answer(text='статус змінено на ❌ Заблоковано(ліміт)')
-    await query.message.delete()
-
-
 async def back_to_menu_from_order(message: types.Message):
     user_data[f'{message.from_user.id}'] = None
     await message.delete()
     await message.answer(reply_markup=menu_kb(), text='Ви повернулись в меню!')
 
 
-async def order_delete(query: types.CallbackQuery, callback_data: dict):
-    if sqlite_db.delete_order(callback_data['id']):
-        await query.answer(text='Заявка видалена')
-    else:
-        await query.answer(text='Заявка вже проведена')
-    await query.message.delete()
-
-
 async def order_continue(query: types.CallbackQuery):
     await query.message.delete()
 
 
-def register_handlers_handler(dp: Dispatcher):
+def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     dp.register_callback_query_handler(to_start_from_order, Menu_KB.filter(action='back_to_menu'))
     dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
@@ -412,11 +363,4 @@ def register_handlers_handler(dp: Dispatcher):
     dp.register_callback_query_handler(payment_cash, cat_cb.filter(action='cash'))
     dp.register_callback_query_handler(payment_bank, cat_cb.filter(action='bank'))
 
-    dp.register_message_handler(admin_test, text='admin')
-    dp.register_callback_query_handler(admin_test_kb, cat_cb.filter(action='order_admin'))
-    #
-    dp.register_callback_query_handler(order_status_agreed, cat_cb.filter(action='order_agreed'))
-    dp.register_callback_query_handler(order_status_agreed_but, cat_cb.filter(action='order_agreed_but'))
-    dp.register_callback_query_handler(order_status_blocked_debt, cat_cb.filter(action='order_blocked_debt'))
-    dp.register_callback_query_handler(order_status_blocked_limit, cat_cb.filter(action='order_blocked_limit'))
-    dp.register_callback_query_handler(order_delete, cat_cb.filter(action='order_delete'))
+
