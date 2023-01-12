@@ -24,6 +24,7 @@ def brand_markup(cat_id):
             InlineKeyboardButton(brand_title, callback_data=cat_cb.new(id=brand_id, action='brand->pos')))
     brand_cb_markup.add(InlineKeyboardButton('⬅ BACK', callback_data=cat_cb.new(id=int(cat_id),
                                                                                 action='back_to_cat')))
+    brand_cb_markup.add(back_to.back_to_order_menu())
     return brand_cb_markup
 
 
@@ -38,6 +39,7 @@ def position_markup(brand_id):
 
     position_cb_markup.add(InlineKeyboardButton('⬅ BACK', callback_data=cat_cb.new(id=sqlite_db.select_cat_id(brand_id),
                                                                                    action='cat->brand')))
+    position_cb_markup.add(back_to.back_to_order_menu())
     return position_cb_markup
 
 
@@ -176,7 +178,7 @@ def user_register_kb(user_id):
                                        callback_data=cat_cb.new(id=user_id, action='register_user_address'))
         ]
     ]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_menu())
 
 
 def cancel_state(register=False):

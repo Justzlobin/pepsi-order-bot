@@ -286,10 +286,6 @@ async def back_to_order_menu(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def order_continue(query: types.CallbackQuery):
-    await query.message.delete()
-
-
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     #
@@ -318,7 +314,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(box, cat_cb.filter(action='box'))
     dp.register_callback_query_handler(multi, cat_cb.filter(action='multi'))
     #
-    dp.register_callback_query_handler(order_continue, cat_cb.filter(action='continue_from_order'))
+
     #
     dp.register_callback_query_handler(update_numbers, cat_cb.filter(action='position_order'))
 

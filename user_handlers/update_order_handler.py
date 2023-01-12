@@ -1,6 +1,3 @@
-import types
-
-import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
