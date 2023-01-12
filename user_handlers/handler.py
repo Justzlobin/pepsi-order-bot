@@ -205,6 +205,7 @@ async def last_order(query: types.CallbackQuery):
     await query.bot.send_message(text='Останні замовлення:',
                                  reply_markup=order_for_user(query.from_user.id),
                                  chat_id=query.message.chat.id)
+    await query.message.delete()
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
