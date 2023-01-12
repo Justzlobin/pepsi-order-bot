@@ -21,6 +21,7 @@ async def command_start(message: types.Message):
                                                          'кому і куди відправляти замовлення!',
 
                                    reply_markup=menu_kb(), parse_mode='HTML')
+    await message.delete()
 
 
 async def to_start_from_order(query: types.CallbackQuery):
@@ -33,7 +34,7 @@ async def to_start_from_order(query: types.CallbackQuery):
                                                      'кому і куди відправляти замовлення!',
 
                                  reply_markup=menu_kb(), parse_mode='HTML')
-
+    await query.message.delete()
 
 async def command_ascort(query: types.CallbackQuery):
     await query.message.delete()
