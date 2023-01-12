@@ -35,16 +35,16 @@ async def back_to_main_menu(query: types.CallbackQuery):
 
 async def command_assort(query: types.CallbackQuery):
     try:
-        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
+        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
+                                                         'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     await query.message.delete()
 
 
 async def back_to_cat(query: types.CallbackQuery):
     await dp.bot.send_message(text='Оберіть цікаву вам категорію:', chat_id=query.message.chat.id,
-                              reply_markup=cat_markup())
+                              reply_markup=back_to_order_menu())
     await query.message.delete()
 
 
