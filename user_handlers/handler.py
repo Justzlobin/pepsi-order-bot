@@ -282,7 +282,8 @@ async def order_settings(query: types.CallbackQuery):
     user_id = query.from_user.id
     await query.message.delete()
     await query.bot.send_message(text='Налаштування замовлення:',
-                                 reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)))
+                                 reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)),
+                                 chat_id=query.message.chat.id)
 
 
 async def calendar(query: types.CallbackQuery):
@@ -312,7 +313,8 @@ async def payment_bank(query: types.CallbackQuery):
 async def back_to_menu_from_order(query: types.CallbackQuery):
     user_data[f'{query.from_user.id}'] = None
     await query.message.delete()
-    await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!')
+    await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
+                                 chat_id=query.message.chat.id)
 
 
 async def order_continue(query: types.CallbackQuery):
