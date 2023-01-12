@@ -317,6 +317,10 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
                                  chat_id=query.message.chat.id)
 
 
+async def back_to_order_menu(query: types.CallbackQuery):
+    await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+
+
 async def order_continue(query: types.CallbackQuery):
     await query.message.delete()
 
@@ -338,6 +342,7 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(back_to_cat, cat_cb.filter(action='back_to_cat'))
     dp.register_callback_query_handler(back_to_position, cat_cb.filter(action='back_to_position'))
+    dp.register_callback_query_handler(back_to_order_menu, order_kb.filter(action='back_to_order_menu'))
     #
     dp.register_callback_query_handler(order_position_plus, cat_cb.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, cat_cb.filter(action='desc'))
