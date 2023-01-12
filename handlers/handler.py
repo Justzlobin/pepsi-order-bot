@@ -29,6 +29,7 @@ async def command_start(message: types.Message):
 
 
 async def command_ascort(query: types.CallbackQuery):
+    await query.message.delete()
     try:
         await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     except KeyError:
