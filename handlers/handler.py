@@ -11,7 +11,7 @@ order_data = {}
 checkin = False
 
 
-async def command_start(message: types.Message):
+async def command_start(message: types.Message, query: types.CallbackQuery):
     await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                          'Бот створений для прийому заявок,\n'
                                                          'а також як інтерактивний прайс з продукцією.\n'
@@ -361,6 +361,7 @@ async def order_continue(query: types.CallbackQuery):
 
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
+    dp.register_callback_query_handler(command_start, Menu_KB.filter(action='back_to_menu'))
     dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
     dp.register_message_handler(order_view, text='🛒 Корзина')
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
