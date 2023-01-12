@@ -182,6 +182,7 @@ async def new_custom(message: types.Message):
                          reply_markup=order_inline_kb(), parse_mode='HTML')
     new_custom = sqlite_db.create_new_custom(message.from_user.id)
     order_data[f'{message.from_user.id}'] = new_custom
+    await message.delete()
     print(order_data)
     print(f'new custom: {new_custom}')
 
