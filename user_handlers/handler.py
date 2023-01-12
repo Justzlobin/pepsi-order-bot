@@ -169,6 +169,7 @@ async def order_view(query: types.CallbackQuery):
                 reply_markup=keyboard_order(order_data[f'{query.from_user.id}'],
                                             query.from_user.id),
                 parse_mode='HTML', chat_id=query.message.chat.id)
+            await query.message.delete()
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                      , reply_markup=menu_kb())
