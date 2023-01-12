@@ -16,13 +16,15 @@ async def payment(query: types.CallbackQuery):
 
 
 async def payment_cash(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "💰 Готівка"')
+    await query.bot.send_message(text='Обрано: "💰 Готівка"', reply_markup=order_menu_kb(),
+                                 chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
     await query.message.delete()
 
 
 async def payment_bank(query: types.CallbackQuery):
-    await query.answer(text='Обрано: "💳 Банк"')
+    await query.bot.send_message(text='Обрано: "💳 Банк"', reply_markup=order_menu_kb(),
+                                 chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
     await query.message.delete()
 
