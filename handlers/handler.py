@@ -1,3 +1,5 @@
+import types
+
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -26,11 +28,11 @@ async def command_start(message: types.Message):
                                    reply_markup=kb_menu, parse_mode='HTML')
 
 
-async def command_ascort(message: types.Message):
+async def command_ascort(query: types.CallbackQuery):
     try:
-        await message.bot.send_message(message.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     except KeyError:
-        await message.bot.send_message(message.from_user.id, 'Нажаль, час сесії вийшов\n'
+        await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                                              'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
 
 
@@ -361,7 +363,8 @@ async def order_continue(query: types.CallbackQuery):
 
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
-    dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
+    # dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
+    dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
     dp.register_message_handler(order_view, text='🛒 Корзина')
     dp.register_message_handler(new_custom, text='❎ Сформувати замовлення')
     dp.register_message_handler(last_order, text='📄 Останні замовлення')
