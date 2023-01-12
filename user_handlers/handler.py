@@ -323,9 +323,11 @@ async def order_continue(query: types.CallbackQuery):
 
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
+    #
     dp.register_callback_query_handler(to_start_from_order, Menu_KB.filter(action='back_to_menu'))
     dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
-    dp.register_message_handler(order_view, text='🛒 Корзина')
+    dp.register_callback_query_handler(order_view, order_kb.filter(action='basket'))
+    #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
     dp.register_message_handler(order_settings, text='⚙ Налаштування')
@@ -362,5 +364,3 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(payment, cat_cb.filter(action='payment'))
     dp.register_callback_query_handler(payment_cash, cat_cb.filter(action='cash'))
     dp.register_callback_query_handler(payment_bank, cat_cb.filter(action='bank'))
-
-
