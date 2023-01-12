@@ -9,8 +9,8 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await query.answer(text='Дію скасовано!')
-    await query.message.delete()
+    await query.bot.send_message(text='Головне меню', chat_id=query.message.chat.id, reply_markup=menu_kb())
+    await query.bot.delete_message(chat_id=query.message.chat.id, message_id=query.message.message_id)
 
 
 async def user_register(query: types.CallbackQuery):
