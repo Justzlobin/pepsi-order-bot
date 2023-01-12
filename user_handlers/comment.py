@@ -11,7 +11,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await query.answer(text='Дію скасовано!')
-    await dp.bot.delete_message()
+    await query.message.delete()
 
 
 async def comment(query: types.CallbackQuery):
