@@ -175,13 +175,6 @@ async def order_view(query: types.CallbackQuery):
                                      , reply_markup=menu_kb())
 
 
-async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
-    await query.answer(text='Замовлення збережено!')
-    sqlite_db.order_verification(callback_data['id'])
-    await query.message.delete()
-    await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id, reply_markup=menu_kb())
-
-
 async def new_custom(query: types.CallbackQuery):
     await query.bot.send_message(text='1. Натисність <b>🛍️ Асортимент</b>, щоб почати формувати замовлення.\n'
                                       '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
@@ -192,12 +185,6 @@ async def new_custom(query: types.CallbackQuery):
     await query.message.delete()
     print(order_data)
     print(f'new custom: {new_custom}')
-
-
-async def delete_from_order(query: types.CallbackQuery):
-    sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
-    await query.answer(text='Замовлення скасовано!')
-    await query.message.delete()
 
 
 async def box(query: types.CallbackQuery):
@@ -331,8 +318,6 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(box, cat_cb.filter(action='box'))
     dp.register_callback_query_handler(multi, cat_cb.filter(action='multi'))
     #
-    dp.register_callback_query_handler(add_in_list_orders, cat_cb.filter(action='add_full_order'))
-    dp.register_callback_query_handler(delete_from_order, cat_cb.filter(action='delete_from_order'))
     dp.register_callback_query_handler(order_continue, cat_cb.filter(action='continue_from_order'))
     #
     dp.register_callback_query_handler(update_numbers, cat_cb.filter(action='position_order'))
