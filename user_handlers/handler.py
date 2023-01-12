@@ -164,11 +164,11 @@ async def order_view(query: types.CallbackQuery):
         if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
             await query.answer(text='Корзина пуста')
         else:
-            await dp.bot.send_message(
+            await query.bot.send_message(
                 text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                 reply_markup=keyboard_order(order_data[f'{query.from_user.id}'],
                                             query.from_user.id),
-                parse_mode='HTML')
+                parse_mode='HTML', chat_id=query.message.chat.id)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                      , reply_markup=menu_kb())
@@ -286,9 +286,6 @@ async def order_settings(query: types.CallbackQuery):
     await query.message.delete()
 
 
-
-
-
 async def back_to_menu_from_order(query: types.CallbackQuery):
     user_data[f'{query.from_user.id}'] = None
     await query.message.delete()
@@ -343,4 +340,3 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(update_plus, cat_cb.filter(action='update_incr'))
     dp.register_callback_query_handler(update_minus, cat_cb.filter(action='update_desc'))
     dp.register_callback_query_handler(update_zero, cat_cb.filter(action='update_zero'))
-
