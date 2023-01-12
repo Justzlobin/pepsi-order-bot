@@ -12,11 +12,6 @@ checkin = False
 
 
 async def command_start(message: types.Message):
-    # print(sqlite_db.user_exist())
-    # if message.from_user.id in sqlite_db.user_exist():
-    #     await message.bot.send_message(message.from_user.id, 'З повернення, друже!\n'
-    #                                                          'Зробимо замовлення?', reply_markup=kb_menu)
-    # else:
     await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                          'Бот створений для прийому заявок,\n'
                                                          'а також як інтерактивний прайс з продукцією.\n'
@@ -25,7 +20,7 @@ async def command_start(message: types.Message):
                                                          'щоб <b>PepsiBot</b> розумів,\n'
                                                          'кому і куди відправляти замовлення!',
 
-                                   reply_markup=kb_menu, parse_mode='HTML')
+                                   reply_markup=menu_kb(), parse_mode='HTML')
 
 
 async def command_ascort(query: types.CallbackQuery):
@@ -34,7 +29,7 @@ async def command_ascort(query: types.CallbackQuery):
         await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                             'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+                                                         'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -176,14 +171,14 @@ async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
     await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id, reply_markup=kb_menu)
 
 
-async def new_custom(message: types.Message):
-    await message.answer(text='1. Натисність <b>🛍️ Асортимент</b>, щоб почати формувати замовлення.\n'
-                              '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                              '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                         reply_markup=order_inline_kb(), parse_mode='HTML')
-    new_custom = sqlite_db.create_new_custom(message.from_user.id)
-    order_data[f'{message.from_user.id}'] = new_custom
-    await message.delete()
+async def new_custom(query: types.CallbackQuery):
+    await query.bot.send_message(text='1. Натисність <b>🛍️ Асортимент</b>, щоб почати формувати замовлення.\n'
+                                      '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                      '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                 reply_markup=order_inline_kb(), parse_mode='HTML', chat_id=query.message.chat.id)
+    new_custom = sqlite_db.create_new_custom(query.from_user.id)
+    order_data[f'{query.from_user.id}'] = new_custom
+    await query.message.delete()
     print(order_data)
     print(f'new custom: {new_custom}')
 
@@ -206,11 +201,12 @@ async def multi(query: types.CallbackQuery):
     await query.answer(text='Обрано поштучно')
 
 
-async def last_order(message: types.Message):
+async def last_order(query: types.CallbackQuery):
     sqlite_db.delete_empty_orders()
-    sqlite_db.delete_not_verification(user_id=message.from_user.id)
-    await message.answer(text='Останні замовлення:',
-                         reply_markup=order_for_user(message.from_user.id))
+    sqlite_db.delete_not_verification(user_id=query.from_user.id)
+    await query.bot.send_message(text='Останні замовлення:',
+                                 reply_markup=order_for_user(query.from_user.id),
+                                 chat_id=query.message.chat.id)
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
@@ -365,11 +361,10 @@ async def order_continue(query: types.CallbackQuery):
 
 def register_handlers_handler(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
-    # dp.register_message_handler(command_ascort, text='🛍️ Асортимент')
     dp.register_callback_query_handler(command_ascort, order_kb.filter(action='assort'))
     dp.register_message_handler(order_view, text='🛒 Корзина')
-    dp.register_message_handler(new_custom, text='❎ Сформувати замовлення')
-    dp.register_message_handler(last_order, text='📄 Останні замовлення')
+    dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
+    dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
     dp.register_message_handler(order_settings, text='⚙ Налаштування')
     dp.register_message_handler(back_to_menu_from_order, text='🔙 Назад до меню')
     #
