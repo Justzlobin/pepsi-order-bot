@@ -280,10 +280,10 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
 
 async def order_settings(query: types.CallbackQuery):
     user_id = query.from_user.id
-    await query.message.delete()
     await query.bot.send_message(text='Налаштування замовлення:',
                                  reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)),
                                  chat_id=query.message.chat.id)
+    await query.message.delete()
 
 
 async def calendar(query: types.CallbackQuery):
@@ -319,6 +319,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
 
 async def back_to_order_menu(query: types.CallbackQuery):
     await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
+    await query.message.delete()
 
 
 async def order_continue(query: types.CallbackQuery):
