@@ -12,7 +12,7 @@ def cat_markup():
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_cb_markup.add(InlineKeyboardButton(category_title, callback_data=cat_cb.new(id=cat_id,
                                                                                         action='cat->brand')))
-    cat_cb_markup.add(back_to.back_to_menu())
+    cat_cb_markup.add(back_to.back_to_order_menu())
     return cat_cb_markup
 
 

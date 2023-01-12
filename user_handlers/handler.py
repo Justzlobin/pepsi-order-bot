@@ -44,7 +44,7 @@ async def command_assort(query: types.CallbackQuery):
 
 async def back_to_cat(query: types.CallbackQuery):
     await dp.bot.send_message(text='Оберіть цікаву вам категорію:', chat_id=query.message.chat.id,
-                              reply_markup=back_to_order_menu())
+                              reply_markup=cat_markup())
     await query.message.delete()
 
 
