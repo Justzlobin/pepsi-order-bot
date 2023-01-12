@@ -318,7 +318,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
-    await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+    await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
 
 
 async def order_continue(query: types.CallbackQuery):
