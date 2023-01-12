@@ -1,8 +1,6 @@
-import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
-from config import ADMIN
 
 user_data = {}
 order_data = {}
@@ -161,19 +159,19 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
-async def order_view(message: types.Message):
+async def order_view(query: types.CallbackQuery):
     try:
-        if sqlite_db.sum_order(order_data[f'{message.from_user.id}']) == 0:
-            await message.answer(text='Корзина пуста')
+        if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
+            await query.answer(text='Корзина пуста')
         else:
-            await message.answer(
-                text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{message.from_user.id}"])}</b>',
-                reply_markup=keyboard_order(order_data[f'{message.from_user.id}'],
-                                            message.from_user.id),
+            await dp.bot.send_message(
+                text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
+                reply_markup=keyboard_order(order_data[f'{query.from_user.id}'],
+                                            query.from_user.id),
                 parse_mode='HTML')
     except KeyError:
-        await message.bot.send_message(message.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                       , reply_markup=menu_kb())
+        await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
+                                     , reply_markup=menu_kb())
 
 
 async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
@@ -280,11 +278,11 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
                             reply_markup=keyboard(pos_id, order=True))
 
 
-async def order_settings(message: types.Message):
-    user_id = message.from_user.id
-    await message.delete()
-    await message.answer(text='Налаштування замовлення:',
-                         reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)))
+async def order_settings(query: types.CallbackQuery):
+    user_id = query.from_user.id
+    await query.message.delete()
+    await query.bot.send_message(text='Налаштування замовлення:',
+                                 reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)))
 
 
 async def calendar(query: types.CallbackQuery):
@@ -311,10 +309,10 @@ async def payment_bank(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def back_to_menu_from_order(message: types.Message):
-    user_data[f'{message.from_user.id}'] = None
-    await message.delete()
-    await message.answer(reply_markup=menu_kb(), text='Ви повернулись в меню!')
+async def back_to_menu_from_order(query: types.CallbackQuery):
+    user_data[f'{query.from_user.id}'] = None
+    await query.message.delete()
+    await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!')
 
 
 async def order_continue(query: types.CallbackQuery):
