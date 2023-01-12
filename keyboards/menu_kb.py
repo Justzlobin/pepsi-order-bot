@@ -30,4 +30,4 @@ def back_to_menu(designer=False):
 def combo_menu_kb():
     combo_buttons = []
     [combo_buttons.append(i) for i in menu_kb(designer=True) and back_to_menu(designer=True)]
-    return combo_buttons
+    return InlineKeyboardMarkup(inline_keyboard=combo_buttons)
