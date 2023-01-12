@@ -22,7 +22,7 @@ async def command_start(message: types.Message):
     await message.delete()
 
 
-async def to_start_from_order(query: types.CallbackQuery):
+async def back_to_main_menu(query: types.CallbackQuery):
     await query.bot.send_message(query.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                      'Бот створений для прийому заявок,\n'
                                                      'а також як інтерактивний прайс з продукцією.\n'
@@ -324,13 +324,13 @@ async def order_continue(query: types.CallbackQuery):
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     #
-    dp.register_callback_query_handler(to_start_from_order, Menu_KB.filter(action='back_to_menu'))
+    dp.register_callback_query_handler(back_to_menu_from_order, Menu_KB.filter(action='back_to_menu'))
     dp.register_callback_query_handler(command_assort, order_kb.filter(action='assort'))
     dp.register_callback_query_handler(order_view, order_kb.filter(action='basket'))
+    dp.register_callback_query_handler(order_settings, order_kb.filter(action='settings'))
     #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
-    dp.register_message_handler(order_settings, text='⚙ Налаштування')
     dp.register_message_handler(back_to_menu_from_order, text='🔙 Назад до меню')
     #
     dp.register_callback_query_handler(show_brand, cat_cb.filter(action='cat->brand'))
