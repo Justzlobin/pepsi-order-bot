@@ -283,7 +283,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
-    await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=order_menu_kb())
+    await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
     await query.message.delete()
 
 
@@ -298,24 +298,24 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
     #
-    dp.register_callback_query_handler(show_brand, cat_cb.filter(action='cat->brand'))
-    dp.register_callback_query_handler(show_position, cat_cb.filter(action='brand->pos'))
-    dp.register_callback_query_handler(cmd_numbers, cat_cb.filter(action='position'))
+    dp.register_callback_query_handler(show_brand, Cat_KB.filter(action='cat->brand'))
+    dp.register_callback_query_handler(show_position, Cat_KB.filter(action='brand->pos'))
+    dp.register_callback_query_handler(cmd_numbers, Cat_KB.filter(action='position'))
     #
-    dp.register_callback_query_handler(back_to_cat, cat_cb.filter(action='back_to_cat'))
-    dp.register_callback_query_handler(back_to_position, cat_cb.filter(action='back_to_position'))
+    dp.register_callback_query_handler(back_to_cat, Cat_KB.filter(action='back_to_cat'))
+    dp.register_callback_query_handler(back_to_position, Cat_KB.filter(action='back_to_position'))
     dp.register_callback_query_handler(back_to_order_menu, Order_KB.filter(action='back_to_order_menu'))
     #
-    dp.register_callback_query_handler(order_position_plus, cat_cb.filter(action='incr'))
-    dp.register_callback_query_handler(order_position_minus, cat_cb.filter(action='desc'))
-    dp.register_callback_query_handler(order_position_zero, cat_cb.filter(action='zero'))
-    dp.register_callback_query_handler(update_order_finish, cat_cb.filter(action='update_finish'))
-    dp.register_callback_query_handler(order_position_finish, cat_cb.filter(action='finish'))
+    dp.register_callback_query_handler(order_position_plus, Cat_KB.filter(action='incr'))
+    dp.register_callback_query_handler(order_position_minus, Cat_KB.filter(action='desc'))
+    dp.register_callback_query_handler(order_position_zero, Cat_KB.filter(action='zero'))
+    dp.register_callback_query_handler(update_order_finish, Cat_KB.filter(action='update_finish'))
+    dp.register_callback_query_handler(order_position_finish, Cat_KB.filter(action='finish'))
 
-    dp.register_callback_query_handler(box, cat_cb.filter(action='box'))
-    dp.register_callback_query_handler(multi, cat_cb.filter(action='multi'))
+    dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
+    dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
     #
-    dp.register_callback_query_handler(update_numbers, cat_cb.filter(action='position_order'))
-    dp.register_callback_query_handler(update_plus, cat_cb.filter(action='update_incr'))
-    dp.register_callback_query_handler(update_minus, cat_cb.filter(action='update_desc'))
-    dp.register_callback_query_handler(update_zero, cat_cb.filter(action='update_zero'))
+    dp.register_callback_query_handler(update_numbers, Cat_KB.filter(action='position_order'))
+    dp.register_callback_query_handler(update_plus, Cat_KB.filter(action='update_incr'))
+    dp.register_callback_query_handler(update_minus, Cat_KB.filter(action='update_desc'))
+    dp.register_callback_query_handler(update_zero, Cat_KB.filter(action='update_zero'))

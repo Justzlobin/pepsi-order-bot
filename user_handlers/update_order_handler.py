@@ -22,6 +22,6 @@ async def order_close_user(query: types.CallbackQuery):
 
 
 def register_update_order_handler(dp: Dispatcher):
-    dp.register_callback_query_handler(view_order_for_user, cat_cb.filter(action='order_user'))
-    dp.register_callback_query_handler(order_correct_user, cat_cb.filter(action='order_correct'))
-    dp.register_callback_query_handler(order_close_user, cat_cb.filter(action='order_close'))
+    dp.register_callback_query_handler(view_order_for_user, Cat_KB.filter(action='order_user'))
+    dp.register_callback_query_handler(order_correct_user, Cat_KB.filter(action='order_correct'))
+    dp.register_callback_query_handler(order_close_user, Cat_KB.filter(action='order_close'))

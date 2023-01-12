@@ -10,4 +10,4 @@ def back_to_menu():
 
 
 def back_to_order_menu():
-    return types.InlineKeyboardButton('Назад', callback_data=Back_to.new(action='back_to_order_menu'))
+    return types.InlineKeyboardButton('Меню замовлення', callback_data=Back_to.new(action='back_to_order_menu'))
