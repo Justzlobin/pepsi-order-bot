@@ -13,8 +13,10 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
     await query.message.delete()
 
 
-async def user_register(message: types.Message):
-    await message.answer(text='Ваші данні: ', reply_markup=user_register_kb(message.from_user.id))
+async def user_register(query: types.CallbackQuery):
+    await query.bot.send_message(text='Ваші данні: ', reply_markup=user_register_kb(query.from_user.id),
+                                 chat_id=query.message.chat.id)
+    await query.message.delete()
 
 
 async def user_register_name(query: types.CallbackQuery):
@@ -53,7 +55,7 @@ async def address_enter(message: types.Message, state: FSMContext):
 
 
 def register_register_handlers(dp: Dispatcher):
-    dp.register_callback_query_handler(user_register_name, Menu_KB.filter(action='register'))
+    dp.register_callback_query_handler(user_register, Menu_KB.filter(action='register'))
     dp.register_callback_query_handler(user_register_name, Cat_KB.filter(action='register_user_name'), state=None)
     dp.register_callback_query_handler(user_register_address, Cat_KB.filter(action='register_user_address'), state=None)
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)
