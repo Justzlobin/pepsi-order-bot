@@ -130,6 +130,7 @@ def order_for_user(user_id):
     for i in sqlite_db.list_order_to_user(user_id):
         order_to_user_markup.add(InlineKeyboardButton(text=f'{i[0]}  {sqlite_db.sum_order(i[1])}',
                                                       callback_data=cat_cb.new(id=i[1], action='order_user')))
+    order_to_user_markup.add(back_to.back_to_menu())
     return order_to_user_markup
 
 

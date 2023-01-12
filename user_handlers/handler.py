@@ -314,11 +314,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(box, cat_cb.filter(action='box'))
     dp.register_callback_query_handler(multi, cat_cb.filter(action='multi'))
     #
-
-    #
     dp.register_callback_query_handler(update_numbers, cat_cb.filter(action='position_order'))
-
-    #
     dp.register_callback_query_handler(update_plus, cat_cb.filter(action='update_incr'))
     dp.register_callback_query_handler(update_minus, cat_cb.filter(action='update_desc'))
     dp.register_callback_query_handler(update_zero, cat_cb.filter(action='update_zero'))
