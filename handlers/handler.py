@@ -179,7 +179,7 @@ async def new_custom(message: types.Message):
     await message.answer(text='1. Натисність <b>🛍️ Асортимент</b>, щоб почати формувати замовлення.\n'
                               '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                               '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                         reply_markup=kb_custom, parse_mode='HTML')
+                         reply_markup=order_inline_kb(), parse_mode='HTML')
     new_custom = sqlite_db.create_new_custom(message.from_user.id)
     order_data[f'{message.from_user.id}'] = new_custom
     print(order_data)
