@@ -53,7 +53,7 @@ async def address_enter(message: types.Message, state: FSMContext):
 
 
 def register_register_handlers(dp: Dispatcher):
-    dp.register_message_handler(user_register, text='📋 Реєстрація')
+    dp.register_callback_query_handler(user_register_name, Menu_KB.filter(action='register'))
     dp.register_callback_query_handler(user_register_name, Cat_KB.filter(action='register_user_name'), state=None)
     dp.register_callback_query_handler(user_register_address, Cat_KB.filter(action='register_user_address'), state=None)
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)

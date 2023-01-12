@@ -57,9 +57,9 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
-    dp.register_callback_query_handler(admin_test_kb, cat_cb.filter(action='order_admin'))
-    dp.register_callback_query_handler(order_status_agreed, cat_cb.filter(action='order_agreed'))
-    dp.register_callback_query_handler(order_status_agreed_but, cat_cb.filter(action='order_agreed_but'))
-    dp.register_callback_query_handler(order_status_blocked_debt, cat_cb.filter(action='order_blocked_debt'))
-    dp.register_callback_query_handler(order_status_blocked_limit, cat_cb.filter(action='order_blocked_limit'))
-    dp.register_callback_query_handler(order_delete, cat_cb.filter(action='order_delete'))
+    dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
+    dp.register_callback_query_handler(order_status_agreed, Cat_KB.filter(action='order_agreed'))
+    dp.register_callback_query_handler(order_status_agreed_but, Cat_KB.filter(action='order_agreed_but'))
+    dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
+    dp.register_callback_query_handler(order_status_blocked_limit, Cat_KB.filter(action='order_blocked_limit'))
+    dp.register_callback_query_handler(order_delete, Cat_KB.filter(action='order_delete'))
