@@ -23,6 +23,7 @@ async def user_register_name(query: types.CallbackQuery):
     await query.message.answer(text='Введіть ПІБ ФОП',
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
+    await query.message.delete()
 
 
 async def user_register_address(query: types.CallbackQuery):
@@ -30,6 +31,7 @@ async def user_register_address(query: types.CallbackQuery):
                                     'Приклад: м.Вінниця, Пирогова, 100',
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_address.set()
+    await query.message.delete()
 
 
 async def name_enter(message: types.Message, state: FSMContext):
@@ -41,6 +43,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
+    await message.delete()
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -52,6 +55,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
+    await message.delete()
 
 
 def register_register_handlers(dp: Dispatcher):
