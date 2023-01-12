@@ -18,4 +18,4 @@ def menu_kb(designer=False):
 
 
 def back_to_menu():
-    return [types.InlineKeyboardButton('Назад до меню', callback_data=Menu_KB.new(action='back_to_menu'))]
+    return types.InlineKeyboardButton('Назад до меню', callback_data=Menu_KB.new(action='back_to_menu'))
