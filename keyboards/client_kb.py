@@ -21,7 +21,7 @@ def brand_markup(cat_id):
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='brand->pos')))
-    brand_cb_markup.add(InlineKeyboardButton('⬅ BACK', callback_data=Cat_KB.new(id=int(cat_id),
+    brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                 action='back_to_cat')))
     brand_cb_markup.add(back_to.back_to_order_menu())
     return brand_cb_markup
@@ -30,11 +30,11 @@ def brand_markup(cat_id):
 def position_markup(brand_id):
     position_cb_markup = InlineKeyboardMarkup()
     for position_id, position_title in sqlite_db.select_product(brand_id):
-        position_cb_markup.add(InlineKeyboardButton(f'🍟 {position_title}', callback_data=Cat_KB.new(
+        position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action='position'
         )))
 
-    position_cb_markup.add(InlineKeyboardButton('⬅ BACK', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
+    position_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
                                                                                    action='cat->brand')))
     position_cb_markup.add(back_to.back_to_order_menu())
     return position_cb_markup
@@ -82,7 +82,7 @@ def keyboard(pos_id, order=False, correct=False):
     ]
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    keyboard.add(InlineKeyboardButton('⬅ BACK', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
+    keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
                                                                          action='back_to_position')))
 
     return keyboard
@@ -94,7 +94,7 @@ def keyboard_settings(order_id):
         #                             callback_data=cat_cb.new(id=order_id, action='date_deliver'))],
         [types.InlineKeyboardButton(text='💰 Спосіб оплати',
                                     callback_data=Cat_KB.new(id=order_id, action='payment'))],
-        [types.InlineKeyboardButton(text='📝 Примітка',
+        [types.InlineKeyboardButton(text='💬 Примітка',
                                     callback_data=Cat_KB.new(id=order_id, action='comment'))]]
     keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboards
@@ -180,7 +180,7 @@ def user_register_kb(user_id):
 def cancel_state(register=False):
     action = 'stop_register' if register else 'stop_comment'
     button = [
-        [types.InlineKeyboardButton(text='Відмінити', callback_data=Cat_KB.new(id=1, action=action))]
+        [types.InlineKeyboardButton(text='🛑 Відмінити', callback_data=Cat_KB.new(id=1, action=action))]
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
