@@ -331,7 +331,6 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
-    dp.register_message_handler(back_to_menu_from_order, text='🔙 Назад до меню')
     #
     dp.register_callback_query_handler(show_brand, cat_cb.filter(action='cat->brand'))
     dp.register_callback_query_handler(show_position, cat_cb.filter(action='brand->pos'))

@@ -38,7 +38,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     print(data)
     await state.finish()
-    await message.answer(text='Ваші дані оновлені', reply_markup=kb_menu)
+    await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -49,7 +49,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
     print(data)
     await state.finish()
-    await message.answer(text='Ваші данні оновлені', reply_markup=kb_menu)
+    await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
 
 
 def register_register_handlers(dp: Dispatcher):
