@@ -3,6 +3,8 @@ from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
 
+message_on_delete = {}
+
 
 async def stop_register(query: types.CallbackQuery, state: FSMContext):
     current_state = state.get_state()
@@ -24,6 +26,7 @@ async def user_register_name(query: types.CallbackQuery):
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
     await query.bot.delete_message(message_id=query.message.message_id, chat_id=query.message.chat.id)
+    message_on_delete['message_id'] = query.message.message_id
 
 
 async def user_register_address(query: types.CallbackQuery):
@@ -33,6 +36,7 @@ async def user_register_address(query: types.CallbackQuery):
     await UserRegisterName.user_enter_address.set()
     await query.bot.delete_message(chat_id=query.message.chat.id,
                                    message_id=query.message.message_id)
+    message_on_delete['message_id'] = query.message.message_id
 
 
 async def name_enter(message: types.Message, state: FSMContext):
@@ -45,7 +49,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
-    await message.delete_reply_markup()
+    await message.bot.delete_message(message_id=message_on_delete['message_id'], chat_id=message.chat.id)
     await message.delete()
 
 
@@ -59,7 +63,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
-
+    await message.bot.delete_message(message_id=message_on_delete['message_id'], chat_id=message.chat.id)
     await message.delete()
 
 
