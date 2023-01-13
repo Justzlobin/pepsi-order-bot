@@ -246,7 +246,7 @@ def list_order_to_admin():
 
 def list_order_to_user(user_id):
     cur.execute("""SELECT date,  list_id
-                    FROM list l WHERE l.user_id = %s""", (user_id,))
+                    FROM list l WHERE l.user_id = %s ORDER BY date""", (user_id,))
     return cur.fetchall()
 
 
