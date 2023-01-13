@@ -155,7 +155,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                                          'Головне меню:', reply_markup=menu_kb())
 
     await query.message.delete()
-    await dp.bot.send_message(text='Доступні смаки бренду', chat_id=chat_id,
+    await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
@@ -210,7 +210,6 @@ async def last_order(query: types.CallbackQuery):
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
     sum1 = user_data[callback_data['id']]
-
     update_text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{update_text[0]} {update_text[1]} {update_text[2]} {update_text[3]} {update_text[4]}'
     order = True
@@ -222,7 +221,6 @@ async def update_numbers(query: types.CallbackQuery, callback_data: dict):
 
 async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
     chat_id = query.message.chat.id
-
     sqlite_db.update_order_pos_id(user_data[callback_data['id']],
                                   sqlite_db.select_last_order(query.from_user.id),
                                   callback_data['id'])
@@ -251,7 +249,6 @@ async def update_zero(query: types.CallbackQuery, callback_data: dict):
 async def update_minus(query: types.CallbackQuery, callback_data: dict):
     user_value = user_data.get(callback_data['id'], 0)
     result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
-
     if result < 0:
         result = 0
     user_data[callback_data['id']] = result

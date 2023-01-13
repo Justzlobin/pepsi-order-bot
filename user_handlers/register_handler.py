@@ -45,6 +45,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
+    await message.delete_reply_markup()
     await message.delete()
 
 
@@ -57,6 +58,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
+    await message.delete_reply_markup()
     await message.delete()
 
 
