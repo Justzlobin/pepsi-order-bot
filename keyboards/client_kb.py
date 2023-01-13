@@ -14,19 +14,22 @@ def cat_markup(assortment=False):
                                                                                         action='cat->brand')))
     if assortment:
         cat_kb_markup.add(back_to.back_to_menu())
-    else:
+    if not assortment:
         cat_kb_markup.add(back_to.back_to_order_menu())
     return cat_kb_markup
 
 
-def brand_markup(cat_id):
+def brand_markup(cat_id, assortment=True):
     brand_cb_markup = InlineKeyboardMarkup()
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='brand->pos')))
     brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                  action='back_to_cat')))
-    brand_cb_markup.add(back_to.back_to_order_menu())
+    if not assortment:
+        brand_cb_markup.add(back_to.back_to_order_menu())
+    if assortment:
+        brand_cb_markup.add(back_to.back_to_menu())
     return brand_cb_markup
 
 
