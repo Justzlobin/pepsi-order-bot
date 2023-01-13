@@ -5,6 +5,7 @@ from keyboards import *
 user_data = {}
 order_data = {}
 checkin = False
+message_on_delete = {}
 
 
 async def command_start(message: types.Message):
@@ -18,6 +19,7 @@ async def command_start(message: types.Message):
 
                                    reply_markup=menu_kb(), parse_mode='HTML')
     await message.delete()
+    message_on_delete['message_id'] = message.message_id
 
 
 async def back_to_main_menu(query: types.CallbackQuery):

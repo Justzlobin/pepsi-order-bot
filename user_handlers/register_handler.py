@@ -2,8 +2,7 @@ from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
-
-message_on_delete = {}
+from user_handlers.handler import message_on_delete
 
 
 async def stop_register(query: types.CallbackQuery, state: FSMContext):
@@ -18,7 +17,6 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
 async def user_register(query: types.CallbackQuery):
     await query.bot.send_message(text='Ваші данні: ', reply_markup=user_register_kb(query.from_user.id),
                                  chat_id=query.message.chat.id)
-    message_on_delete['message_id'] = query.message.message_id
     print(message_on_delete)
     await query.message.delete()
 
