@@ -30,23 +30,28 @@ def brand_markup(cat_id, assortment=True):
         brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                      action='back_to_cat')))
     if assortment:
-        brand_cb_markup.add(back_to.back_to_menu())
         brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                      action='assortment_back_to_cat')))
+        brand_cb_markup.add(back_to.back_to_menu())
     return brand_cb_markup
 
 
-def position_markup(brand_id):
+def position_markup(brand_id, assortment=True):
     position_cb_markup = InlineKeyboardMarkup()
     for position_id, position_title in sqlite_db.select_product(brand_id):
         position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action='position'
         )))
-
-    position_cb_markup.add(
-        InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                 action='cat->brand')))
-    position_cb_markup.add(back_to.back_to_order_menu())
+    if not assortment:
+        position_cb_markup.add(
+            InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
+                                                                     action='cat->brand')))
+        position_cb_markup.add(back_to.back_to_order_menu())
+    if assortment:
+        position_cb_markup.add(
+            InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
+                                                                     action='assortment_back_to_brand')))
+        position_cb_markup.add(back_to.back_to_menu())
     return position_cb_markup
 
 

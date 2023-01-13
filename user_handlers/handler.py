@@ -51,8 +51,7 @@ async def back_to_cat(query: types.CallbackQuery):
 
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
-    await dp.bot.send_message(text='Доступні бренди в категорії:', chat_id=chat_id,
+    await dp.bot.send_message(text='Доступні бренди в категорії:', chat_id=query.message.chat.id,
                               reply_markup=brand_markup(callback_data['id']))
     await query.message.delete()
 

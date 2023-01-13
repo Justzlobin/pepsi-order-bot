@@ -11,10 +11,13 @@ async def show_assortment(query: types.CallbackQuery):
 
 
 async def assortment_back_to_cat(query: types.CallbackQuery):
-    await dp.bot.send_message(text='Доступні категорії:',
+    await query.bot.send_message(text='Доступні категорії:',
                               chat_id=query.message.chat.id,
                               reply_markup=cat_markup(assortment=True))
     await query.message.delete()
+
+async def assortment_back_to_brand(query: types.CallbackQuery):
+    await query.bot.send_message()
 
 
 def register_assortment_handlers(dp: Dispatcher):
