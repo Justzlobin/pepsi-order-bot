@@ -8,7 +8,7 @@ Order_KB = CallbackData('title', 'action')
 
 def order_menu_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='🛍 Асортимент', callback_data=Order_KB.new(action='assort'))],
+        [types.InlineKeyboardButton(text='🛍 Товари', callback_data=Order_KB.new(action='assort'))],
         [types.InlineKeyboardButton(text='🛒 Корзина', callback_data=Order_KB.new(action='basket'))],
         [types.InlineKeyboardButton(text='⚙ Налаштування', callback_data=Order_KB.new(action='settings'))]
     ]

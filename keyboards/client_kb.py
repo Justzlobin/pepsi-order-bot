@@ -7,12 +7,15 @@ from keyboards import back_to
 Cat_KB = CallbackData('title', 'id', 'action')
 
 
-def cat_markup():
+def cat_markup(assortment=False):
     cat_kb_markup = InlineKeyboardMarkup()
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_kb_markup.add(InlineKeyboardButton(category_title, callback_data=Cat_KB.new(id=cat_id,
                                                                                         action='cat->brand')))
-    cat_kb_markup.add(back_to.back_to_order_menu())
+    if assortment:
+        cat_kb_markup.add(back_to.back_to_menu())
+    else:
+        cat_kb_markup.add(back_to.back_to_order_menu())
     return cat_kb_markup
 
 
@@ -22,7 +25,7 @@ def brand_markup(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='brand->pos')))
     brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                action='back_to_cat')))
+                                                                                 action='back_to_cat')))
     brand_cb_markup.add(back_to.back_to_order_menu())
     return brand_cb_markup
 
@@ -34,8 +37,9 @@ def position_markup(brand_id):
             id=position_id, action='position'
         )))
 
-    position_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                                   action='cat->brand')))
+    position_cb_markup.add(
+        InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
+                                                                 action='cat->brand')))
     position_cb_markup.add(back_to.back_to_order_menu())
     return position_cb_markup
 
@@ -83,7 +87,7 @@ def keyboard(pos_id, order=False, correct=False):
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
-                                                                         action='back_to_position')))
+                                                                          action='back_to_position')))
 
     return keyboard
 
