@@ -96,7 +96,7 @@ def keyboard_settings(order_id):
                                     callback_data=Cat_KB.new(id=order_id, action='payment'))],
         [types.InlineKeyboardButton(text='💬 Примітка',
                                     callback_data=Cat_KB.new(id=order_id, action='comment'))]]
-    keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_order_menu())
     return keyboards
 
 
