@@ -25,7 +25,6 @@ async def user_register_name(query: types.CallbackQuery):
     await query.message.answer(text='Введіть ПІБ ФОП',
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
-    await query.bot.delete_message(message_id=query.message.message_id, chat_id=query.message.chat.id)
     message_on_delete['message_id'] = query.message.message_id
 
 
@@ -34,8 +33,6 @@ async def user_register_address(query: types.CallbackQuery):
                                     'Приклад: м.Вінниця, Пирогова, 100',
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_address.set()
-    await query.bot.delete_message(chat_id=query.message.chat.id,
-                                   message_id=query.message.message_id)
     message_on_delete['message_id'] = query.message.message_id
 
 
