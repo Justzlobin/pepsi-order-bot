@@ -18,5 +18,6 @@ comment.comment_order_handlers(dp)
 update_order_handler.register_update_order_handler(dp)
 order_settings.register_order_settings(dp)
 order_final.register_order_final(dp)
+assortment_handler.register_assortment_handlers(dp)
 
 executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
