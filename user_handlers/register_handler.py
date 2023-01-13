@@ -26,6 +26,7 @@ async def user_register_name(query: types.CallbackQuery):
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
     message_on_delete['message_id'] = query.message.message_id
+    await query.message.delete()
 
 
 async def user_register_address(query: types.CallbackQuery):
@@ -34,6 +35,7 @@ async def user_register_address(query: types.CallbackQuery):
                                reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_address.set()
     message_on_delete['message_id'] = query.message.message_id
+    await query.message.delete()
 
 
 async def name_enter(message: types.Message, state: FSMContext):
