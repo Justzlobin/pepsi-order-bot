@@ -24,12 +24,15 @@ def brand_markup(cat_id, assortment=True):
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='brand->pos')))
-    brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                 action='back_to_cat')))
+
     if not assortment:
         brand_cb_markup.add(back_to.back_to_order_menu())
+        brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
+                                                                                     action='back_to_cat')))
     if assortment:
         brand_cb_markup.add(back_to.back_to_menu())
+        brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
+                                                                                     action='assortment_back_to_cat')))
     return brand_cb_markup
 
 
