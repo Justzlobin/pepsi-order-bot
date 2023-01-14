@@ -19,18 +19,18 @@ async def comment(query: types.CallbackQuery):
                                    '"Серт" - сертифікат\n'
                                    '"ттн" - товаро-транспортна накладна\n',
                               reply_markup=cancel_kb())
-    await query.message.delete()
-    await query.message.delete_reply_markup()
+
 
 async def stop_comment(message: types.Message, state: FSMContext):
     # async def stop_comment(query: types.CallbackQuery, state: FSMContext):
+    await message.delete()
+    await message.delete_reply_markup()
     current_state = state.get_state()
     if current_state is None:
         return
     await state.finish()
     await message.answer(text='Дію скасовано!')
-    await message.delete()
-    await message.delete_reply_markup()
+
 
 async def write_comment(message: types.Message, state: FSMContext):
     async with state.proxy() as data_comment:
