@@ -1,5 +1,3 @@
-import types
-
 from aiogram.dispatcher import FSMContext
 from aiogram import Dispatcher
 from create_bot import dp
@@ -18,11 +16,9 @@ async def comment(query: types.CallbackQuery):
                                                                '"Серт" - сертифікат\n'
                                                                '"ттн" - товаро-транспортна накладна\n',
                                                           reply_markup=cancel_state())
-    # 'Щоб скасувати дію натисність /cancel')
     await query.message.delete()
 
 
-# async def stop_comment(message: types.Message, state: FSMContext):
 async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     current_state = state.get_state()
     if current_state is None:
@@ -46,6 +42,5 @@ async def write_comment(message: types.Message, state: FSMContext):
 def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Cat_KB.filter(action='comment'), state=None)
     dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
-    # dp.register_message_handler(stop_comment, commands='cancel', state='*')
     dp.register_message_handler(write_comment, state=CommentToOrder.write_comment)
     dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
