@@ -25,8 +25,9 @@ async def stop_comment(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message.answer(text='Дію скасовано!', reply_markup=back_to_order_menu())
     await message.delete()
+    await message.answer(text='Дію скасовано!', reply_markup=order_menu_kb())
+
 
 
 async def write_comment(message: types.Message, state: FSMContext):
