@@ -2,10 +2,13 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from aiogram import types
+from delete.delete_message import UnMessage
 
 user_data = {}
 order_data = {}
 checkin = False
+
+delete_message = UnMessage()
 
 
 async def command_start(message: types.Message):
@@ -95,8 +98,9 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(fr"image/{callback_data['id']}.png"))
+        delete_message.add_photo(message_id=await query.bot.send_photo(chat_id=query.message.chat.id,
+                                                                       photo=types.InputFile(
+                                                                           fr"image/{callback_data['id']}.png")))
     except FileNotFoundError:
         pass
     await query.message.answer(text=f'{full_text}\n'
