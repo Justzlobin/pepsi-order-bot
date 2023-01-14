@@ -7,10 +7,8 @@ from keyboards import *
 from states.comment_states import CommentToOrder
 
 
-
-
-
 async def comment(query: types.CallbackQuery):
+    await query.message.delete()
     await CommentToOrder.write_comment.set()
     await dp.bot.send_message(chat_id=query.message.chat.id,
                               text='Введіть примітку.\n'
@@ -19,7 +17,8 @@ async def comment(query: types.CallbackQuery):
                                    '"Серт" - сертифікат\n'
                                    '"ттн" - товаро-транспортна накладна\n',
                               reply_markup=cancel_kb())
-
+    await query.message.delete()
+    await query.message.delete_reply_markup()
 
 async def stop_comment(message: types.Message, state: FSMContext):
     # async def stop_comment(query: types.CallbackQuery, state: FSMContext):
@@ -30,9 +29,11 @@ async def stop_comment(message: types.Message, state: FSMContext):
         return
     await state.finish()
     await message.answer(text='Дію скасовано!')
+    await message.delete()
 
 
 async def write_comment(message: types.Message, state: FSMContext):
+    await message.delete()
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
         print(tuple(data_comment.values()))
@@ -43,10 +44,8 @@ async def write_comment(message: types.Message, state: FSMContext):
     await message.delete_reply_markup()
 
 
-
 def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Cat_KB.filter(action='comment'), state=None)
     dp.register_message_handler(stop_comment, text='СКАСУВАТИ', state='*')
     dp.register_message_handler(write_comment, state=CommentToOrder.write_comment)
     # dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
-
