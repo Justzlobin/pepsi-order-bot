@@ -6,19 +6,18 @@ from create_bot import dp
 from keyboards import *
 from states.comment_states import CommentToOrder
 
-message_delete = []
+message_delete = {}
 
 
 async def comment(query: types.CallbackQuery):
     await CommentToOrder.write_comment.set()
-    mess = await dp.bot.send_message(chat_id=query.message.chat.id,
+    message_delete['message'] = await dp.bot.send_message(chat_id=query.message.chat.id,
                                      text='Введіть примітку.\n'
                                           'Приклад:\n'
                                           '"Штрих" - штрихкоди\n'
                                           '"Серт" - сертифікат\n'
                                           '"ттн" - товаро-транспортна накладна\n'
                                           'Щоб скасувати дію натисність /cancel')
-    message_delete.append(mess)
     await query.message.delete()
 
 
@@ -28,7 +27,7 @@ async def stop_comment(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message_delete[0].delete()
+    await message_delete['message'].delete()
     await message.answer(text='Дію скасовано!', reply_markup=order_menu_kb())
 
 
