@@ -2,7 +2,8 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeybo
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
-from keyboards import back_to, Menu_KB
+from keyboards import back_to
+from keyboards.menu_kb import Menu_KB
 
 Cat_KB = CallbackData('title', 'id', 'action')
 
