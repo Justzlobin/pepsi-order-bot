@@ -193,7 +193,7 @@ def cancel_kb():
     button = [
         [types.KeyboardButton(text='СКАСУВАТИ')]
     ]
-    return types.ReplyKeyboardMarkup(keyboard=button)
+    return types.ReplyKeyboardMarkup(keyboard=button, resize_keyboard=True)
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
