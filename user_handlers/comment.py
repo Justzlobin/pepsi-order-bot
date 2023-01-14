@@ -15,8 +15,7 @@ async def comment(query: types.CallbackQuery):
                                    '"Штрих" - штрихкоди\n'
                                    '"Серт" - сертифікат\n'
                                    '"ттн" - товаро-транспортна накладна\n'
-                                   'Щоб скасувати дію натисність /cancel',
-                              reply_markup=cancel_kb())
+                                   'Щоб скасувати дію натисність /cancel')
     await query.message.delete()
 
 
