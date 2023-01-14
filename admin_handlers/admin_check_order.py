@@ -6,6 +6,7 @@ from config import ADMIN
 
 
 async def admin_test(message: types.Message):
+    await message.delete()
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
         await message.answer(reply_markup=order_for_admin(), text='working')
