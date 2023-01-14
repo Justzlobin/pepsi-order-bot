@@ -22,7 +22,7 @@ async def command_start(message: types.Message):
 
                                                   reply_markup=menu_kb(), parse_mode='HTML'))
     await message.delete()
-    await empty_message.dict_message().delete()
+    await empty_message.dict_message()['message_id'].delete()
     message_on_delete['message_id'] = message.message_id
 
 
