@@ -21,9 +21,8 @@ async def command_start(message: types.Message):
                                                                         'кому і куди відправляти замовлення!',
 
                                                   reply_markup=menu_kb(), parse_mode='HTML'))
-    for i in empty_message.full_list_message():
-        i.delete()
     await message.delete()
+    await empty_message.dict_message().delete()
     message_on_delete['message_id'] = message.message_id
 
 
