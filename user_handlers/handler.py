@@ -3,6 +3,7 @@ from create_bot import dp
 from keyboards import *
 from aiogram import types
 from delete.delete_message import UnMessage
+from aiogram.utils import exceptions
 
 user_data = {}
 order_data = {}
@@ -70,7 +71,10 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     chat_id = query.message.chat.id
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(callback_data['id']))
-    await delete_message.destr_photo().delete()
+    try:
+        await delete_message.destr_photo().delete()
+    except exceptions.MessageToDeleteNotFound:
+        pass
     await query.message.delete()
 
 
@@ -163,7 +167,10 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                                          'Головне меню:', reply_markup=menu_kb())
-    await delete_message.destr_photo().delete()
+    try:
+        await delete_message.destr_photo().delete()
+    except exceptions.MessageToDeleteNotFound:
+        pass
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
