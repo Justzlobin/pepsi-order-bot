@@ -47,4 +47,4 @@ def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Cat_KB.filter(action='comment'), state=None)
     dp.register_message_handler(write_comment, state=CommentToOrder.write_comment)
     # dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
-    dp.register_message_handler(stop_comment, text='Скасувати', state='*')
+    dp.register_message_handler(stop_comment, text='СКАСУВАТИ', state='*')
