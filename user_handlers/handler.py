@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
-
+from aiogram import types
 user_data = {}
 order_data = {}
 checkin = False
@@ -94,7 +94,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     await query.bot.send_photo(chat_id=query.message.chat.id,
-                               photo=r'image\77.png')
+                               photo=types.InputFile(r'image\77.png'))
     await query.message.answer(text=f'{full_text}\n'
                                     f'Кількість: 0, Ціна: {text[5]}'
                                , reply_markup=keyboard(callback_data['id']))
