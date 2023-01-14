@@ -3,19 +3,20 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from states.comment_states import CommentToOrder
+from delete.delete_message import UnMessage
 
-message_delete = {}
+delete_message = UnMessage()
 
 
 async def comment(query: types.CallbackQuery):
     await CommentToOrder.write_comment.set()
-    message_delete['message'] = await dp.bot.send_message(chat_id=query.message.chat.id,
-                                                          text='Введіть примітку.\n'
-                                                               'Приклад:\n'
-                                                               '"Штрих" - штрихкоди\n'
-                                                               '"Серт" - сертифікат\n'
-                                                               '"ттн" - товаро-транспортна накладна\n',
-                                                          reply_markup=cancel_state())
+    delete_message.add(message_id=await dp.bot.send_message(chat_id=query.message.chat.id,
+                                                            text='Введіть примітку.\n'
+                                                                 'Приклад:\n'
+                                                                 '"Штрих" - штрихкоди\n'
+                                                                 '"Серт" - сертифікат\n'
+                                                                 '"ттн" - товаро-транспортна накладна\n',
+                                                            reply_markup=cancel_state()))
     await query.message.delete()
 
 
@@ -24,7 +25,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message_delete['message'].delete()
+    await delete_message.destr().delete()
     await query.bot.send_message(text='Дію скасовано!', reply_markup=order_menu_kb(),
                                  chat_id=query.message.chat.id)
 
@@ -35,7 +36,7 @@ async def write_comment(message: types.Message, state: FSMContext):
         print(tuple(data_comment.values()))
     await sqlite_db.update_comment(message.from_user.id, state)
     await state.finish()
-    await message_delete['message'].delete()
+    await delete_message.destr().delete()
     await message.delete()
     await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
 

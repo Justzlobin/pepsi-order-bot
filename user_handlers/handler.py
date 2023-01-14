@@ -1,11 +1,9 @@
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
-from delete.delete_message import UnMessage
 
 user_data = {}
 order_data = {}
-message_on_delete = {}
 checkin = False
 
 
