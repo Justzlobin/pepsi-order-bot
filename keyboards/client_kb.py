@@ -1,4 +1,4 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
@@ -23,7 +23,7 @@ def brand_markup(cat_id):
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='brand->pos')))
 
     brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                     action='back_to_cat')))
+                                                                                 action='back_to_cat')))
     brand_cb_markup.add(back_to.back_to_order_menu())
     return brand_cb_markup
 
@@ -36,7 +36,7 @@ def position_markup(brand_id):
         )))
     position_cb_markup.add(
         InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                     action='cat->brand')))
+                                                                 action='cat->brand')))
     position_cb_markup.add(back_to.back_to_order_menu())
 
     return position_cb_markup
@@ -187,6 +187,13 @@ def cancel_state(register=False):
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
+
+
+def cancel_kb():
+    button = [
+        [types.KeyboardButton(text='СКАСУВАТИ')]
+    ]
+    return types.ReplyKeyboardMarkup(keyboard=button)
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')

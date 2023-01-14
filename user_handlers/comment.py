@@ -5,7 +5,6 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from states.comment_states import CommentToOrder
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 async def stop_comment(message: types.Message, state: FSMContext):
@@ -26,7 +25,7 @@ async def comment(query: types.CallbackQuery):
                                    '"Штрих" - штрихкоди\n'
                                    '"Серт" - сертифікат\n'
                                    '"ттн" - товаро-транспортна накладна\n',
-                              reply_markup=KeyboardButton('Скасувати'))
+                              reply_markup=cancel_kb())
 
 
 async def write_comment(message: types.Message, state: FSMContext):
