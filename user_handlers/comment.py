@@ -30,7 +30,6 @@ async def stop_comment(message: types.Message, state: FSMContext):
     await message.answer(text='Дію скасовано!', reply_markup=order_menu_kb())
 
 
-
 async def write_comment(message: types.Message, state: FSMContext):
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
@@ -43,6 +42,6 @@ async def write_comment(message: types.Message, state: FSMContext):
 
 def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Cat_KB.filter(action='comment'), state=None)
-    dp.register_message_handler(stop_comment, text='СКАСУВАТИ', state='*')
+    dp.register_message_handler(stop_comment, commands='cancel', state='*')
     dp.register_message_handler(write_comment, state=CommentToOrder.write_comment)
     # dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
