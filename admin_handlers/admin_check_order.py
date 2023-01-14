@@ -55,8 +55,10 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
         await query.answer(text='Заявка вже проведена')
     await query.message.delete()
 
+
 async def close_order_for_admin(query: types.CallbackQuery):
     await query.message.delete()
+
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')

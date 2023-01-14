@@ -1,6 +1,7 @@
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
+from delete.delete_message import UnMessage
 
 user_data = {}
 order_data = {}
@@ -9,15 +10,19 @@ message_on_delete = {}
 
 
 async def command_start(message: types.Message):
-    await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                         'Бот створений для прийому заявок,\n'
-                                                         'а також як інтерактивний прайс з продукцією.\n'
-                                                         'Якщо ви вперше тут,\n'
-                                                         'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                         'щоб <b>PepsiBot</b> розумів,\n'
-                                                         'кому і куди відправляти замовлення!',
+    empty_message = UnMessage(chat_id=message.chat.id)
+    empty_message.add_message(
+        message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+                                                                        'Бот створений для прийому заявок,\n'
+                                                                        'а також як інтерактивний прайс з продукцією.\n'
+                                                                        'Якщо ви вперше тут,\n'
+                                                                        'прошу натиснути 📋 <b>Реєстрація</b>\n'
+                                                                        'щоб <b>PepsiBot</b> розумів,\n'
+                                                                        'кому і куди відправляти замовлення!',
 
-                                   reply_markup=menu_kb(), parse_mode='HTML')
+                                                  reply_markup=menu_kb(), parse_mode='HTML'))
+    for i in empty_message.full_list_message():
+        i.delete()
     await message.delete()
     message_on_delete['message_id'] = message.message_id
 
