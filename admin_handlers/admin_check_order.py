@@ -66,4 +66,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
     dp.register_callback_query_handler(order_status_blocked_limit, Cat_KB.filter(action='order_blocked_limit'))
     dp.register_callback_query_handler(order_delete, Cat_KB.filter(action='order_delete'))
-    dp.register_callback_query_handler(close_order_for_admin(), Menu_KB.filter(action='close_admin'))
+    dp.register_callback_query_handler(close_order_for_admin, Menu_KB.filter(action='close_admin'))
