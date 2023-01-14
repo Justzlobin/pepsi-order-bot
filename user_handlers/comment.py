@@ -8,7 +8,6 @@ from states.comment_states import CommentToOrder
 
 
 async def comment(query: types.CallbackQuery):
-    await query.message.delete()
     await CommentToOrder.write_comment.set()
     await dp.bot.send_message(chat_id=query.message.chat.id,
                               text='Введіть примітку.\n'
@@ -18,12 +17,10 @@ async def comment(query: types.CallbackQuery):
                                    '"ттн" - товаро-транспортна накладна\n',
                               reply_markup=cancel_kb())
     await query.message.delete()
-    await query.message.delete_reply_markup()
+
 
 async def stop_comment(message: types.Message, state: FSMContext):
     # async def stop_comment(query: types.CallbackQuery, state: FSMContext):
-    await message.delete()
-    await message.delete_reply_markup()
     current_state = state.get_state()
     if current_state is None:
         return
@@ -33,7 +30,6 @@ async def stop_comment(message: types.Message, state: FSMContext):
 
 
 async def write_comment(message: types.Message, state: FSMContext):
-    await message.delete()
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
         print(tuple(data_comment.values()))
@@ -41,7 +37,6 @@ async def write_comment(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
     await message.delete()
-    await message.delete_reply_markup()
 
 
 def comment_order_handlers(dp: Dispatcher):
