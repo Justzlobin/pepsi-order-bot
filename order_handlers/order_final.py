@@ -6,7 +6,7 @@ from user_handlers.handler import order_data
 async def delete_from_order(query: types.CallbackQuery):
     sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
     await query.bot.send_message(text='Замовлення скасовано!',
-                                 reply_markup=back_to_menu(),
+                                 reply_markup=menu_kb(),
                                  chat_id=query.message.chat.id)
     await query.message.delete()
 
@@ -22,7 +22,7 @@ async def order_continue(query: types.CallbackQuery):
     await query.message.delete()
     await query.bot.send_message(text='Меню замовлення:',
                                  chat_id=query.message.chat.id,
-                                 reply_markup=back_to_order_menu())
+                                 reply_markup=order_menu_kb())
 
 
 def register_order_final(dp: Dispatcher):
