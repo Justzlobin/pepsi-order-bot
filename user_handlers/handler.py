@@ -94,8 +94,11 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    await query.bot.send_photo(chat_id=query.message.chat.id,
-                               photo=types.InputFile(fr"image/{callback_data['id']}.png"))
+    try:
+        await query.bot.send_photo(chat_id=query.message.chat.id,
+                                   photo=types.InputFile(fr"image/{callback_data['id']}.png"))
+    except FileNotFoundError:
+        pass
     await query.message.answer(text=f'{full_text}\n'
                                     f'Кількість: 0, Ціна: {text[5]}'
                                , reply_markup=keyboard(callback_data['id']))
