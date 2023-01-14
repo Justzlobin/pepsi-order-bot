@@ -119,6 +119,7 @@ def order_for_admin():
         order_to_admin_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {i[2]} {i[3]}',
                                                        callback_data=Cat_KB.new(id=i[0],
                                                                                 action='order_admin')))
+    order_to_admin_markup.add(back_to.back_to_menu())
     return order_to_admin_markup
 
 
