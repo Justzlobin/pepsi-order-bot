@@ -302,7 +302,7 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(back_to_cat, Cat_KB.filter(action='back_to_cat'))
     dp.register_callback_query_handler(back_to_position, Cat_KB.filter(action='back_to_position'))
-    dp.register_callback_query_handler(back_to_order_menu, Order_KB.filter(action='back_to_order_menu'))
+    dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
     #
     dp.register_callback_query_handler(order_position_plus, Cat_KB.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, Cat_KB.filter(action='desc'))
