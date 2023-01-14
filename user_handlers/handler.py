@@ -288,7 +288,7 @@ async def back_to_order_menu(query: types.CallbackQuery):
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     #
-    dp.register_callback_query_handler(back_to_menu_from_order, Menu_KB.filter(action='back_to_menu'))
+    dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
     dp.register_callback_query_handler(command_assort, Order_KB.filter(action='assort'))
     dp.register_callback_query_handler(order_view, Order_KB.filter(action='basket'))
     dp.register_callback_query_handler(order_settings, Order_KB.filter(action='settings'))

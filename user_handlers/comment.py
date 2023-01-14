@@ -39,7 +39,6 @@ async def write_comment(message: types.Message, state: FSMContext):
     await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
 
 
-
 def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Cat_KB.filter(action='comment'), state=None)
     dp.register_message_handler(stop_comment, text='СКАСУВАТИ', state='*')
