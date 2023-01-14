@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeybo
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
-from keyboards import back_to
+from keyboards import back_to, Menu_KB
 
 Cat_KB = CallbackData('title', 'id', 'action')
 
@@ -119,7 +119,7 @@ def order_for_admin():
         order_to_admin_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {i[2]} {i[3]}',
                                                        callback_data=Cat_KB.new(id=i[0],
                                                                                 action='order_admin')))
-    order_to_admin_markup.add(back_to.back_to_menu())
+    order_to_admin_markup.add(InlineKeyboardButton(text='Згорнути', callback_data=Menu_KB.new(action='close_admin')))
     return order_to_admin_markup
 
 
