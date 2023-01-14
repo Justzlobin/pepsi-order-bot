@@ -25,7 +25,7 @@ async def stop_comment(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message.answer(text='Дію скасовано!')
+    await message.answer(text='Дію скасовано!', reply_markup=back_to_order_menu())
     await message.delete()
 
 
@@ -35,8 +35,9 @@ async def write_comment(message: types.Message, state: FSMContext):
         print(tuple(data_comment.values()))
     await sqlite_db.update_comment(message.from_user.id, state)
     await state.finish()
-    await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
     await message.delete()
+    await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
+
 
 
 def comment_order_handlers(dp: Dispatcher):
