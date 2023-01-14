@@ -36,6 +36,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     await sqlite_db.update_comment(message.from_user.id, state)
     await state.finish()
     await message_delete['message'].delete()
+    await message.delete()
     await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
 
 

@@ -55,7 +55,7 @@ def keyboard_order(order_id, user_id):
                                                                             action='delete_from_order')))
     keyboard_order_markup.add(InlineKeyboardButton(f'📝 Продовжити замовлення',
                                                    callback_data=Cat_KB.new(id=order_id,
-                                                                            action='continue_from_order')))
+                                                                            action='continue_to_order')))
     return keyboard_order_markup
 
 
