@@ -27,8 +27,9 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await delete_message.destr(query.message.chat.id).delete()
-    await query.bot.send_message(text='Дію скасовано!', reply_markup=order_menu_kb(),
-                                 chat_id=query.message.chat.id)
+    delete_message.add(message_id=await query.bot.send_message(text='Дію скасовано!', reply_markup=order_menu_kb(),
+                                                               chat_id=query.message.chat.id),
+                       chat_id=query.message.chat.id)
 
 
 async def write_comment(message: types.Message, state: FSMContext):
@@ -39,7 +40,8 @@ async def write_comment(message: types.Message, state: FSMContext):
     await state.finish()
     await delete_message.destr(message.chat.id).delete()
     await message.delete()
-    await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
+    delete_message.add(await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb()),
+                       chat_id=message.chat.id)
 
 
 def comment_order_handlers(dp: Dispatcher):
