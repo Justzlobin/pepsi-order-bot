@@ -15,11 +15,11 @@ delete_message = UnMessage()
 async def command_start(message: types.Message):
     try:
         await delete_message.destr(message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
+    except:
         pass
-    except KeyError:
-        pass
-    except AttributeError:
+    try:
+        await delete_message.destr_photo(message.chat.id).delete()
+    except:
         pass
     delete_message.add(
         message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
@@ -32,10 +32,6 @@ async def command_start(message: types.Message):
 
                                                   reply_markup=menu_kb(), parse_mode='HTML'),
         chat_id=message.chat.id)
-    try:
-        await delete_message.destr_photo(message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
-        pass
 
     await message.delete()
 
@@ -122,7 +118,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
                                                                        photo=types.InputFile(
                                                                            fr"image/{callback_data['id']}.png")),
                                  chat_id=query.message.chat.id)
-    except FileNotFoundError:
+    except:
         pass
     await query.message.answer(text=f'{full_text}\n'
                                     f'Кількість: 0, Ціна: {text[5]}'
@@ -185,7 +181,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                                          'Головне меню:', reply_markup=menu_kb())
     try:
         await delete_message.destr_photo(query.message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
+    except:
         pass
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
