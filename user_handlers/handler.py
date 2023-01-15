@@ -84,7 +84,7 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
                               reply_markup=position_markup(callback_data['id']))
     try:
         await delete_message.destr_photo(query.message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
+    except:
         pass
     await query.message.delete()
 
