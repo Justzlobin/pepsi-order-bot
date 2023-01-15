@@ -22,6 +22,6 @@ class UnMessage:
 
     def destr_photo(self, chat_id):
         if chat_id == self.dict_chat['chat_id']:
-            return self.dict_mess['message_photo']
+            return self.dict_photo['message_photo']
         else:
             pass
