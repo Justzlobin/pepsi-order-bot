@@ -22,6 +22,14 @@ async def command_start(message: types.Message):
                                                          'кому і куди відправляти замовлення!',
 
                                    reply_markup=menu_kb(), parse_mode='HTML')
+    try:
+        await delete_message.destr_photo().delete()
+    except exceptions.MessageToDeleteNotFound:
+        pass
+    try:
+        await delete_message.destr().delete()
+    except exceptions.MessageToDeleteNotFound:
+        pass
     await message.delete()
 
 
