@@ -17,6 +17,8 @@ async def command_start(message: types.Message):
         await delete_message.destr().delete()
     except exceptions.MessageToDeleteNotFound:
         pass
+    except KeyError:
+        pass
     delete_message.add(
         message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                                         'Бот створений для прийому заявок,\n'
