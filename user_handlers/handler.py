@@ -13,23 +13,25 @@ delete_message = UnMessage()
 
 
 async def command_start(message: types.Message):
-    await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                         'Бот створений для прийому заявок,\n'
-                                                         'а також як інтерактивний прайс з продукцією.\n'
-                                                         'Якщо ви вперше тут,\n'
-                                                         'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                         'щоб <b>PepsiBot</b> розумів,\n'
-                                                         'кому і куди відправляти замовлення!',
-
-                                   reply_markup=menu_kb(), parse_mode='HTML')
-    try:
-        await delete_message.destr_photo().delete()
-    except exceptions.MessageToDeleteNotFound:
-        pass
     try:
         await delete_message.destr().delete()
     except exceptions.MessageToDeleteNotFound:
         pass
+    delete_message.add(
+        message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+                                                                        'Бот створений для прийому заявок,\n'
+                                                                        'а також як інтерактивний прайс з продукцією.\n'
+                                                                        'Якщо ви вперше тут,\n'
+                                                                        'прошу натиснути 📋 <b>Реєстрація</b>\n'
+                                                                        'щоб <b>PepsiBot</b> розумів,\n'
+                                                                        'кому і куди відправляти замовлення!',
+
+                                                  reply_markup=menu_kb(), parse_mode='HTML'))
+    try:
+        await delete_message.destr_photo().delete()
+    except exceptions.MessageToDeleteNotFound:
+        pass
+
     await message.delete()
 
 
