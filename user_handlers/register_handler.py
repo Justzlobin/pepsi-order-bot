@@ -59,7 +59,8 @@ async def address_enter(message: types.Message, state: FSMContext):
         data['user_address'] = message.text
     if not user_db.check_user_for_registration(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True, register=True)
-    user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
+    else:
+        user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
