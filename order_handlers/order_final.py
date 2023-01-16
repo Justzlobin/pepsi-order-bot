@@ -1,10 +1,10 @@
 from aiogram import Dispatcher
 from keyboards import *
-from user_handlers.handler import order_data
+from user_handlers.handler import order
 
 
 async def delete_from_order(query: types.CallbackQuery):
-    sqlite_db.delete_from_order(order_data[f'{query.from_user.id}'])
+    sqlite_db.delete_from_order(order.order_dict[f'{query.from_user.id}'])
     await query.bot.send_message(text='Замовлення скасовано!',
                                  reply_markup=menu_kb(),
                                  chat_id=query.message.chat.id)
