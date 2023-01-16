@@ -1,20 +1,38 @@
-from datadase import sqlite_db
+from datadase.sqlite_db import create_new_custom
 
 
 class Order:
 
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.new_order = sqlite_db.create_new_custom(user_id)
-        self.dict_item = {}
-        self.dict_order = {}
-        print(self.user_id)
-        print(self.new_order)
-        print(self.dict_item)
-        print(self.dict_order)
+    def __init__(self):
+        self.user_dict = {}
+        self.order_dict = {}
+        self.item_dict = {}
+        self.check_in = False
 
-    def add_item(self, pos_id, values):
-        self.dict_item[pos_id] = values
-        self.dict_item[self.new_order] = self.dict_item
-        print(self.dict_item)
-        print(self.dict_item)
+    def init_user(self, user_id):
+        self.user_dict['user_id'] = user_id
+        return self.user_dict
+
+    def init_order(self, user_id):
+        if self.user_dict['user_id'] == user_id:
+            self.order_dict[user_id] = create_new_custom(user_id)
+            return self.order_dict
+        else:
+            pass
+
+    def add_item(self, pos_id, value, user_id):
+        if self.user_dict['user_id'] == user_id:
+            self.item_dict[pos_id] = value
+        else:
+            pass
+
+    def full_order(self):
+        return {self.user_dict['user_id']: {self.order_dict['order_id']: {self.item_dict}}}
+
+    def box(self):
+        self.check_in = True
+        return True
+
+    def multi(self):
+        self.check_in = False
+        return False
