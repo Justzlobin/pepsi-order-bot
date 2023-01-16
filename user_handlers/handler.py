@@ -12,6 +12,7 @@ checkin = False
 delete_message = UnMessage()
 
 
+
 async def command_start(message: types.Message):
     await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                          'Бот створений для прийому заявок,\n'
