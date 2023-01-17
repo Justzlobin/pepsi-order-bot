@@ -168,6 +168,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                                          'Головне меню:', reply_markup=menu_kb())
+    print(order.order_dict)
     try:
         await delete_message.destr_photo(query.message.chat.id).delete()
     except exceptions.MessageToDeleteNotFound:
