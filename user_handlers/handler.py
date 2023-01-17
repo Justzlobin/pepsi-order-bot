@@ -157,7 +157,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
         if quantity != 0:
             await query.answer(f'Добавлено: {full_text}\n'
                                f'К-ть: {quantity}, Ціна: {round(sum, 2)}')
-            sqlite_db.add_in_order(order.order_dict[f'{query.from_user.id}'],
+            sqlite_db.add_in_order(order.order_dict[query.from_user.id],
                                    callback_data['id'],
                                    quantity,
                                    round(sum, 2),
