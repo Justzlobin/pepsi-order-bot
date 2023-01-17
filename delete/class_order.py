@@ -16,7 +16,6 @@ class Order:
     def init_order(self, user_id):
         if self.user_dict['user_id'] == user_id:
             self.order_dict[user_id] = create_new_custom(user_id)
-            return self.order_dict
         else:
             pass
 
