@@ -198,6 +198,7 @@ async def new_custom(query: types.CallbackQuery):
     order.init_order(query.from_user.id)
 
     print(f'USER {order.user_dict}\n ORDER {order.order_dict}')
+    print(order)
     await query.message.delete()
 
 
