@@ -194,7 +194,10 @@ async def new_custom(query: types.CallbackQuery):
                                       '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                       '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                                  reply_markup=order_menu_kb(), parse_mode='HTML', chat_id=query.message.chat.id)
+    order.init_user(query.from_user.id)
     order.init_order(query.from_user.id)
+
+    print(f'USER {order.user_dict}\n ORDER {order.order_dict}')
     await query.message.delete()
 
 
