@@ -182,12 +182,12 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 async def order_view(query: types.CallbackQuery):
     try:
-        if sqlite_db.sum_order(order.order_dict[f'{query.from_user.id}']) == 0:
+        if sqlite_db.sum_order(order.order_dict[query.from_user.id]) == 0:
             await query.answer(text='Корзина пуста')
         else:
             await query.bot.send_message(
-                text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order.order_dict[f"{query.from_user.id}"])}</b>',
-                reply_markup=keyboard_order(order.order_dict[f'{query.from_user.id}'],
+                text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order.order_dict[query.from_user.id])}</b>',
+                reply_markup=keyboard_order(order.order_dict[query.from_user.id],
                                             query.from_user.id),
                 parse_mode='HTML', chat_id=query.message.chat.id)
             await query.message.delete()
@@ -298,7 +298,7 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
-    order.order_dict[f'{query.from_user.id}'] = None
+    order.order_dict[query.from_user.id] = None
     await query.message.delete()
     await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                  chat_id=query.message.chat.id)
