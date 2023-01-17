@@ -20,7 +20,6 @@ async def command_start(message: types.Message):
                                                          'кому і куди відправляти замовлення!',
 
                                    reply_markup=menu_kb(), parse_mode='HTML')
-    order.init_user(message.from_user.id)
     await message.delete()
 
 
@@ -119,6 +118,8 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
     print('user_value:' + str(user_value))
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[order.check_in]
     order.item_dict[callback_data['id']] = result
+    print(order.item_dict)
+
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
@@ -131,6 +132,8 @@ async def order_position_minus(query: types.CallbackQuery, callback_data: dict):
     if result < 0:
         result = 0
     order.item_dict[callback_data['id']] = result
+    print(order.item_dict)
+
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
@@ -139,6 +142,7 @@ async def order_position_minus(query: types.CallbackQuery, callback_data: dict):
 async def order_position_zero(query: types.CallbackQuery, callback_data: dict):
     user_value = order.item_dict.get(callback_data['id'], 0)
     order.item_dict[callback_data['id']] = user_value - user_value
+    print(order.item_dict)
 
     await update_num_text(query.message, user_value - user_value, callback_data['id'])
 
@@ -168,6 +172,8 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
         await delete_message.destr_photo(query.message.chat.id).delete()
     except exceptions.MessageToDeleteNotFound:
         pass
+    print(order.item_dict)
+
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
@@ -198,7 +204,6 @@ async def new_custom(query: types.CallbackQuery):
     order.init_order(query.from_user.id)
 
     print(f'USER {order.user_dict}\n ORDER {order.order_dict}')
-    print(order)
     await query.message.delete()
 
 
@@ -222,13 +227,14 @@ async def last_order(query: types.CallbackQuery):
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
-    sum1 = order.order_dict[callback_data['id']]
+    sum1 = order.item_dict[callback_data['id']]
     update_text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{update_text[0]} {update_text[1]} {update_text[2]} {update_text[3]} {update_text[4]}'
     rder = True
     await query.message.answer(text=f'{full_text}\n'
                                     f'Кількість: {sum1}, Ціна: {update_text[5]}'
                                , reply_markup=keyboard(callback_data['id'], rder))
+    print(order.item_dict)
     await query.message.delete()
 
 
@@ -247,15 +253,19 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
-    user_value = order.order_dict.get(callback_data['id'])
+    user_value = order.item_dict.get(callback_data['id'])
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[order.check_in]
-    order.order_dict[callback_data['id']] = result
+    order.item_dict[callback_data['id']] = result
+    print(order.item_dict)
+
     await update_num_text_in_order(query.message, result, callback_data['id'])
 
 
 async def update_zero(query: types.CallbackQuery, callback_data: dict):
-    user_value = order.order_dict.get(callback_data['id'], 0)
-    order.order_dict[callback_data['id']] = user_value - user_value
+    user_value = order.item_dict.get(callback_data['id'], 0)
+    order.item_dict[callback_data['id']] = user_value - user_value
+    print(order.item_dict)
+
     await update_num_text_in_order(query.message, user_value - user_value, callback_data['id'])
 
 
@@ -265,6 +275,7 @@ async def update_minus(query: types.CallbackQuery, callback_data: dict):
     if result < 0:
         result = 0
     order.order_dict[callback_data['id']] = result
+    print(order.order_dict)
     await update_num_text_in_order(query.message, result, callback_data['id'])
 
 
@@ -290,6 +301,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
     await query.message.delete()
     await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                  chat_id=query.message.chat.id)
+    print(order.order_dict)
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
