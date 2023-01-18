@@ -4,16 +4,18 @@ from keyboards import *
 from aiogram import types
 from delete.delete_message import UnMessage
 from aiogram.utils import exceptions
+from delete.message_delete import Count
 
 user_data = {}
 order_data = {}
 checkin = False
 
 delete_message = UnMessage()
+del_mes = Count()
 
 
 async def command_start(message: types.Message):
-    await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+    del_mes.add_message(message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                          'Бот створений для прийому заявок,\n'
                                                          'а також як інтерактивний прайс з продукцією.\n'
                                                          'Якщо ви вперше тут,\n'
@@ -21,7 +23,8 @@ async def command_start(message: types.Message):
                                                          'щоб <b>PepsiBot</b> розумів,\n'
                                                          'кому і куди відправляти замовлення!',
 
-                                   reply_markup=menu_kb(), parse_mode='HTML')
+                                   reply_markup=menu_kb(), parse_mode='HTML'),
+                        chat_id=message.chat.id)
     await message.delete()
 
 
@@ -291,8 +294,11 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
+    if del_mes.len_list_messages(query.message.chat.id) == 1:
+        await del_mes.delete_last_message(query.message.chat.id)
+    else:
+        [await i.delete() for i in del_mes.list_of_deleted_messages(query.message.chat.id)]
     user_data[f'{query.from_user.id}'] = None
-    await query.message.delete()
     await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                  chat_id=query.message.chat.id)
 
