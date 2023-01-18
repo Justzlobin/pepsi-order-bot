@@ -295,7 +295,7 @@ async def order_settings(query: types.CallbackQuery):
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
     if del_mes.len_list_messages(query.message.chat.id) == 1:
-        del_mes.delete_last_message(query.message.chat.id)
+        del_mes.delete_last_message(query.message.chat.id).delete()
     else:
         [i.delete() for i in del_mes.list_of_deleted_messages(query.message.chat.id)]
     user_data[f'{query.from_user.id}'] = None
