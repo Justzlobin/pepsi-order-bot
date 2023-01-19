@@ -70,6 +70,8 @@ async def command_assort(query: types.CallbackQuery):
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        print(f'CHAT DICT {del_mes.chat_dict}')
+        print(f'MESSAGE DICT {message_in_dict}')
         try:
             await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
@@ -397,6 +399,8 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
             await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
+        except KeyError:
+            await message_in_dict.delete()
     user_data[f'{query.from_user.id}'] = None
 
 
