@@ -357,7 +357,7 @@ async def delete_message_from_list(chat, message):
         if message_in_dict == message:
             pass
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
