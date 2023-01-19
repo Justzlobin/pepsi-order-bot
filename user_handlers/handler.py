@@ -296,6 +296,7 @@ async def order_settings(query: types.CallbackQuery):
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
     chat = query.message.chat.id
+    del_mes.add_message(chat_id=chat, message_id=query.message.message_id)
     for message in del_mes.chat_dict[chat][1:]:
         await query.bot.delete_message(chat_id=chat, message_id=message)
     user_data[f'{query.from_user.id}'] = None
