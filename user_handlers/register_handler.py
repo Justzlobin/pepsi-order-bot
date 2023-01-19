@@ -27,7 +27,7 @@ async def user_register(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def user_register_name(query: types.CallbackQuery):
@@ -38,7 +38,7 @@ async def user_register_name(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def user_register_address(query: types.CallbackQuery):
@@ -50,7 +50,7 @@ async def user_register_address(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def name_enter(message: types.Message, state: FSMContext):
@@ -65,7 +65,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -82,7 +82,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 def register_register_handlers(dp: Dispatcher):

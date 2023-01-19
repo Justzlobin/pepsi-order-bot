@@ -22,7 +22,7 @@ async def comment(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def stop_comment(query: types.CallbackQuery, state: FSMContext):
@@ -36,7 +36,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 async def write_comment(message: types.Message, state: FSMContext):
@@ -50,7 +50,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    delete_message_from_list(chat, message)
+    await delete_message_from_list(chat, message)
 
 
 def comment_order_handlers(dp: Dispatcher):
