@@ -4,6 +4,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from delete.delete_message import UnMessage
 from .handler import del_mes, delete_message_from_list
+from aiogram.utils import exceptions
 
 delete_message = UnMessage()
 
@@ -24,10 +25,11 @@ async def user_register(query: types.CallbackQuery):
                                                query.from_user.id),
                                            chat_id=query.message.chat.id)
     del_mes.add_message(chat_id=chat, message_id=message)
-    del_mes.add_message(chat_id=chat,
-                        message_id=message
-                        )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def user_register_name(query: types.CallbackQuery):
@@ -38,7 +40,11 @@ async def user_register_name(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def user_register_address(query: types.CallbackQuery):
@@ -50,7 +56,11 @@ async def user_register_address(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def name_enter(message: types.Message, state: FSMContext):
@@ -65,7 +75,11 @@ async def name_enter(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -82,7 +96,11 @@ async def address_enter(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 def register_register_handlers(dp: Dispatcher):

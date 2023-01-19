@@ -4,7 +4,8 @@ from create_bot import dp
 from keyboards import *
 from states.comment_states import CommentToOrder
 from delete.delete_message import UnMessage
-from .handler import del_mes, delete_message_from_list
+from .handler import del_mes
+from aiogram.utils import exceptions
 
 delete_message = UnMessage()
 
@@ -22,7 +23,11 @@ async def comment(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def stop_comment(query: types.CallbackQuery, state: FSMContext):
@@ -36,7 +41,11 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def write_comment(message: types.Message, state: FSMContext):
@@ -50,7 +59,11 @@ async def write_comment(message: types.Message, state: FSMContext):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 def comment_order_handlers(dp: Dispatcher):

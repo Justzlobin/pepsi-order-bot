@@ -1,6 +1,8 @@
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
+from user_handlers.handler import del_mes
+from aiogram.utils import exceptions
 
 
 async def calendar(query: types.CallbackQuery):
@@ -9,24 +11,42 @@ async def calendar(query: types.CallbackQuery):
 
 
 async def payment(query: types.CallbackQuery):
-    await dp.bot.send_message(text='Оберіть спосіб оплати:',
-                              chat_id=query.message.chat.id,
-                              reply_markup=chose_payment(query.from_user.id))
-    await query.message.delete()
+    chat = query.message.chat.id
+    message = await dp.bot.send_message(text='Оберіть спосіб оплати:',
+                                        chat_id=query.message.chat.id,
+                                        reply_markup=chose_payment(query.from_user.id))
+    del_mes.add_message(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def payment_cash(query: types.CallbackQuery):
-    await query.bot.send_message(text='Обрано: "💰 Готівка"', reply_markup=order_menu_kb(),
+    chat = query.message.chat.id
+    message = await query.bot.send_message(text='Обрано: "💰 Готівка"', reply_markup=order_menu_kb(),
                                  chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
-    await query.message.delete()
+    del_mes.add_message(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def payment_bank(query: types.CallbackQuery):
-    await query.bot.send_message(text='Обрано: "💳 Банк"', reply_markup=order_menu_kb(),
+    chat = query.message.chat.id
+    message = await query.bot.send_message(text='Обрано: "💳 Банк"', reply_markup=order_menu_kb(),
                                  chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
-    await query.message.delete()
+    del_mes.add_message(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 def register_order_settings(dp: Dispatcher):

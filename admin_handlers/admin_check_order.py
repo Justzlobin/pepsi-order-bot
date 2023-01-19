@@ -1,27 +1,41 @@
-import aiogram.utils.exceptions
+from aiogram.utils import exceptions
 from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from config import ADMIN
+from user_handlers.handler import del_mes
 
 
 async def admin_test(message: types.Message):
-    await message.delete()
+    chat = message.chat.id
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
-        await message.answer(reply_markup=order_for_admin(), text='working')
+        message = await message.answer(reply_markup=order_for_admin(), text='working')
     else:
-        await message.answer('У вас немає доступу!')
+        message = await message.answer('У вас немає доступу!')
+    del_mes.add_message(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
+    chat = query.message.chat.id
     try:
-        await dp.bot.send_message(
+        message = await dp.bot.send_message(
             text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
             chat_id=query.message.chat.id,
             parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
-    except aiogram.utils.exceptions.MessageTextIsEmpty:
-        await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
+    except exceptions.MessageTextIsEmpty:
+        message = await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
+    del_mes.add_message(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):

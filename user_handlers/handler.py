@@ -29,7 +29,11 @@ async def command_start(message: types.Message):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
@@ -46,7 +50,11 @@ async def back_to_main_menu(query: types.CallbackQuery):
                                            parse_mode='HTML')
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
     print(del_mes.chat_dict[chat][1:])
 
@@ -61,7 +69,11 @@ async def command_assort(query: types.CallbackQuery):
                                                reply_markup=cat_markup())
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -69,7 +81,11 @@ async def back_to_cat(query: types.CallbackQuery):
                                         reply_markup=cat_markup())
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
@@ -79,7 +95,11 @@ async def show_brand(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def show_position(query: types.CallbackQuery, callback_data: dict):
@@ -89,7 +109,11 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
@@ -103,7 +127,11 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
@@ -222,7 +250,11 @@ async def order_view(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -237,7 +269,11 @@ async def new_custom(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def box(query: types.CallbackQuery):
@@ -262,7 +298,11 @@ async def last_order(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
@@ -290,7 +330,11 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
@@ -333,7 +377,11 @@ async def order_settings(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
@@ -343,21 +391,23 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    await delete_message_from_list(chat, message)
-    user_data[f'{query.from_user.id}'] = None
-
-
-async def back_to_order_menu(query: types.CallbackQuery):
-    await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
-    await query.message.delete()
-
-
-async def delete_message_from_list(chat, message):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
             await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
+    user_data[f'{query.from_user.id}'] = None
+
+
+async def back_to_order_menu(query: types.CallbackQuery):
+    chat = query.message.chat.id
+    message = await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            await message_in_dict[0].delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
+
 
 
 def register_user_handlers(dp: Dispatcher):
