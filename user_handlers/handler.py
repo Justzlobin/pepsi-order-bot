@@ -43,7 +43,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
                                                                               parse_mode='HTML'))
     for message_in_dict in del_mes.chat_dict[chat][1:]:
         try:
-            await dp.bot.delete_message(chat_id=chat, message_id=message_in_dict)
+            await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
     print(del_mes.chat_dict[chat][1:])
@@ -309,7 +309,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
                         )
     for message in del_mes.chat_dict[chat][1:]:
         try:
-            await query.bot.delete_message(chat_id=chat, message_id=message)
+            await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
     user_data[f'{query.from_user.id}'] = None
