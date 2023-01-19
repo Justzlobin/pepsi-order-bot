@@ -15,16 +15,17 @@ del_mes = Count()
 
 
 async def command_start(message: types.Message):
-    del_mes.add_message(message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                         'Бот створений для прийому заявок,\n'
-                                                         'а також як інтерактивний прайс з продукцією.\n'
-                                                         'Якщо ви вперше тут,\n'
-                                                         'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                         'щоб <b>PepsiBot</b> розумів,\n'
-                                                         'кому і куди відправляти замовлення!',
+    del_mes.add_message(
+        message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+                                                                        'Бот створений для прийому заявок,\n'
+                                                                        'а також як інтерактивний прайс з продукцією.\n'
+                                                                        'Якщо ви вперше тут,\n'
+                                                                        'прошу натиснути 📋 <b>Реєстрація</b>\n'
+                                                                        'щоб <b>PepsiBot</b> розумів,\n'
+                                                                        'кому і куди відправляти замовлення!',
 
-                                   reply_markup=menu_kb(), parse_mode='HTML'),
-                        chat_id=message.chat.id)
+                                                  reply_markup=menu_kb(), parse_mode='HTML'),
+        chat_id=message.chat.id)
     await message.delete()
 
 
@@ -294,10 +295,12 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
+    chat = query.message.chat.id
     if len(del_mes.count_list) == 1:
-        del_mes.delete_last_message(query.message.chat.id).delete()
+        await query.bot.delete_message(message_id=del_mes.delete_last_message(chat), chat_id=chat)
     else:
-        [i.delete() for i in del_mes.list_of_deleted_messages(query.message.chat.id)]
+        [query.bot.delete_message(message_id=i, chat_id=chat)
+         for i in del_mes.list_of_deleted_messages(chat)]
     user_data[f'{query.from_user.id}'] = None
     await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                  chat_id=query.message.chat.id)
