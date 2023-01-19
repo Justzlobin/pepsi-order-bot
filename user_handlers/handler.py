@@ -34,7 +34,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat, message_id=query.message.message_id)
     for message_in_dict in del_mes.chat_dict[chat][1:]:
         try:
-            await message_in_dict.delete()
+            await dp.bot.delete_message(chat_id=chat, message_id=message_in_dict)
         except exceptions.MessageToDeleteNotFound:
             pass
     print(del_mes.chat_dict[chat][1:])
