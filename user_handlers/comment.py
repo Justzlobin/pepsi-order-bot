@@ -25,7 +25,7 @@ async def comment(query: types.CallbackQuery):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -43,7 +43,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -61,7 +61,7 @@ async def write_comment(message: types.Message, state: FSMContext):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 

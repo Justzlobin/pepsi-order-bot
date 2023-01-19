@@ -31,7 +31,7 @@ async def command_start(message: types.Message):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -52,7 +52,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat, message_id=message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -71,7 +71,7 @@ async def command_assort(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat, message_id=message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -83,7 +83,7 @@ async def back_to_cat(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat, message_id=message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -97,7 +97,7 @@ async def show_brand(query: types.CallbackQuery, callback_data: dict):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -111,7 +111,7 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -129,7 +129,7 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -252,7 +252,7 @@ async def order_view(query: types.CallbackQuery):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -301,7 +301,7 @@ async def last_order(query: types.CallbackQuery):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -333,7 +333,7 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -380,7 +380,7 @@ async def order_settings(query: types.CallbackQuery):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -394,7 +394,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
                         )
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
     user_data[f'{query.from_user.id}'] = None
@@ -406,7 +406,7 @@ async def back_to_order_menu(query: types.CallbackQuery):
     del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 

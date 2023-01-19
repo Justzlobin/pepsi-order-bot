@@ -13,7 +13,7 @@ async def delete_from_order(query: types.CallbackQuery):
     del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -27,7 +27,7 @@ async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
