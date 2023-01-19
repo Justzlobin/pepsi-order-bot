@@ -9,7 +9,7 @@ class Count:
         return len(self.chat_dict[chat_id])
 
     def add_message(self, chat_id, message_id):
-        self.count_list.append(message_id)
+        self.count_list.append(message_id.get('message_id'))
         self.chat_dict = {chat_id: self.count_list}
         return self.chat_dict
 
