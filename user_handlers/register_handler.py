@@ -27,9 +27,7 @@ async def user_register(query: types.CallbackQuery):
                                            chat_id=query.message.chat.id)
     del_mes.add_message(chat_id=chat, message_id=message)
 
-    for message_in_dict in del_mes.chat_dict[chat][1:]:
-        if message_in_dict == message:
-            pass
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:

@@ -42,7 +42,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
                                            parse_mode='HTML')
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=message)
-    for message_in_dict in del_mes.chat_dict[chat][1:]:
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
@@ -309,7 +309,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
     del_mes.add_message(chat_id=chat,
                         message_id=message
                         )
-    for message_in_dict in del_mes.chat_dict[chat][1:]:
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
         if message_in_dict == message:
             pass
         try:
