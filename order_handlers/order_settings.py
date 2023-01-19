@@ -31,7 +31,7 @@ async def payment_cash(query: types.CallbackQuery):
     del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict[0].delete()
+            await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
@@ -44,7 +44,7 @@ async def payment_bank(query: types.CallbackQuery):
     del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict[0].delete()
+            await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
