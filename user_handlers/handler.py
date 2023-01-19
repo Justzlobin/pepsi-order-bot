@@ -272,6 +272,7 @@ async def new_custom(query: types.CallbackQuery):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
             await message_in_dict.delete()
+            print('message in dict' + message_in_dict)
         except exceptions.MessageToDeleteNotFound:
             pass
 
