@@ -46,7 +46,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
                                                      'кому і куди відправляти замовлення!',
 
                                  reply_markup=menu_kb(), parse_mode='HTML')
-    await query.message.delete()
+
 
 
 async def command_assort(query: types.CallbackQuery):
