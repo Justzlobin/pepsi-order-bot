@@ -32,9 +32,9 @@ async def command_start(message: types.Message):
 async def back_to_main_menu(query: types.CallbackQuery):
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat, message_id=query.message.message_id)
-    for message in del_mes.chat_dict[chat][1:]:
+    for message_in_dict in del_mes.chat_dict[chat][1:]:
         try:
-            await query.bot.delete_message(chat_id=chat, message_id=message)
+            await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
     await query.bot.send_message(query.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
