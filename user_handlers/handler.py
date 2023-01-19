@@ -296,11 +296,8 @@ async def order_settings(query: types.CallbackQuery):
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
     chat = query.message.chat.id
-    if len(del_mes.count_list) == 1:
-        await query.bot.delete_message(message_id=del_mes.delete_last_message(chat), chat_id=chat)
-    else:
-        [query.bot.delete_message(message_id=i, chat_id=chat)
-         for i in del_mes.list_of_deleted_messages(chat)]
+    for message in del_mes.chat_dict[chat][1:]:
+        await query.bot.delete_message(chat_id=chat, message_id=message)
     user_data[f'{query.from_user.id}'] = None
     await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                  chat_id=query.message.chat.id)
