@@ -354,10 +354,8 @@ async def back_to_order_menu(query: types.CallbackQuery):
 
 async def delete_message_from_list(chat, message):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
-        print(message_in_dict)
-        print(del_mes.chat_dict[chat])
         try:
-            await message_in_dict.delete()
+            await message_in_dict[0].delete()
         except exceptions.MessageToDeleteNotFound:
             pass
 
