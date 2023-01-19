@@ -402,6 +402,7 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
 async def back_to_order_menu(query: types.CallbackQuery):
     chat = query.message.chat.id
     message = await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
+    del_mes.add_message(chat, message)
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
             await message_in_dict.delete()
