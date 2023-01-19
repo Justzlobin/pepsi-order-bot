@@ -21,12 +21,15 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
 async def user_register(query: types.CallbackQuery):
     print(del_mes.chat_dict)
     chat = query.message.chat.id
-    del_mes.add_message(chat_id=chat, message_id=await query.bot.send_message(text='Ваші данні: ',
-                                                                              reply_markup=user_register_kb(
-                                                                                  query.from_user.id),
-                                                                              chat_id=query.message.chat.id))
+    message = await query.bot.send_message(text='Ваші данні: ',
+                                           reply_markup=user_register_kb(
+                                               query.from_user.id),
+                                           chat_id=query.message.chat.id)
+    del_mes.add_message(chat_id=chat, message_id=message)
 
     for message_in_dict in del_mes.chat_dict[chat][1:]:
+        if message_in_dict == message:
+            pass
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:

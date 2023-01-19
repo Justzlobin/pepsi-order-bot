@@ -29,18 +29,19 @@ async def command_start(message: types.Message):
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
-    chat = query.message.chat.id
-    del_mes.add_message(chat_id=chat, message_id=await query.bot.send_message(query.from_user.id,
-                                                                              'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                                              'Бот створений для прийому заявок,\n'
-                                                                              'а також як інтерактивний прайс з продукцією.\n'
-                                                                              'Якщо ви вперше тут,\n'
-                                                                              'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                                              'щоб <b>PepsiBot</b> розумів,\n'
-                                                                              'кому і куди відправляти замовлення!',
+    message = await query.bot.send_message(query.from_user.id,
+                                           'Ласкаво просимо в <b>PepsiBot</b>!\n'
+                                           'Бот створений для прийому заявок,\n'
+                                           'а також як інтерактивний прайс з продукцією.\n'
+                                           'Якщо ви вперше тут,\n'
+                                           'прошу натиснути 📋 <b>Реєстрація</b>\n'
+                                           'щоб <b>PepsiBot</b> розумів,\n'
+                                           'кому і куди відправляти замовлення!',
 
-                                                                              reply_markup=menu_kb(),
-                                                                              parse_mode='HTML'))
+                                           reply_markup=menu_kb(),
+                                           parse_mode='HTML')
+    chat = query.message.chat.id
+    del_mes.add_message(chat_id=chat, message_id=message)
     for message_in_dict in del_mes.chat_dict[chat][1:]:
         try:
             await message_in_dict.delete()
@@ -302,12 +303,15 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
+    message = await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
+                                           chat_id=query.message.chat.id)
     chat = query.message.chat.id
     del_mes.add_message(chat_id=chat,
-                        message_id=await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
-                                                                chat_id=query.message.chat.id)
+                        message_id=message
                         )
-    for message in del_mes.chat_dict[chat][1:]:
+    for message_in_dict in del_mes.chat_dict[chat][1:]:
+        if message_in_dict == message:
+            pass
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
