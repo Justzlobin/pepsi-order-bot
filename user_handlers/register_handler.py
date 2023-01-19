@@ -3,7 +3,7 @@ from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
 from delete.delete_message import UnMessage
-from .handler import del_mes, delete_message_from_list
+from .handler import del_mes
 from aiogram.utils import exceptions
 
 delete_message = UnMessage()
