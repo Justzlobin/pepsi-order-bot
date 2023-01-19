@@ -26,7 +26,7 @@ async def command_start(message: types.Message):
 
                                                   reply_markup=menu_kb(), parse_mode='HTML'),
         chat_id=message.chat.id)
-    await message.delete()
+
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
