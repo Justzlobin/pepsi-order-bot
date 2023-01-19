@@ -37,6 +37,7 @@ async def back_to_main_menu(query: types.CallbackQuery):
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
+    print(del_mes.chat_dict[chat][1:])
     await query.bot.send_message(query.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
                                                      'Бот створений для прийому заявок,\n'
                                                      'а також як інтерактивний прайс з продукцією.\n'

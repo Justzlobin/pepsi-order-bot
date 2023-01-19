@@ -30,6 +30,7 @@ async def user_register(query: types.CallbackQuery):
     await query.bot.send_message(text='Ваші данні: ', reply_markup=user_register_kb(query.from_user.id),
                                  chat_id=query.message.chat.id)
     print(del_mes.chat_dict)
+    print(del_mes.chat_dict[chat][1:])
 
 
 async def user_register_name(query: types.CallbackQuery):
