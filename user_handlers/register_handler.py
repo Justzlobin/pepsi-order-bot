@@ -18,9 +18,10 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
 
 
 async def user_register(query: types.CallbackQuery):
-    if del_mes.len_list_messages(query.message.chat.id) == 1:
-        del_mes.delete_last_message(query.message.chat.id).delete()
+    if len(del_mes.count_list) == 1:
+        del_mes.delete_last_message(chat_id=query.message.chat.id)
     else:
+        del_mes.delete_last_message(query.message.chat.id).delete()
         [i.delete() for i in del_mes.list_of_deleted_messages(query.message.chat.id)]
     await query.bot.send_message(text='Ваші данні: ', reply_markup=user_register_kb(query.from_user.id),
                                  chat_id=query.message.chat.id)
