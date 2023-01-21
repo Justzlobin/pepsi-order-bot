@@ -64,23 +64,24 @@ async def command_assort(query: types.CallbackQuery):
 
 
 async def back_to_cat(query: types.CallbackQuery):
-    await dp.bot.send_message(text='Оберіть цікаву вам категорію:', chat_id=query.message.chat.id,
-                              reply_markup=cat_markup())
-    await query.message.delete()
+    message = await dp.bot.send_message(text='Оберіть цікаву вам категорію:', chat_id=query.message.chat.id,
+                                        reply_markup=cat_markup())
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
-    await dp.bot.send_message(text='Доступні бренди в категорії:', chat_id=query.message.chat.id,
-                              reply_markup=brand_markup(callback_data['id']))
-    await query.message.delete()
+    message = await dp.bot.send_message(text='Доступні бренди в категорії:', chat_id=query.message.chat.id,
+                                        reply_markup=brand_markup(callback_data['id']))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def show_position(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
-    await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
-                              reply_markup=position_markup(callback_data['id']))
-
-    await query.message.delete()
+    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
+                                        reply_markup=position_markup(callback_data['id']))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
@@ -134,11 +135,8 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
     user_value = user_data.get(callback_data['id'])
-    print('user_value:' + str(user_value))
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
     user_data[callback_data['id']] = result
-    print('user_data ' + str(result))
-    print(user_data)
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
@@ -212,14 +210,14 @@ async def order_view(query: types.CallbackQuery):
 async def new_custom(query: types.CallbackQuery):
     chat = query.message.chat.id
     message = await query.bot.send_message(text='1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                          '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                          '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                                     reply_markup=order_menu_kb(), parse_mode='HTML', chat_id=query.message.chat.id)
+                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                           reply_markup=order_menu_kb(), parse_mode='HTML',
+                                           chat_id=query.message.chat.id)
     new_custom = sqlite_db.create_new_custom(query.from_user.id)
     order_data[f'{query.from_user.id}'] = new_custom
     del_mes.add_message(chat_id=chat, message_id=message)
     await delete_message_from_dict(chat=chat)
-
 
 
 async def box(query: types.CallbackQuery):
@@ -237,10 +235,11 @@ async def multi(query: types.CallbackQuery):
 async def last_order(query: types.CallbackQuery):
     sqlite_db.delete_empty_orders()
     sqlite_db.delete_not_verification(user_id=query.from_user.id)
-    await query.bot.send_message(text='Останні замовлення:',
-                                 reply_markup=order_for_user(query.from_user.id),
-                                 chat_id=query.message.chat.id)
-    await query.message.delete()
+    message = query.bot.send_message(text='Останні замовлення:',
+                                     reply_markup=order_for_user(query.from_user.id),
+                                     chat_id=query.message.chat.id)
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
@@ -300,35 +299,26 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
 
 
 async def order_settings(query: types.CallbackQuery):
-    user_id = query.from_user.id
-    chat = query.message.chat.id
     message = await query.bot.send_message(text='Налаштування замовлення:',
-                                           reply_markup=keyboard_settings(sqlite_db.select_last_order(user_id)),
+                                           reply_markup=keyboard_settings(
+                                               sqlite_db.select_last_order(query.from_user.id)),
                                            chat_id=query.message.chat.id)
-    del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_dict(chat=chat)
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
     message = await query.bot.send_message(reply_markup=menu_kb(), text='Ви повернулись в меню!',
                                            chat_id=query.message.chat.id)
-    chat = query.message.chat.id
-    del_mes.add_message(chat_id=chat,
-                        message_id=message
-                        )
-    for message_in_dict in del_mes.chat_dict[chat][:-1]:
-        if message_in_dict == message:
-            pass
-        try:
-            await message_in_dict.delete()
-        except exceptions.MessageToDeleteNotFound:
-            pass
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
     user_data[f'{query.from_user.id}'] = None
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
-    await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
-    await query.message.delete()
+    message = await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def delete_message_from_dict(chat):
