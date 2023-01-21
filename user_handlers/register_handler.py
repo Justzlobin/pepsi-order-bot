@@ -81,7 +81,7 @@ async def address_enter(message: types.Message, state: FSMContext):
 def delete_message_from_dict(chat):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            await message_in_dict.delete()
+            message_in_dict.delete()
             del_mes.chat_dict[chat].remove(message_in_dict)
         except exceptions.MessageToDeleteNotFound:
             pass

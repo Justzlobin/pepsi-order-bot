@@ -51,12 +51,16 @@ async def back_to_main_menu(query: types.CallbackQuery):
 
 
 async def command_assort(query: types.CallbackQuery):
+    chat = query.message.chat.id
     try:
-        await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
+        message = await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:',
+                                               reply_markup=cat_markup())
     except KeyError:
-        await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Оберіть цікаву вам категорію:', reply_markup=cat_markup())
-    await query.message.delete()
+        message = await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
+                                                                   'Оберіть цікаву вам категорію:',
+                                               reply_markup=cat_markup())
+    del_mes.add_message(chat_id=chat, message_id=message)
+    delete_message_from_dict(chat=chat)
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -322,6 +326,15 @@ async def back_to_menu_from_order(query: types.CallbackQuery):
 async def back_to_order_menu(query: types.CallbackQuery):
     await query.bot.send_message(query.from_user.id, text='Меню замовлення:', reply_markup=order_menu_kb())
     await query.message.delete()
+
+
+def delete_message_from_dict(chat):
+    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+        try:
+            message_in_dict.delete()
+            del_mes.chat_dict[chat].remove(message_in_dict)
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
 
 def register_user_handlers(dp: Dispatcher):
