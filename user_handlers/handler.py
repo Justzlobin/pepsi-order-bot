@@ -60,7 +60,7 @@ async def command_assort(query: types.CallbackQuery):
                                                                    'Оберіть цікаву вам категорію:',
                                                reply_markup=cat_markup())
     del_mes.add_message(chat_id=chat, message_id=message)
-    delete_message_from_dict(chat=chat)
+    await delete_message_from_dict(chat=chat)
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -328,10 +328,10 @@ async def back_to_order_menu(query: types.CallbackQuery):
     await query.message.delete()
 
 
-def delete_message_from_dict(chat):
+async def delete_message_from_dict(chat):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            message_in_dict.delete()
+            await message_in_dict.delete()
             del_mes.chat_dict[chat].remove(message_in_dict)
         except exceptions.MessageToDeleteNotFound:
             pass

@@ -26,7 +26,7 @@ async def user_register(query: types.CallbackQuery):
                                                query.from_user.id),
                                            chat_id=query.message.chat.id)
     del_mes.add_message(chat_id=chat, message_id=message)
-    delete_message_from_dict(chat=chat)
+    await delete_message_from_dict(chat=chat)
 
     print(del_mes.chat_dict)
     print(del_mes.chat_dict[chat][1:])
@@ -78,10 +78,10 @@ async def address_enter(message: types.Message, state: FSMContext):
     await message.delete()
 
 
-def delete_message_from_dict(chat):
+async def delete_message_from_dict(chat):
     for message_in_dict in del_mes.chat_dict[chat][:-1]:
         try:
-            message_in_dict.delete()
+            await message_in_dict.delete()
             del_mes.chat_dict[chat].remove(message_in_dict)
         except exceptions.MessageToDeleteNotFound:
             pass
