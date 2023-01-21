@@ -218,7 +218,6 @@ async def new_custom(query: types.CallbackQuery):
     new_custom = sqlite_db.create_new_custom(query.from_user.id)
     order_data[f'{query.from_user.id}'] = new_custom
     del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_dict(chat=chat)
 
 
 async def box(query: types.CallbackQuery):
