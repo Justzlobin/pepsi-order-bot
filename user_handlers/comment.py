@@ -4,6 +4,7 @@ from create_bot import dp
 from keyboards import *
 from states.comment_states import CommentToOrder
 from delete.delete_message import UnMessage
+from user_handlers.handler import del_mes
 
 delete_message = UnMessage()
 

@@ -169,26 +169,32 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     sum = quantity * text[5]
     try:
         if quantity != 0:
-            await query.answer(f'Добавлено: {full_text}\n'
-                               f'К-ть: {quantity}, Ціна: {round(sum, 2)}')
+            message = await query.answer(f'Добавлено: {full_text}\n'
+                                         f'К-ть: {quantity}, Ціна: {round(sum, 2)}')
             sqlite_db.add_in_order(order_data[f'{query.from_user.id}'],
                                    callback_data['id'],
                                    quantity,
                                    round(sum, 2),
                                    query.from_user.id)
+            del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+
 
         else:
             pass
     except KeyError:
-        await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
-                                                         'Головне меню:', reply_markup=menu_kb())
+        message = await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
+                                                                   'Головне меню:', reply_markup=menu_kb())
+        del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     try:
-        await delete_message.destr_photo(query.message.chat.id).delete()
+        message_photo = await delete_message.destr_photo(query.message.chat.id).delete()
+        del_mes.add_message(chat_id=query.message.chat.id, message_id=message_photo)
     except exceptions.MessageToDeleteNotFound:
         pass
+
     await query.message.delete()
-    await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
+    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
 
 
 async def order_view(query: types.CallbackQuery):
