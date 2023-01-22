@@ -2,7 +2,6 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from aiogram import types
-from delete.delete_message import UnMessage
 from aiogram.utils import exceptions
 from delete.message_delete import Count
 
@@ -10,7 +9,6 @@ user_data = {}
 order_data = {}
 checkin = False
 
-delete_message = UnMessage()
 del_mes = Count()
 
 
@@ -88,7 +86,7 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
                                         reply_markup=position_markup(callback_data['id']))
     try:
-        await delete_message.destr_photo(chat_id=query.message.chat.id).delete()
+        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
     except exceptions.MessageToDeleteNotFound:
         pass
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
