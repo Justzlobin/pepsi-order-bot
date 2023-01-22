@@ -120,15 +120,17 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
-        delete_message.add_photo(message_id=await query.bot.send_photo(chat_id=query.message.chat.id,
-                                                                       photo=types.InputFile(
-                                                                           fr"image/{callback_data['id']}.png")),
-                                 chat_id=query.message.chat.id)
+        message = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                             photo=types.InputFile(
+                                                 fr"image/{callback_data['id']}.png")),
+        delete_message.add_photo(message_id=message, chat_id=query.message.chat.id)
+        del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
-    await query.message.answer(text=f'{full_text}\n'
-                                    f'Кількість: 0, Ціна: {text[5]}'
-                               , reply_markup=keyboard(callback_data['id']))
+    message = await query.message.answer(text=f'{full_text}\n'
+                                              f'Кількість: 0, Ціна: {text[5]}'
+                                         , reply_markup=keyboard(callback_data['id']))
+    del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
     await query.message.delete()
     print(user_data)
 
@@ -193,7 +195,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
     await query.message.delete()
     message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
-                              reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
+                                        reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
 
 
@@ -332,6 +334,8 @@ async def delete_message_from_dict(chat):
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
+            pass
+        except AttributeError:
             pass
 
 
