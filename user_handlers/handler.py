@@ -122,7 +122,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     try:
         message = await query.bot.send_photo(chat_id=query.message.chat.id,
                                              photo=types.InputFile(
-                                                 fr"image/{callback_data['id']}.png")),
+                                                 fr"image/{callback_data['id']}.png"))
         delete_message.add_photo(message_id=message, chat_id=query.message.chat.id)
         del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
     except FileNotFoundError:
