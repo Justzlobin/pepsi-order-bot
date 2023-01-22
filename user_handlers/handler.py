@@ -120,11 +120,11 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
-        message = await query.bot.send_photo(chat_id=query.message.chat.id,
+        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                              photo=types.InputFile(
                                                  fr"image/{callback_data['id']}.png"))
-        delete_message.add_photo(message_id=message, chat_id=query.message.chat.id)
-        del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
+        delete_message.add_photo(message_id=message_photo, chat_id=query.message.chat.id)
+        del_mes.add_message(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
     message = await query.message.answer(text=f'{full_text}\n'
