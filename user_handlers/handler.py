@@ -85,14 +85,14 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
-    await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
-                              reply_markup=position_markup(callback_data['id']))
+    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
+                                        reply_markup=position_markup(callback_data['id']))
     try:
         await delete_message.destr_photo(chat_id=query.message.chat.id).delete()
     except exceptions.MessageToDeleteNotFound:
         pass
-    await query.message.delete()
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
@@ -121,10 +121,9 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
-                                             photo=types.InputFile(
-                                                 fr"image/{callback_data['id']}.png"))
-        delete_message.add_photo(message_id=message_photo, chat_id=query.message.chat.id)
-        del_mes.add_message(message_id=message_photo, chat_id=query.message.chat.id)
+                                                   photo=types.InputFile(
+                                                       fr"image/{callback_data['id']}.png"))
+        del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
     message = await query.message.answer(text=f'{full_text}\n'
@@ -164,22 +163,19 @@ async def order_position_zero(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_position_finish(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     quantity = user_data[callback_data['id']]
     sum = quantity * text[5]
     try:
         if quantity != 0:
-            message = await query.answer(f'Добавлено: {full_text}\n'
-                                         f'К-ть: {quantity}, Ціна: {round(sum, 2)}')
+            await query.answer(f'Добавлено: {full_text}\n'
+                               f'К-ть: {quantity}, Ціна: {round(sum, 2)}')
             sqlite_db.add_in_order(order_data[f'{query.from_user.id}'],
                                    callback_data['id'],
                                    quantity,
                                    round(sum, 2),
                                    query.from_user.id)
-            del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-
 
         else:
             pass
@@ -188,15 +184,13 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                                                    'Головне меню:', reply_markup=menu_kb())
         del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     try:
-        message_photo = await delete_message.destr_photo(query.message.chat.id).delete()
-        del_mes.add_message(chat_id=query.message.chat.id, message_id=message_photo)
+        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
     except exceptions.MessageToDeleteNotFound:
         pass
-
-    await query.message.delete()
-    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
+    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
                                         reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def order_view(query: types.CallbackQuery):
@@ -329,8 +323,11 @@ async def back_to_order_menu(query: types.CallbackQuery):
     await delete_message_from_dict(chat=query.message.chat.id)
 
 
-async def delete_message_from_dict(chat):
-    for message_in_dict in del_mes.chat_dict[chat][:-1]:
+async def delete_message_from_dict(chat, photo=False):
+    list_messages = del_mes.chat_dict[chat][:-1]
+    if photo:
+        list_messages = del_mes.photo_dict[chat][:-1]
+    for message_in_dict in list_messages:
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
