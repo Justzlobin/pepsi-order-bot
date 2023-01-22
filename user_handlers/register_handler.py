@@ -3,8 +3,8 @@ from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
 from delete.delete_message import UnMessage
-from .handler import del_mes
-from aiogram.utils import exceptions
+from .handler import del_mes, delete_message_from_dict
+
 
 delete_message = UnMessage()
 
@@ -76,15 +76,6 @@ async def address_enter(message: types.Message, state: FSMContext):
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
     await delete_message.destr(message.chat.id).delete()
     await message.delete()
-
-
-async def delete_message_from_dict(chat):
-    for message_in_dict in del_mes.chat_dict[chat][:-1]:
-        try:
-            await message_in_dict.delete()
-
-        except exceptions.MessageToDeleteNotFound:
-            pass
 
 
 def register_register_handlers(dp: Dispatcher):
