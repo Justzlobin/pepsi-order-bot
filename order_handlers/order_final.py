@@ -16,7 +16,6 @@ async def delete_from_order(query: types.CallbackQuery):
 async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
     await query.answer(text='Замовлення збережено!')
     sqlite_db.order_verification(callback_data['id'])
-    await query.message.delete()
     message = await query.bot.send_message(text='Ще одне замовлення?)', chat_id=query.message.chat.id,
                                            reply_markup=menu_kb())
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
@@ -24,7 +23,6 @@ async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_continue(query: types.CallbackQuery):
-    await query.message.delete()
     message = await query.bot.send_message(text='Меню замовлення:',
                                            chat_id=query.message.chat.id,
                                            reply_markup=order_menu_kb())

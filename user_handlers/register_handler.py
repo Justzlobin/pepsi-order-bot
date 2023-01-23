@@ -2,10 +2,7 @@ from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
-from delete.delete_message import UnMessage
 from .handler import del_mes, delete_message_from_dict
-
-delete_message = UnMessage()
 
 
 async def stop_register(query: types.CallbackQuery, state: FSMContext):
@@ -55,8 +52,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
-    await delete_message.destr(message.chat.id).delete()
-    await message.delete()
+    await delete_message_from_dict(chat=message.chat.id)
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -70,8 +66,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
-    await delete_message.destr(message.chat.id).delete()
-    await message.delete()
+    await delete_message_from_dict(chat=message.chat.id)
 
 
 def register_register_handlers(dp: Dispatcher):

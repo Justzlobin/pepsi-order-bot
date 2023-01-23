@@ -46,7 +46,6 @@ async def back_to_main_menu(query: types.CallbackQuery):
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
             pass
-    print(del_mes.chat_dict[chat][1:])
 
 
 async def command_assort(query: types.CallbackQuery):
@@ -130,7 +129,6 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
                                          , reply_markup=keyboard(callback_data['id']))
     del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
     await query.message.delete()
-    print(user_data)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
