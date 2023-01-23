@@ -23,7 +23,7 @@ async def command_start(message: types.Message):
                                                                    'щоб <b>PepsiBot</b> розумів,\n'
                                                                    'кому і куди відправляти замовлення!',
 
-                                             reply_markup=menu_kb(), parse_mode='markdown')
+                                             reply_markup=menu_kb(), parse_mode='Markdown')
     del_mes.add_message(chat_id=message.chat.id, message_id=message)
     await delete_message_from_dict(chat=message.chat.id)
 
