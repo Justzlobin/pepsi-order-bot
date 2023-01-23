@@ -9,21 +9,21 @@ async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
-        await message.answer(reply_markup=order_for_admin(), text='working')
+        await message.answer(text='Меню адміністратора',
+                             reply_markup=admin_menu_kb())
+
     else:
         await message.answer('У вас немає доступу!')
 
 
 async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
-    await query.bot.send_message(text='Меню адміністратора', chat_id=query.message.chat.id, reply_markup=admin_menu_kb())
-
-    # try:
-    #     await dp.bot.send_message(
-    #         text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
-    #         chat_id=query.message.chat.id,
-    #         parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
-    # except aiogram.utils.exceptions.MessageTextIsEmpty:
-    #     await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
+    try:
+        await dp.bot.send_message(
+            text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
+            chat_id=query.message.chat.id,
+            parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
+    except aiogram.utils.exceptions.MessageTextIsEmpty:
+        await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
 
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
@@ -64,7 +64,7 @@ async def close_order_for_admin(query: types.CallbackQuery):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
-    dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
+    dp.register_callback_query_handler(admin_test_kb, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(order_status_agreed, Cat_KB.filter(action='order_agreed'))
     dp.register_callback_query_handler(order_status_agreed_but, Cat_KB.filter(action='order_agreed_but'))
     dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
