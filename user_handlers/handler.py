@@ -2,7 +2,6 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from aiogram import types
-from aiogram.utils import exceptions
 from delete.class_order import Order
 
 order = Order()
