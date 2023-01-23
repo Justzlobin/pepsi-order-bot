@@ -16,7 +16,7 @@ async def command_start(message: types.Message):
     await message.delete()
     message = await message.bot.send_message(message.from_user.id, '__PepsiBot!__',
 
-                                             reply_markup=menu_kb(), parse_mode='Markdown')
+                                             reply_markup=menu_kb(), parse_mode='MarkdownV2')
     del_mes.add_message(chat_id=message.chat.id, message_id=message)
     await delete_message_from_dict(chat=message.chat.id)
 
