@@ -14,7 +14,7 @@ del_mes = Count()
 
 async def command_start(message: types.Message):
     await message.delete()
-    message = await message.bot.send_message(message.from_user.id, '#PepsiBot\n'
+    message = await message.bot.send_message(message.from_user.id, '\#PepsiBot\n'
                                                                    '___\n'
                                                                    '___Опис___',
 
