@@ -1,4 +1,4 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
@@ -99,8 +99,8 @@ def keyboard_settings(order_id):
                                     callback_data=Cat_KB.new(id=order_id, action='payment'))],
         [types.InlineKeyboardButton(text='💬 Примітка',
                                     callback_data=Cat_KB.new(id=order_id, action='comment'))]]
-    keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_order_menu())
-    return keyboards
+    keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboards.add(back_to.back_to_order_menu())
 
 
 def chose_payment(user_id):
