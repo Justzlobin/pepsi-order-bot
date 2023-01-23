@@ -5,7 +5,6 @@ from keyboards import *
 from delete.delete_message import UnMessage
 from .handler import del_mes, delete_message_from_dict
 
-
 delete_message = UnMessage()
 
 
@@ -19,34 +18,30 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
 
 
 async def user_register(query: types.CallbackQuery):
-    print(del_mes.chat_dict)
-    chat = query.message.chat.id
     message = await query.bot.send_message(text='Ваші данні: ',
                                            reply_markup=user_register_kb(
                                                query.from_user.id),
                                            chat_id=query.message.chat.id)
-    del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_dict(chat=chat)
-
-    print(del_mes.chat_dict)
-    print(del_mes.chat_dict[chat][1:])
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def user_register_name(query: types.CallbackQuery):
-    delete_message.add(message_id=await query.message.answer(text='Введіть ПІБ ФОП',
-                                                             reply_markup=cancel_state(register=True)),
-                       chat_id=query.message.chat.id)
+    message = await query.message.answer(text='Введіть ПІБ ФОП',
+                                         reply_markup=cancel_state(register=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await UserRegisterName.user_enter_name.set()
-    await query.message.delete()
+    await delete_message_from_dict(chat=query.message.chat.id)
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
 
 
 async def user_register_address(query: types.CallbackQuery):
-    delete_message.add(message_id=await query.message.answer(text='Введіть адресу\n'
-                                                                  'Приклад: м.Вінниця, Пирогова, 100',
-                                                             reply_markup=cancel_state(register=True)),
-                       chat_id=query.message.chat.id)
+    message = await query.message.answer(text='Введіть адресу\n'
+                                              'Приклад: м.Вінниця, Пирогова, 100',
+                                         reply_markup=cancel_state(register=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
     await UserRegisterName.user_enter_address.set()
-    await query.message.delete()
 
 
 async def name_enter(message: types.Message, state: FSMContext):
