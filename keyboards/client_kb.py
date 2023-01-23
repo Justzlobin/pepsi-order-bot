@@ -111,7 +111,7 @@ def chose_payment(user_id):
                                     callback_data=Cat_KB.new(id=user_id, action='bank'))]
     ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    return keyboard
+    return keyboard.add(back_to.back_to_order_menu())
 
 
 def order_for_admin():

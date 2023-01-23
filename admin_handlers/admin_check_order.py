@@ -64,7 +64,7 @@ async def close_order_for_admin(query: types.CallbackQuery):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
-    dp.register_callback_query_handler(admin_test_kb, Admin_KB.filter(action='orders'))
+    dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
     dp.register_callback_query_handler(order_status_agreed, Cat_KB.filter(action='order_agreed'))
     dp.register_callback_query_handler(order_status_agreed_but, Cat_KB.filter(action='order_agreed_but'))
     dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
