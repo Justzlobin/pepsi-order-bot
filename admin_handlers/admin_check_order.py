@@ -15,13 +15,15 @@ async def admin_test(message: types.Message):
 
 
 async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
-    try:
-        await dp.bot.send_message(
-            text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
-            chat_id=query.message.chat.id,
-            parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
-    except aiogram.utils.exceptions.MessageTextIsEmpty:
-        await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
+    await query.bot.send_message(text='Меню адміністратора', chat_id=query.message.chat.id, reply_markup=admin_menu_kb())
+
+    # try:
+    #     await dp.bot.send_message(
+    #         text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"], admin=True)}',
+    #         chat_id=query.message.chat.id,
+    #         parse_mode='HTML', reply_markup=order_state_kb(callback_data['id']))
+    # except aiogram.utils.exceptions.MessageTextIsEmpty:
+    #     await dp.bot.send_message(text='Замовлення пусте', chat_id=query.message.chat.id)
 
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
