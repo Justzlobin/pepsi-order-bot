@@ -10,7 +10,7 @@ Admin_KB = CallbackData('title', 'action')
 def admin_menu_kb():
     buttons = [
         [types.InlineKeyboardButton(text='Останні замовлення', callback_data=Admin_KB.new(action='orders'))],
-        [types.InlineKeyboardButton(text='Склад', callback_data=Admin_KB.new(action='status_position'))],
+        [types.InlineKeyboardButton(text='Склад', callback_data=Admin_KB.new(action='stock'))],
         [types.InlineKeyboardButton(text='Додати товар', callback_data=Admin_KB.new(action='add_new_position'))]
     ]
     admin_kb_markup = types.InlineKeyboardMarkup(inline_keyboard=buttons)
