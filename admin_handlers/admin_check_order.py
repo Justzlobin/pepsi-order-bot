@@ -62,7 +62,7 @@ async def close_order_for_admin(query: types.CallbackQuery):
     await query.message.delete()
 
 
-async def last_orders(query: types.CallbackQuery):
+async def last_order_admin(query: types.CallbackQuery):
     await query.bot.send_message(text='Останні замовлення:', chat_id=query.message.chat.id,
                                  reply_markup=order_for_admin())
 
@@ -81,5 +81,5 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_blocked_limit, Cat_KB.filter(action='order_blocked_limit'))
     dp.register_callback_query_handler(order_delete, Cat_KB.filter(action='order_delete'))
     dp.register_callback_query_handler(close_order_for_admin, Menu_KB.filter(action='close_admin'))
-    dp.register_callback_query_handler(last_orders, Admin_KB.filter(action='orders'))
+    dp.register_callback_query_handler(last_order_admin, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(stock, Admin_KB.filter(action='stock'))
