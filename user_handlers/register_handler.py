@@ -2,9 +2,6 @@ from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
-from delete.delete_message import UnMessage
-
-delete_message = UnMessage()
 
 
 async def stop_register(query: types.CallbackQuery, state: FSMContext):
@@ -13,7 +10,6 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await query.bot.send_message(text='Головне меню', chat_id=query.message.chat.id, reply_markup=menu_kb())
-    await delete_message.destr(query.message.chat.id).delete()
 
 
 async def user_register(query: types.CallbackQuery):
@@ -23,18 +19,16 @@ async def user_register(query: types.CallbackQuery):
 
 
 async def user_register_name(query: types.CallbackQuery):
-    delete_message.add(message_id=await query.message.answer(text='Введіть ПІБ ФОП',
-                                                             reply_markup=cancel_state(register=True)),
-                       chat_id=query.message.chat.id)
+    await query.message.answer(text='Введіть ПІБ ФОП',
+                               reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_name.set()
     await query.message.delete()
 
 
 async def user_register_address(query: types.CallbackQuery):
-    delete_message.add(message_id=await query.message.answer(text='Введіть адресу\n'
-                                                                  'Приклад: м.Вінниця, Пирогова, 100',
-                                                             reply_markup=cancel_state(register=True)),
-                       chat_id=query.message.chat.id)
+    await query.message.answer(text='Введіть адресу\n'
+                                    'Приклад: м.Вінниця, Пирогова, 100',
+                               reply_markup=cancel_state(register=True))
     await UserRegisterName.user_enter_address.set()
     await query.message.delete()
 
@@ -49,7 +43,6 @@ async def name_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
-    await delete_message.destr(message.chat.id).delete()
     await message.delete()
 
 
@@ -64,7 +57,6 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
-    await delete_message.destr(message.chat.id).delete()
     await message.delete()
 
 

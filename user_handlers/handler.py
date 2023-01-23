@@ -2,11 +2,9 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from aiogram import types
-from delete.delete_message import UnMessage
 from aiogram.utils import exceptions
 from delete.class_order import Order
 
-delete_message = UnMessage()
 order = Order()
 
 
@@ -69,10 +67,6 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     chat_id = query.message.chat.id
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(callback_data['id']))
-    try:
-        await delete_message.destr_photo(chat_id=query.message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
-        pass
     await query.message.delete()
 
 
@@ -100,13 +94,10 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    try:
-        delete_message.add_photo(message_id=await query.bot.send_photo(chat_id=query.message.chat.id,
+    await query.bot.send_photo(chat_id=query.message.chat.id,
                                                                        photo=types.InputFile(
-                                                                           fr"image/{callback_data['id']}.png")),
-                                 chat_id=query.message.chat.id)
-    except FileNotFoundError:
-        pass
+                                                                           fr"image/{callback_data['id']}.png"))
+
     await query.message.answer(text=f'{full_text}\n'
                                     f'Кількість: 0, Ціна: {text[5]}'
                                , reply_markup=keyboard(callback_data['id']))
@@ -168,13 +159,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     except KeyError:
         await query.bot.send_message(query.from_user.id, 'Нажаль, час сесії вийшов\n'
                                                          'Головне меню:', reply_markup=menu_kb())
-    print(order.order_dict)
-    try:
-        await delete_message.destr_photo(query.message.chat.id).delete()
-    except exceptions.MessageToDeleteNotFound:
-        pass
-    print(order.item_dict)
-
     await query.message.delete()
     await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=chat_id,
                               reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
