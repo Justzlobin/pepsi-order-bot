@@ -13,17 +13,18 @@ del_mes = Count()
 
 
 async def command_start(message: types.Message):
-    del_mes.add_message(
-        message_id=await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
-                                                                        'Бот створений для прийому заявок,\n'
-                                                                        'а також як інтерактивний прайс з продукцією.\n'
-                                                                        'Якщо ви вперше тут,\n'
-                                                                        'прошу натиснути 📋 <b>Реєстрація</b>\n'
-                                                                        'щоб <b>PepsiBot</b> розумів,\n'
-                                                                        'кому і куди відправляти замовлення!',
+    await message.delete()
+    message = await message.bot.send_message(message.from_user.id, 'Ласкаво просимо в <b>PepsiBot</b>!\n'
+                                                                   'Бот створений для прийому заявок,\n'
+                                                                   'а також як інтерактивний прайс з продукцією.\n'
+                                                                   'Якщо ви вперше тут,\n'
+                                                                   'прошу натиснути 📋 <b>Реєстрація</b>\n'
+                                                                   'щоб <b>PepsiBot</b> розумів,\n'
+                                                                   'кому і куди відправляти замовлення!',
 
-                                                  reply_markup=menu_kb(), parse_mode='HTML'),
-        chat_id=message.chat.id)
+                                             reply_markup=menu_kb(), parse_mode='HTML')
+    del_mes.add_message(chat_id=message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=message.chat.id)
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
