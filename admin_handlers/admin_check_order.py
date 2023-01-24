@@ -91,12 +91,12 @@ async def stock_position(query: types.CallbackQuery, callback_data: dict):
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(
-                                       fr"image/{callback_data['id']}.png"))
-    except FileNotFoundError:
-        pass
+    # try:
+    #     await query.bot.send_photo(chat_id=query.message.chat.id,
+    #                                photo=types.InputFile(
+    #                                    fr"image/{callback_data['id']}.png"))
+    # except FileNotFoundError:
+    #     pass
     await query.bot.send_message(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
                                  chat_id=query.message.chat.id)
 
