@@ -14,3 +14,12 @@ def admin_menu_kb():
     ]
     admin_kb_markup = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return admin_kb_markup.add(back_to.back_to_menu())
+
+
+def in_stock_kb(pos_id):
+    buttons = [
+        [types.InlineKeyboardButton(text='TRUE', callback_data=Admin_cat_KB.new(action='in_stock_true'))],
+        [types.InlineKeyboardButton(text='FALSE', callback_data=Admin_cat_KB.new(action='in_stock_false'))]
+
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)

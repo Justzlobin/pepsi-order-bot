@@ -4,6 +4,7 @@ from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 from keyboards import back_to
 from keyboards.menu_kb import Menu_KB
+from datadase.admin_db import *
 
 Cat_KB = CallbackData('title', 'id', 'action')
 
@@ -42,11 +43,13 @@ def brand_markup(cat_id, admin=False):
 def position_markup(brand_id, admin=False):
     action = 'position'
     back_kb = back_to.back_to_order_menu()
+    list_pos = sqlite_db.select_product(brand_id)
     if admin:
         action = 'admin_position'
         back_kb = back_to.back_to_admin_menu()
+        list_pos = admin_select_product(brand_id)
     position_cb_markup = InlineKeyboardMarkup()
-    for position_id, position_title in sqlite_db.select_product(brand_id):
+    for position_id, position_title in list_pos:
         position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action=action
         )))

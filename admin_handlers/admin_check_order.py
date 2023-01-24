@@ -3,6 +3,7 @@ from aiogram import Dispatcher
 from create_bot import dp
 from keyboards import *
 from config import ADMIN
+from datadase.admin_db import *
 
 
 async def admin_test(message: types.Message):
@@ -96,11 +97,23 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
                                        fr"image/{callback_data['id']}.png"))
     except FileNotFoundError:
         pass
-    await query.message.answer(text=f'{full_text}\n')
+    await query.message.answer(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']))
+
+
+async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
+    check_in_status(value=True, pos_id=callback_data['id'])
+    await query.answer(text='Changed to TRUE!')
+
+
+async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
+    check_in_status(value=False, pos_id=callback_data['id'])
+    await query.answer(text='Changed to FALSE!')
+
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
-    # dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
     dp.register_callback_query_handler(order_status_agreed, Cat_KB.filter(action='order_agreed'))
     dp.register_callback_query_handler(order_status_agreed_but, Cat_KB.filter(action='order_agreed_but'))
     dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
@@ -113,3 +126,5 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(stock_brand, Cat_KB.filter(action='admin_from_cat_to_brand'))
     dp.register_callback_query_handler(stock_position, Cat_KB.filter(action='admin_from_brand_to_pos'))
     dp.register_callback_query_handler(stock_single_position, Cat_KB.filter(action='admin_position'))
+    dp.register_callback_query_handler(in_stock_true, Admin_cat_KB.filter(action='in_stock_true'))
+    dp.register_callback_query_handler(in_stock_false, Admin_cat_KB.filter(action='in_stock_false'))
