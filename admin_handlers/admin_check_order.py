@@ -77,6 +77,27 @@ async def back_to_admin_menu(query: types.CallbackQuery):
                                  reply_markup=admin_menu_kb())
 
 
+async def stock_brand(query: types.CallbackQuery, callback_data: dict):
+    await query.bot.send_message(text='Brands:', chat_id=query.message.chat.id,
+                                 reply_markup=brand_markup(callback_data['id'], admin=True))
+
+
+async def stock_position(query: types.CallbackQuery, callback_data: dict):
+    await query.bot.send_message(text='Positions:', chat_id=query.message.chat.id,
+                                 reply_markup=position_markup(callback_data['id'], admin=True))
+
+
+async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
+    text = sqlite_db.select_one_position(callback_data['id'])
+    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
+    try:
+        await query.bot.send_photo(chat_id=query.message.chat.id,
+                                   photo=types.InputFile(
+                                       fr"image/{callback_data['id']}.png"))
+    except FileNotFoundError:
+        pass
+    await query.message.answer(text=f'{full_text}\n')
+
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
     # dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
@@ -89,3 +110,6 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(last_order_admin, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(stock, Admin_KB.filter(action='stock'))
     dp.register_callback_query_handler(back_to_admin_menu, Admin_KB.filter(action='back_to_admin_menu'))
+    dp.register_callback_query_handler(stock_brand, Cat_KB.filter(action='admin_from_cat_to_brand'))
+    dp.register_callback_query_handler(stock_position, Cat_KB.filter(action='admin_from_brand_to_pos'))
+    dp.register_callback_query_handler(stock_single_position, Cat_KB.filter(action='admin_position'))

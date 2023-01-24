@@ -1,10 +1,9 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 from keyboards import back_to
 
 Admin_KB = CallbackData('title', 'action')
+Admin_cat_KB = CallbackData('title', 'id', 'action')
 
 
 def admin_menu_kb():
