@@ -72,6 +72,11 @@ async def stock(query: types.CallbackQuery):
                                  reply_markup=cat_markup(admin=True))
 
 
+async def back_to_admin_menu(query: types.CallbackQuery):
+    await query.bot.send_message(text='Admin menu', chat_id=query.message.chat.id,
+                                 reply_markup=admin_menu_kb())
+
+
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
     # dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
@@ -83,3 +88,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(close_order_for_admin, Menu_KB.filter(action='close_admin'))
     dp.register_callback_query_handler(last_order_admin, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(stock, Admin_KB.filter(action='stock'))
+    dp.register_callback_query_handler(back_to_admin_menu, Admin_KB.filter(action='back_to_admin_menu'))
