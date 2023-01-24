@@ -22,5 +22,5 @@ def admin_select_product(brand_id) -> list:
 
 
 def check_in_status(value, pos_id):
-    cur.execute("""UPDATE position p SET p.in_stock = %s WHERE pos_id = %s""", (value, pos_id))
+    cur.execute("""UPDATE position SET in_stock = %s WHERE pos_id = %s""", (value, pos_id))
     return conn.commit()
