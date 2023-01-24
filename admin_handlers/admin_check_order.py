@@ -97,7 +97,8 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
                                        fr"image/{callback_data['id']}.png"))
     except FileNotFoundError:
         pass
-    await query.message.answer(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']))
+    await query.bot.send_message(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
+                                 chat_id=query.message.chat.id)
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
