@@ -102,13 +102,12 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
     check_in_status(value=True, pos_id=callback_data['id'])
     await query.answer(text='Changed to TRUE!')
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
+
     check_in_status(value=False, pos_id=callback_data['id'])
     await query.answer(text='Changed to FALSE!')
 
