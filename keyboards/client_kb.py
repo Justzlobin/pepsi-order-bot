@@ -17,7 +17,7 @@ def cat_markup():
     return cat_kb_markup
 
 
-def brand_markup(cat_id):
+def brand_markup(cat_id, admin=False):
     brand_cb_markup = InlineKeyboardMarkup()
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
@@ -25,7 +25,10 @@ def brand_markup(cat_id):
 
     brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                  action='back_to_cat')))
-    brand_cb_markup.add(back_to.back_to_order_menu())
+    if admin:
+        brand_cb_markup.add(back_to.back_to_admin_menu())
+    else:
+        brand_cb_markup.add(back_to.back_to_order_menu())
     return brand_cb_markup
 
 
