@@ -8,12 +8,15 @@ from keyboards.menu_kb import Menu_KB
 Cat_KB = CallbackData('title', 'id', 'action')
 
 
-def cat_markup():
+def cat_markup(admin=False):
     cat_kb_markup = InlineKeyboardMarkup()
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_kb_markup.add(InlineKeyboardButton(category_title, callback_data=Cat_KB.new(id=cat_id,
                                                                                         action='cat->brand')))
-    cat_kb_markup.add(back_to.back_to_order_menu())
+    if admin:
+        cat_kb_markup.add(back_to.back_to_admin_menu())
+    else:
+        cat_kb_markup.add(back_to.back_to_order_menu())
     return cat_kb_markup
 
 

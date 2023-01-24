@@ -69,7 +69,7 @@ async def last_order_admin(query: types.CallbackQuery):
 
 async def stock(query: types.CallbackQuery):
     await query.bot.send_message(text='Category:', chat_id=query.message.chat.id,
-                                 reply_markup=cat_markup())
+                                 reply_markup=cat_markup(admin=True))
 
 
 def register_admin_handlers(dp: Dispatcher):
