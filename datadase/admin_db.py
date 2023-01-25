@@ -24,3 +24,13 @@ def admin_select_product(brand_id) -> list:
 def check_in_status(value, pos_id):
     cur.execute("""UPDATE position SET in_stock = %s WHERE pos_id = %s""", (value, pos_id))
     return conn.commit()
+
+
+def select_one_position(pos_id):
+    cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price, in_stock
+                            FROM position p, brand_cat b, size s, tasty t
+                            WHERE p.pos_id = %s
+                            AND p.brand_id = b.brand_id
+                            AND p.size_id = s.size_id 
+                            AND p.tasty_id = t.tasty_id""", (pos_id,))
+    return cur.fetchone()
