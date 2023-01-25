@@ -56,7 +56,7 @@ def position_markup(brand_id, admin=False):
     if not admin:
         position_cb_markup.add(
             InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                 action='cat->brand')))
+                                                                     action='cat->brand')))
     position_cb_markup.add(back_kb)
     return position_cb_markup
 
@@ -206,6 +206,12 @@ def cancel_state(register=False):
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
+
+
+def back_to_position_kb(pos_id):
+    keyboard = types.InlineKeyboardMarkup()
+    return keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
+                                                                                 action='back_to_position')))
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')

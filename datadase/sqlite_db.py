@@ -91,7 +91,7 @@ def select_one_position(pos_id):
                             WHERE p.pos_id = %s
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
-                            AND p.tasty_id = t.tasty_id""", (pos_id, ))
+                            AND p.tasty_id = t.tasty_id""", (pos_id,))
     return cur.fetchone()
 
 
@@ -303,6 +303,11 @@ def delete_not_verification(user_id=None):
         cur.execute("""DELETE FROM "order" WHERE order_id IS NULL""")
 
     return conn.commit()
+
+
+def check_position_in_stock(pos_id):
+    cur.execute("""SELECT in_stock FROM position WHERE pos_id = %s""", (pos_id,))
+    return cur.fetchall()[0]
 
 
 def close(self):

@@ -114,7 +114,6 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     user_data[callback_data['id']] = 0
-
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
@@ -124,10 +123,16 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
         del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
-    message = await query.message.answer(text=f'{full_text}\n'
-                                              f'Кількість: 0, Ціна: {text[5]}'
-                                         , reply_markup=keyboard(callback_data['id']))
-    del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
+    if sqlite_db.check_position_in_stock(callback_data['id']):
+        message = await query.message.answer(text=f'{full_text}\n'
+                                                  f'Кількість: 0, Ціна: {text[5]}'
+                                             , reply_markup=keyboard(callback_data['id']))
+        del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
+    if not sqlite_db.check_position_in_stock(callback_data['id']):
+        message = await query.bot.send_message(text='ТОВАР ВІДСУТНІЙ.',
+                                               chat_id=query.message.chat.id,
+                                               reply_markup=back_to_position_kb(callback_data['id']))
+        del_mes.add_message(message_id=message, chat_id=query.message.chat.id)
     await query.message.delete()
 
 
