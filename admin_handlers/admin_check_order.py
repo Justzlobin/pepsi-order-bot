@@ -5,6 +5,7 @@ from keyboards import *
 from config import ADMIN
 from datadase.admin_db import *
 from user_handlers.handler import del_mes, delete_message_from_dict
+from aiogram.utils import exceptions
 
 
 async def admin_test(message: types.Message):
@@ -117,14 +118,28 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=True, pos_id=callback_data['id'])
-    await query.answer(text='Changed to TRUE!')
-    await query.message.delete()
+    message = await query.bot.send_message(text='Changed to TRUE', chat_id=query.message.chat.id,
+                                           reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
+                                                                        admin=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
+    try:
+        await delete_message_from_dict(query.message.chat.id, photo=True)
+    except exceptions.MessageToDeleteNotFound:
+        pass
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=False, pos_id=callback_data['id'])
-    await query.answer(text='Changed to FALSE!')
-    await query.message.delete()
+    message = await query.bot.send_message(text='Changed to FALSE', chat_id=query.message.chat.id,
+                                           reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
+                                                                        admin=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
+    try:
+        await delete_message_from_dict(query.message.chat.id, photo=True)
+    except exceptions.MessageToDeleteNotFound:
+        pass
 
 
 def register_admin_handlers(dp: Dispatcher):
