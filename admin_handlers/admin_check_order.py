@@ -102,7 +102,7 @@ async def stock_position(query: types.CallbackQuery, callback_data: dict):
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = admin_select_one_position(callback_data['id'])
-    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]}'
+    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {str(text[5])}'
     try:
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
