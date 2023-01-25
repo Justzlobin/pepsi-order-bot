@@ -4,6 +4,7 @@ from create_bot import dp
 from keyboards import *
 from config import ADMIN
 from datadase.admin_db import *
+from user_handlers.handler import del_mes, delete_message_from_dict
 
 
 async def admin_test(message: types.Message):
@@ -64,52 +65,66 @@ async def close_order_for_admin(query: types.CallbackQuery):
 
 
 async def last_order_admin(query: types.CallbackQuery):
-    await query.bot.send_message(text='Останні замовлення:', chat_id=query.message.chat.id,
-                                 reply_markup=order_for_admin())
+    message = await query.bot.send_message(text='Останні замовлення:', chat_id=query.message.chat.id,
+                                           reply_markup=order_for_admin())
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def stock(query: types.CallbackQuery):
-    await query.bot.send_message(text='Category:', chat_id=query.message.chat.id,
-                                 reply_markup=cat_markup(admin=True))
+    message = await query.bot.send_message(text='Category:', chat_id=query.message.chat.id,
+                                           reply_markup=cat_markup(admin=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def back_to_admin_menu(query: types.CallbackQuery):
-    await query.bot.send_message(text='Admin menu', chat_id=query.message.chat.id,
-                                 reply_markup=admin_menu_kb())
+    message = await query.bot.send_message(text='Admin menu', chat_id=query.message.chat.id,
+                                           reply_markup=admin_menu_kb())
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def stock_brand(query: types.CallbackQuery, callback_data: dict):
-    await query.bot.send_message(text='Brands:', chat_id=query.message.chat.id,
-                                 reply_markup=brand_markup(callback_data['id'], admin=True))
+    message = await query.bot.send_message(text='Brands:', chat_id=query.message.chat.id,
+                                           reply_markup=brand_markup(callback_data['id'], admin=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def stock_position(query: types.CallbackQuery, callback_data: dict):
-    await query.bot.send_message(text='Positions:', chat_id=query.message.chat.id,
-                                 reply_markup=position_markup(callback_data['id'], admin=True))
+    message = await query.bot.send_message(text='Positions:', chat_id=query.message.chat.id,
+                                           reply_markup=position_markup(callback_data['id'], admin=True))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
     try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(
-                                       fr"image/{callback_data['id']}.png"))
+        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                                   photo=types.InputFile(
+                                                       fr"image/{callback_data['id']}.png"))
+        del_mes.add_message_photo(chat_id=query.message.chat.id, message_id=message_photo)
     except FileNotFoundError:
         pass
-    await query.bot.send_message(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
-                                 chat_id=query.message.chat.id)
+    message = await query.bot.send_message(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
+                                           chat_id=query.message.chat.id)
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=True, pos_id=callback_data['id'])
     await query.answer(text='Changed to TRUE!')
+    await query.message.delete()
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
-
     check_in_status(value=False, pos_id=callback_data['id'])
     await query.answer(text='Changed to FALSE!')
+    await query.message.delete()
 
 
 def register_admin_handlers(dp: Dispatcher):
