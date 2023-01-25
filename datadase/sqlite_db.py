@@ -67,9 +67,8 @@ def select_product(brand_id) -> list:
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id
-                            AND p.in_stock = %s
                             ORDER BY size 
-                            """, (brand_id, True))
+                            """, (brand_id,))
     for i in cur.fetchall():
         product_list.append((i[5], f'{i[0]} {i[1]} {i[2]} {i[3]} {i[4]}'))
     return product_list
