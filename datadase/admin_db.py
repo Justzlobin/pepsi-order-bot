@@ -26,7 +26,7 @@ def check_in_status(value, pos_id):
     return conn.commit()
 
 
-def select_one_position(pos_id):
+def admin_select_one_position(pos_id):
     cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price, in_stock
                             FROM position p, brand_cat b, size s, tasty t
                             WHERE p.pos_id = %s
