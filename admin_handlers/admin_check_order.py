@@ -11,9 +11,9 @@ async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
-        await message.answer(text='Меню адміністратора',
-                             reply_markup=admin_menu_kb())
-
+        message = await message.answer(text='Меню адміністратора',
+                                       reply_markup=admin_menu_kb())
+        del_mes.add_message(chat_id=message.chat.id, message_id=message)
     else:
         await message.answer('У вас немає доступу!')
 
