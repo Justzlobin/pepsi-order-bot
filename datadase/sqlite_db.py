@@ -15,32 +15,6 @@ def user_exist():
     return [i[0] for i in cur.fetchall()]
 
 
-def get_user_id(user_id):
-    cur.execute("SELECT id FROM users WHERE user_id = %s", (user_id,))
-    return cur.fetchone()[0]
-
-
-async def add_user(state, user_id):
-    async with state.proxy() as data:
-        val = data.values()
-        if user_id not in user_exist():
-            cur.execute("INSERT INTO users (user_id, user_full_name, user_address) VALUES (%s, %s, %s)",
-                        (user_id, tuple(val)[0],
-                         tuple(val)[1]))
-        else:
-            cur.execute("""UPDATE users
-            SET  user_full_name = %s, user_address = %s
-            WHERE user_id = %s""", (tuple(val)[0], tuple(val)[1], user_id))
-        print(val)
-        return conn.commit()
-
-
-def add_position_in_order(id, user_value, position):
-    cur.execute("""INSERT INTO "order" (order_id, quantity, position ) VALUES (%s, %s, %s) """,
-                (id, int(user_value), str(position)))
-    return conn.commit()
-
-
 def select_all_categories():
     cur.execute("""SELECT * FROM category""")
     return cur.fetchall()

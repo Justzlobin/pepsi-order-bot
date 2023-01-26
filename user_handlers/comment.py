@@ -11,9 +11,10 @@ async def comment(query: types.CallbackQuery):
     message = await dp.bot.send_message(chat_id=query.message.chat.id,
                                         text='Введіть примітку.\n'
                                              'Приклад:\n'
-                                             '"Штрих" - штрихкоди\n'
-                                             '"Серт" - сертифікат\n'
-                                             '"ттн" - товаро-транспортна накладна\n',
+                                             '<b>Дата доставки</b>\n'
+                                             '<b>"Штрих"</b> - штрихкоди\n'
+                                             '<b>"Серт"</b> - сертифікат\n'
+                                             '<b>"ТТН"</b> - товаро-транспортна накладна\n',
                                         reply_markup=cancel_state())
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
@@ -24,7 +25,11 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    message = await query.bot.send_message(text='Дію скасовано!', reply_markup=order_menu_kb(),
+    message = await query.bot.send_message(text='*Дію скасовано*\n'
+                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
+                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                           reply_markup=order_menu_kb(),
                                            chat_id=query.message.chat.id)
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
@@ -36,7 +41,11 @@ async def write_comment(message: types.Message, state: FSMContext):
         print(tuple(data_comment.values()))
     await sqlite_db.update_comment(message.from_user.id, state)
     await state.finish()
-    message = await message.answer(text='Примітка збережена!', reply_markup=order_menu_kb())
+    message = await message.answer(text='*Примітка збережена*\n'
+                                        '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
+                                        '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                        '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                   reply_markup=order_menu_kb())
     del_mes.add_message(chat_id=message.chat.id, message_id=message)
     await delete_message_from_dict(chat=message.chat.id)
 

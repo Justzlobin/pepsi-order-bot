@@ -18,7 +18,11 @@ async def payment(query: types.CallbackQuery):
 
 
 async def payment_cash(query: types.CallbackQuery):
-    message = await query.bot.send_message(text='Обрано: "💰 Готівка"', reply_markup=order_menu_kb(),
+    message = await query.bot.send_message(text='*Обрано: "💰 Готівка"*\n'
+                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
+                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                           reply_markup=order_menu_kb(),
                                            chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
@@ -26,7 +30,11 @@ async def payment_cash(query: types.CallbackQuery):
 
 
 async def payment_bank(query: types.CallbackQuery):
-    message = await query.bot.send_message(text='Обрано: "💳 Банк"', reply_markup=order_menu_kb(),
+    message = await query.bot.send_message(text='*Обрано: "💳 Банк"*\n'
+                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
+                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+                                           reply_markup=order_menu_kb(),
                                            chat_id=query.message.chat.id)
     sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)

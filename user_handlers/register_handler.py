@@ -10,7 +10,15 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    message = await query.bot.send_message(text='Головне меню', chat_id=query.message.chat.id, reply_markup=menu_kb())
+    message = await query.bot.send_message(text='<b>PEPSIBOT</b>\n'
+                                                'Натисніть:\n'
+                                                '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                                '                       або сформувати замовлення. \n'
+                                                '<b>🗃 Історія замовлень</b> - переглянути попередні\n'
+                                                '                              замовлення.\n'
+                                                '<b>📝 Реєстрація</b> - щоб розуміти кому\n'
+                                                '                       відправляти замовлення.\n',
+                                           chat_id=query.message.chat.id, reply_markup=menu_kb())
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
@@ -51,7 +59,15 @@ async def name_enter(message: types.Message, state: FSMContext):
     user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     print(data)
     await state.finish()
-    await message.answer(text='Ваші дані оновлені', reply_markup=menu_kb())
+    await message.answer(text='*Дані оновлені*\n'
+                              '<b>PEPSIBOT</b>\n'
+                              'Натисніть:\n'
+                              '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                              '                       або сформувати замовлення. \n'
+                              '<b>🗃 Історія замовлень</b> - переглянути попередні\n'
+                              '                              замовлення.\n'
+                              '<b>📝 Реєстрація</b> - щоб розуміти кому\n'
+                              '                       відправляти замовлення.\n', reply_markup=menu_kb())
     await delete_message_from_dict(chat=message.chat.id)
 
 
@@ -65,7 +81,15 @@ async def address_enter(message: types.Message, state: FSMContext):
         user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
     print(data)
     await state.finish()
-    await message.answer(text='Ваші данні оновлені', reply_markup=menu_kb())
+    await message.answer(text='*Дані оновлені*\n'
+                              '<b>PEPSIBOT</b>\n'
+                              'Натисніть:\n'
+                              '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                              '                       або сформувати замовлення. \n'
+                              '<b>🗃 Історія замовлень</b> - переглянути попередні\n'
+                              '                              замовлення.\n'
+                              '<b>📝 Реєстрація</b> - щоб розуміти кому\n'
+                              '                       відправляти замовлення.\n', reply_markup=menu_kb())
     await delete_message_from_dict(chat=message.chat.id)
 
 
