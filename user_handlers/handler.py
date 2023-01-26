@@ -306,7 +306,7 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
-    message = await query.bot.send_message(reply_markup=menu_kb(), text='<h1><b>PepsiBot</b></h1>!\n'
+    message = await query.bot.send_message(reply_markup=menu_kb(), text='<h1>PepsiBot</h1>!\n'
                                                                         'Бот створений для прийому заявок,\n'
                                                                         'а також як інтерактивний прайс з продукцією.\n'
                                                                         'Якщо ви вперше тут,\n'
