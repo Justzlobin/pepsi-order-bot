@@ -306,14 +306,14 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def back_to_menu_from_order(query: types.CallbackQuery):
-    message = await query.bot.send_message(reply_markup=menu_kb(), text='<h1>PepsiBot</h1>!\n'
+    message = await query.bot.send_message(reply_markup=menu_kb(), text='<h1><b>PepsiBot</b></h1>!\n'
                                                                         'Бот створений для прийому заявок,\n'
                                                                         'а також як інтерактивний прайс з продукцією.\n'
                                                                         'Якщо ви вперше тут,\n'
                                                                         'прошу натиснути 📋 <b>Реєстрація</b>\n'
                                                                         'щоб <b>PepsiBot</b> розумів,\n'
                                                                         'кому і куди відправляти замовлення!',
-                                           chat_id=query.message.chat.id)
+                                           chat_id=query.message.chat.id, parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
     user_data[f'{query.from_user.id}'] = None
