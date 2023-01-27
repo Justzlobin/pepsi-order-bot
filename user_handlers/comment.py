@@ -30,7 +30,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
                                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                                            reply_markup=order_menu_kb(),
-                                           chat_id=query.message.chat.id)
+                                           chat_id=query.message.chat.id, parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
@@ -45,7 +45,7 @@ async def write_comment(message: types.Message, state: FSMContext):
                                         '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
                                         '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                         '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                                   reply_markup=order_menu_kb())
+                                   reply_markup=order_menu_kb(), parse_mode='HTML')
     del_mes.add_message(chat_id=message.chat.id, message_id=message)
     await delete_message_from_dict(chat=message.chat.id)
 

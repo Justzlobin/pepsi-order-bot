@@ -162,7 +162,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                                     'або сформувати замовлення. \n'
                                                     '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                                     '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-                                               reply_markup=menu_kb())
+                                               reply_markup=menu_kb(), parse_mode='HTML')
         del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     try:
         await delete_message_from_dict(chat=query.message.chat.id, photo=True)
@@ -194,7 +194,7 @@ async def order_view(query: types.CallbackQuery):
                                           'або сформувати замовлення. \n'
                                           '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                           '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
-                                     , reply_markup=menu_kb())
+                                     , reply_markup=menu_kb(), parse_mode='HTML')
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -316,7 +316,7 @@ async def back_to_order_menu(query: types.CallbackQuery):
                                            text='1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
                                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                                           reply_markup=order_menu_kb())
+                                           reply_markup=order_menu_kb(), parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 

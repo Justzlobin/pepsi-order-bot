@@ -16,7 +16,7 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
                                                 'або сформувати замовлення. \n'
                                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-                                           chat_id=query.message.chat.id, reply_markup=menu_kb())
+                                           chat_id=query.message.chat.id, reply_markup=menu_kb(), parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
@@ -64,7 +64,7 @@ async def name_enter(message: types.Message, state: FSMContext):
                               'або сформувати замовлення. \n'
                               '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                               '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-                         reply_markup=menu_kb())
+                         reply_markup=menu_kb(), parse_mode='HTML')
     await delete_message_from_dict(chat=message.chat.id)
 
 
@@ -85,7 +85,7 @@ async def address_enter(message: types.Message, state: FSMContext):
                               'або сформувати замовлення. \n'
                               '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                               '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-                         reply_markup=menu_kb())
+                         reply_markup=menu_kb(), parse_mode='HTML')
     await delete_message_from_dict(chat=message.chat.id)
 
 
