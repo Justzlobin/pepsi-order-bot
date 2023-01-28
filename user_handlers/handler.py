@@ -87,8 +87,6 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                                            f'К-ть: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)}, '
                                            f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
                                       , reply_markup=keyboard(pos_id))
-    del_mes.add_message(chat_id=message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=message.chat.id)
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
