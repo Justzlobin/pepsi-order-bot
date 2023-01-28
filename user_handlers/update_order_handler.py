@@ -12,6 +12,7 @@ async def view_order_for_user(query: types.CallbackQuery, callback_data: dict):
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
+
 async def order_correct_user(query: types.CallbackQuery, callback_data: dict):
     await dp.bot.send_message(text=f'Ваше замовлення: <b>{sqlite_db.sum_order(callback_data["id"])}</b>',
                               chat_id=query.message.chat.id,

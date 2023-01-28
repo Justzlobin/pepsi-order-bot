@@ -14,7 +14,7 @@ async def delete_from_order(query: types.CallbackQuery):
                                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
                                            reply_markup=menu_kb(),
-                                           chat_id=query.message.chat.id)
+                                           chat_id=query.message.chat.id, parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
@@ -30,7 +30,7 @@ async def add_in_list_orders(query: types.CallbackQuery, callback_data: dict):
                                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
                                            chat_id=query.message.chat.id,
-                                           reply_markup=menu_kb())
+                                           reply_markup=menu_kb(), parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
@@ -40,7 +40,7 @@ async def order_continue(query: types.CallbackQuery):
                                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                                            chat_id=query.message.chat.id,
-                                           reply_markup=order_menu_kb())
+                                           reply_markup=order_menu_kb(), parse_mode='HTML')
     del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await delete_message_from_dict(chat=query.message.chat.id)
 
