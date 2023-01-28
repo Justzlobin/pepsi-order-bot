@@ -78,12 +78,10 @@ def keyboard_order(order_id, user_id):
     return keyboard_order_markup
 
 
-def keyboard(pos_id, order=False, correct=False):
+def keyboard(pos_id, order=False):
     list_commands = ['desc', 'zero', 'incr', 'finish']
     if order:
         list_commands = ['update_' + i for i in list_commands]
-    if correct:
-        list_commands = ['correct_' + i for i in list_commands]
     buttons = [
         [
             types.InlineKeyboardButton(text='➖',
@@ -103,7 +101,7 @@ def keyboard(pos_id, order=False, correct=False):
     ]
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    if not order:
+    if order:
         keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
                                                                               action='back_to_position')))
 
