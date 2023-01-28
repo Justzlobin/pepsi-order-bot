@@ -74,11 +74,10 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
 async def order_position(query: types.CallbackQuery, callback_data: dict):
     chat_id = query.message.chat.id
 
-    message = await dp.bot.send_message(text=f'{sqlite_db.select_one_position(callback_data["id"])}\n'
-                                             f'Кількість: 0, Ціна: {callback_data["id"][4]}', chat_id=chat_id,
-                                        reply_markup=keyboard(callback_data['id']))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await dp.bot.send_message(text=f'{sqlite_db.select_one_position(callback_data["id"])}\n'
+                                   f'Кількість: 0, Ціна: {callback_data["id"][4]}', chat_id=chat_id,
+                              reply_markup=keyboard(callback_data['id']))
+    await query.message.delete()
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):
