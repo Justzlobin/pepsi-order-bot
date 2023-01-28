@@ -238,11 +238,10 @@ async def update_numbers(query: types.CallbackQuery, callback_data: dict):
     update_text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{update_text[0]} {update_text[1]} {update_text[2]} {update_text[3]} {update_text[4]}'
     order = True
-    message = await query.message.answer(text=f'{full_text}\n'
-                                              f'Кількість: {sum1}, Ціна: {update_text[5]}'
-                                         , reply_markup=keyboard(callback_data['id'], order))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await query.message.answer(text=f'{full_text}\n'
+                                    f'Кількість: {sum1}, Ціна: {update_text[5]}'
+                               , reply_markup=keyboard(callback_data['id'], order))
+    await query.message.delete()
 
 
 async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
