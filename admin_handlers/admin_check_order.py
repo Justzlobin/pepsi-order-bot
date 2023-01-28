@@ -66,10 +66,8 @@ async def close_order_for_admin(query: types.CallbackQuery):
 
 
 async def last_order_admin(query: types.CallbackQuery):
-    message = await query.bot.send_message(text='Останні замовлення:', chat_id=query.message.chat.id,
-                                           reply_markup=order_for_admin())
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await query.bot.send_message(text='Останні замовлення:', chat_id=query.message.chat.id,
+                                 reply_markup=order_for_admin())
 
 
 async def stock(query: types.CallbackQuery):
