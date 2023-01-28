@@ -224,12 +224,11 @@ async def multi(query: types.CallbackQuery):
 async def last_order(query: types.CallbackQuery):
     sqlite_db.delete_empty_orders()
     sqlite_db.delete_not_verification(user_id=query.from_user.id)
-    # message = \
-    await query.bot.send_message(text='Останні замовлення:',
-                                 reply_markup=order_for_user(query.from_user.id),
-                                 chat_id=query.message.chat.id)
-    # del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    # await delete_message_from_dict(chat=query.message.chat.id)
+    message = await query.bot.send_message(text='Останні замовлення:',
+                                           reply_markup=order_for_user(query.from_user.id),
+                                           chat_id=query.message.chat.id)
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
@@ -237,9 +236,10 @@ async def update_numbers(query: types.CallbackQuery, callback_data: dict):
     update_text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{update_text[0]} {update_text[1]} {update_text[2]} {update_text[3]} {update_text[4]}'
     order = True
-    await query.message.answer(text=f'{full_text}\n'
-                                    f'Кількість: {sum1}, Ціна: {update_text[5]}'
-                               , reply_markup=keyboard(callback_data['id'], order))
+    message = await query.message.answer(text=f'{full_text}\n'
+                                              f'Кількість: {sum1}, Ціна: {update_text[5]}'
+                                         , reply_markup=keyboard(callback_data['id'], order))
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
     await query.message.delete()
 
 
