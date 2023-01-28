@@ -103,8 +103,9 @@ def keyboard(pos_id, order=False, correct=False):
     ]
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
-                                                                          action='back_to_position')))
+    if not order:
+        keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
+                                                                              action='back_to_position')))
 
     return keyboard
 

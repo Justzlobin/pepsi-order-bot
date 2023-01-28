@@ -249,12 +249,13 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                                   sqlite_db.select_last_order(query.from_user.id),
                                   callback_data['id'])
 
-    await dp.bot.send_message(
+    message = await dp.bot.send_message(
         text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
         chat_id=chat_id,
         reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
                                     query.from_user.id), parse_mode='HTML')
-    await query.message.delete()
+    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
