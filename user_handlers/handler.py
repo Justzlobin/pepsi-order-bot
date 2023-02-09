@@ -80,13 +80,14 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     try:
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"))
+                                                       fr"image/{callback_data['id']}.png"),
+                                                   reply_markup=keyboard(callback_data['id']))
         del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
     await query.bot.send_message(text=f'{full_text}\n'
                                       f'Кількість: 0, Ціна: {text[5]}'
-                                 , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
+                                 ,  chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
