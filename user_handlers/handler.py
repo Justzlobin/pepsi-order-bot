@@ -76,6 +76,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     user_data[callback_data['id']] = 0
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
@@ -86,9 +87,9 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
         del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
-    await edit_text(query.message, message_text=f'{full_text}\n'
-                                                f'Кількість: 0, Ціна: {text[5]}'
-                    , reply_markup=keyboard(callback_data['id']))
+    await dp.bot.send_message(message_text=f'{full_text}\n'
+                                           f'Кількість: 0, Ціна: {text[5]}'
+                              , reply_markup=keyboard(callback_data['id']))
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
