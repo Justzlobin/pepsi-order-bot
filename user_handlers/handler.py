@@ -13,14 +13,18 @@ del_mes = Count()
 
 
 async def command_start(message: types.Message):
-    await edit_text(message, message_text='<b>PEPSIBOT</b>\n'
-                                          'Натисніть:\n'
-                                          '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                          'або сформувати замовлення. \n'
-                                          '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                          '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+    await message.delete()
+    message = await message.bot.send_message(message.from_user.id,
+                                             text='<b>PEPSIBOT</b>\n'
+                                                  'Натисніть:\n'
+                                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                                  'або сформувати замовлення. \n'
+                                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+                                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
 
-                    reply_markup=menu_kb())
+                                             reply_markup=menu_kb(), parse_mode='HTML')
+    del_mes.add_message(chat_id=message.chat.id, message_id=message)
+    await delete_message_from_dict(chat=message.chat.id)
 
 
 async def command_assort(query: types.CallbackQuery):
@@ -48,29 +52,24 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
-    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
-                                        reply_markup=position_markup(callback_data['id']))
+    await edit_text(query.message, message_text='Доступні смаки бренду:',
+                    reply_markup=position_markup(callback_data['id']))
     try:
         await delete_message_from_dict(chat=query.message.chat.id, photo=True)
     except exceptions.MessageToDeleteNotFound:
         pass
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
-
-    await dp.bot.send_message(text=f'{sqlite_db.select_one_position(callback_data["id"])}\n'
-                                   f'Кількість: 0, Ціна: {callback_data["id"][4]}', chat_id=chat_id,
-                              reply_markup=keyboard(callback_data['id']))
-    await query.message.delete()
+    await edit_text(query.message, message_text=f'{sqlite_db.select_one_position(callback_data["id"])}\n'
+                                                f'Кількість: 0, Ціна: {callback_data["id"][4]}',
+                    reply_markup=keyboard(callback_data['id']))
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):
     text = sqlite_db.select_one_position(pos_id)
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    message = await message.edit_text(text=f'{full_text}\n'
+    await message.edit_text(text=f'{full_text}\n'
                                            f'К-ть: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)}, '
                                            f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
                                       , reply_markup=keyboard(pos_id))
