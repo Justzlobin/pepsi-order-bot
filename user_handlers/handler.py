@@ -28,36 +28,27 @@ async def command_start(message: types.Message):
 
 
 async def command_assort(query: types.CallbackQuery):
-    chat = query.message.chat.id
     try:
-        message = await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:',
-                                               reply_markup=cat_markup())
+        await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+                        reply_markup=cat_markup())
     except KeyError:
-        message = await query.bot.send_message(query.from_user.id, 'Оберіть цікаву вам категорію:',
-                                               reply_markup=cat_markup())
-    del_mes.add_message(chat_id=chat, message_id=message)
-    await delete_message_from_dict(chat=chat)
+        await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+                        reply_markup=cat_markup())
 
 
 async def back_to_cat(query: types.CallbackQuery):
-    message = await dp.bot.send_message(text='Оберіть цікаву вам категорію:', chat_id=query.message.chat.id,
-                                        reply_markup=cat_markup())
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+                    reply_markup=cat_markup())
 
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
-    message = await dp.bot.send_message(text='Доступні бренди в категорії:', chat_id=query.message.chat.id,
-                                        reply_markup=brand_markup(callback_data['id']))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Доступні бренди в категорії:',
+                    reply_markup=brand_markup(callback_data['id']))
 
 
 async def show_position(query: types.CallbackQuery, callback_data: dict):
-    message = await dp.bot.send_message(text='Доступні смаки бренду:', chat_id=query.message.chat.id,
-                                        reply_markup=position_markup(callback_data['id']))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Доступні смаки бренду:',
+                    reply_markup=position_markup(callback_data['id']))
 
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
@@ -200,20 +191,7 @@ async def new_custom(query: types.CallbackQuery):
     text = """'1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
             '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
             '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.'"""
-
     await edit_text(query.message, message_text=text, reply_markup=order_menu_kb())
-
-
-# chat = query.message.chat.id
-# message = await query.bot.send_message(text='1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-#                                             '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-#                                             '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-#                                        reply_markup=order_menu_kb(), parse_mode='HTML',
-#                                        chat_id=query.message.chat.id)
-# new_custom = sqlite_db.create_new_custom(query.from_user.id)
-# order_data[f'{query.from_user.id}'] = new_custom
-# del_mes.add_message(chat_id=chat, message_id=message)
-# await delete_message_from_dict(chat=chat)
 
 
 async def box(query: types.CallbackQuery):
