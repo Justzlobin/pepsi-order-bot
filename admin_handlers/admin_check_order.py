@@ -4,7 +4,7 @@ from create_bot import dp
 from keyboards import *
 from config import ADMIN
 from datadase.admin_db import *
-from user_handlers.handler import del_mes, delete_message_from_dict
+from user_handlers.handler import del_mes, delete_message_from_dict, edit_text
 from aiogram.utils import exceptions
 
 
@@ -71,31 +71,23 @@ async def last_order_admin(query: types.CallbackQuery):
 
 
 async def stock(query: types.CallbackQuery):
-    message = await query.bot.send_message(text='Category:', chat_id=query.message.chat.id,
-                                           reply_markup=cat_markup(admin=True))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Category:',
+                    reply_markup=cat_markup(admin=True))
 
 
 async def back_to_admin_menu(query: types.CallbackQuery):
-    message = await query.bot.send_message(text='Admin menu', chat_id=query.message.chat.id,
-                                           reply_markup=admin_menu_kb())
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Admin menu',
+                    reply_markup=admin_menu_kb())
 
 
 async def stock_brand(query: types.CallbackQuery, callback_data: dict):
-    message = await query.bot.send_message(text='Brands:', chat_id=query.message.chat.id,
-                                           reply_markup=brand_markup(callback_data['id'], admin=True))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Brands:',
+                    reply_markup=brand_markup(callback_data['id'], admin=True))
 
 
 async def stock_position(query: types.CallbackQuery, callback_data: dict):
-    message = await query.bot.send_message(text='Positions:', chat_id=query.message.chat.id,
-                                           reply_markup=position_markup(callback_data['id'], admin=True))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Positions:',
+                    reply_markup=position_markup(callback_data['id'], admin=True))
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
@@ -110,34 +102,29 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
         del_mes.add_message_photo(chat_id=query.message.chat.id, message_id=message_photo)
     except FileNotFoundError:
         pass
-    message = await query.bot.send_message(text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
-                                           chat_id=query.message.chat.id)
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
+                    chat_id=query.message.chat.id)
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=True, pos_id=callback_data['id'])
-    message = await query.bot.send_message(text='Changed to TRUE', chat_id=query.message.chat.id,
-                                           reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                                        admin=True))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Changed to TRUE',
+                    reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
+                                                 admin=True))
+
     try:
-        await delete_message_from_dict(query.message.chat.id, photo=True)
+        await delete_message_from_dict(query.message.chat.id)
     except exceptions.MessageToDeleteNotFound:
         pass
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=False, pos_id=callback_data['id'])
-    message = await query.bot.send_message(text='Changed to FALSE', chat_id=query.message.chat.id,
-                                           reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                                        admin=True))
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message, message_text='Changed to FALSE',
+                    reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
+                                                 admin=True))
     try:
-        await delete_message_from_dict(query.message.chat.id, photo=True)
+        await delete_message_from_dict(query.message.chat.id)
     except exceptions.MessageToDeleteNotFound:
         pass
 

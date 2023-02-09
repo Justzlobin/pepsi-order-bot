@@ -52,7 +52,7 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(callback_data['id']))
     try:
-        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
+        await delete_message_from_dict(chat=query.message.chat.id)
     except exceptions.MessageToDeleteNotFound:
         pass
 
@@ -145,7 +145,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                      '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
                         reply_markup=menu_kb())
     try:
-        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
+        await delete_message_from_dict(chat=query.message.chat.id)
     except exceptions.MessageToDeleteNotFound:
         pass
     await edit_text(query.message, message_text='Доступні смаки бренду:',
@@ -220,7 +220,7 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                     reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
                                                 query.from_user.id))
     try:
-        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
+        await delete_message_from_dict(chat=query.message.chat.id)
     except exceptions.MessageToDeleteNotFound:
         pass
 
@@ -281,11 +281,9 @@ async def back_to_order_menu(query: types.CallbackQuery):
                     reply_markup=order_menu_kb())
 
 
-async def delete_message_from_dict(chat, photo=False):
-    list_messages = del_mes.chat_dict[chat][:-1]
-    if photo:
-        list_messages = del_mes.photo_dict[chat]
-    for message_in_dict in list_messages:
+async def delete_message_from_dict(chat):
+    list_photo = del_mes.photo_dict[chat]
+    for message_in_dict in list_photo:
         try:
             await message_in_dict.delete()
         except exceptions.MessageToDeleteNotFound:
