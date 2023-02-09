@@ -87,9 +87,9 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
         del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
         pass
-    await dp.bot.send_message(message_text=f'{full_text}\n'
-                                           f'Кількість: 0, Ціна: {text[5]}'
-                              , reply_markup=keyboard(callback_data['id']))
+    await query.bot.send_message(text=f'{full_text}\n'
+                                      f'Кількість: 0, Ціна: {text[5]}'
+                                 , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
