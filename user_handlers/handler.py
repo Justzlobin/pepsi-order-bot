@@ -1,5 +1,4 @@
 from aiogram import Dispatcher
-from create_bot import dp
 from keyboards import *
 from aiogram import types
 from aiogram.utils import exceptions
@@ -14,17 +13,15 @@ del_mes = Count()
 
 async def command_start(message: types.Message):
     await message.delete()
-    message = await message.bot.send_message(message.from_user.id,
-                                             text='<b>PEPSIBOT</b>\n'
-                                                  'Натисніть:\n'
-                                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                                  'або сформувати замовлення. \n'
-                                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+    await message.bot.send_message(message.from_user.id,
+                                   text='<b>PEPSIBOT</b>\n'
+                                        'Натисніть:\n'
+                                        '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                        'або сформувати замовлення. \n'
+                                        '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+                                        '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
 
-                                             reply_markup=menu_kb(), parse_mode='HTML')
-    del_mes.add_message(chat_id=message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=message.chat.id)
+                                   reply_markup=menu_kb(), parse_mode='HTML')
 
 
 async def command_assort(query: types.CallbackQuery):
@@ -156,7 +153,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 
 async def order_view(query: types.CallbackQuery):
-    # try:
+    try:
         if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
             await query.answer(text='Корзина пуста')
         else:
@@ -164,16 +161,16 @@ async def order_view(query: types.CallbackQuery):
                             message_text=
                             f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                             reply_markup=keyboard_order(order_data[f'{query.from_user.id}'], query.from_user.id))
-    # except KeyError:
-    #     await query.answer(text='Час для замовлення вийшов.')
-    #     await edit_text(query.message,
-    #                     message_text='<b>PEPSIBOT</b>\n'
-    #                                  'Натисніть:\n'
-    #                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-    #                                  'або сформувати замовлення. \n'
-    #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-    #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
-    #                     , reply_markup=menu_kb())
+    except KeyError:
+        await query.answer(text='Час для замовлення вийшов.')
+        await edit_text(query.message,
+                        message_text='<b>PEPSIBOT</b>\n'
+                                     'Натисніть:\n'
+                                     '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                     'або сформувати замовлення. \n'
+                                     '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+                                     '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
+                        , reply_markup=menu_kb())
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -213,18 +210,13 @@ async def update_numbers(query: types.CallbackQuery, callback_data: dict):
 
 
 async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
-    chat_id = query.message.chat.id
     sqlite_db.update_order_pos_id(user_data[callback_data['id']],
                                   sqlite_db.select_last_order(query.from_user.id),
                                   callback_data['id'])
-
-    message = await dp.bot.send_message(
-        text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
-        chat_id=chat_id,
-        reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
-                                    query.from_user.id), parse_mode='HTML')
-    del_mes.add_message(chat_id=query.message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=query.message.chat.id)
+    await edit_text(query.message,
+                    message_text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
+                    reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
+                                                query.from_user.id))
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
