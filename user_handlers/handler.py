@@ -174,9 +174,11 @@ async def order_view(query: types.CallbackQuery):
 
 
 async def new_custom(query: types.CallbackQuery):
-    text = """'1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-            '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-            '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.'"""
+    text = """1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n
+            2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n
+            3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки."""
+    new_custom = sqlite_db.create_new_custom(query.from_user.id)
+    order_data[f'{query.from_user.id}'] = new_custom
     await edit_text(query.message, message_text=text, reply_markup=order_menu_kb())
 
 
@@ -316,7 +318,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_position_zero, Cat_KB.filter(action='zero'))
     dp.register_callback_query_handler(update_order_finish, Cat_KB.filter(action='update_finish'))
     dp.register_callback_query_handler(order_position_finish, Cat_KB.filter(action='finish'))
-
+    #
     dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
     #

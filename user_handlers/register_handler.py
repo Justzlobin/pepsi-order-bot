@@ -36,7 +36,6 @@ async def user_register_address(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Введіть адресу\n'
                                                 'Приклад: м.Вінниця, Пирогова, 100',
                     reply_markup=cancel_state(register=True))
-
     await UserRegisterName.user_enter_address.set()
 
 
