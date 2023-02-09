@@ -219,6 +219,10 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                     message_text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                     reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
                                                 query.from_user.id))
+    try:
+        await delete_message_from_dict(chat=query.message.chat.id, photo=True)
+    except exceptions.MessageToDeleteNotFound:
+        pass
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
