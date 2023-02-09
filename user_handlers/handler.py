@@ -156,7 +156,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 
 async def order_view(query: types.CallbackQuery):
-    try:
+    # try:
         if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
             await query.answer(text='Корзина пуста')
         else:
@@ -164,16 +164,16 @@ async def order_view(query: types.CallbackQuery):
                             message_text=
                             f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                             reply_markup=keyboard_order(order_data[f'{query.from_user.id}'], query.from_user.id))
-    except KeyError:
-        await query.answer(text='Час для замовлення вийшов.')
-        await edit_text(query.message,
-                        message_text='<b>PEPSIBOT</b>\n'
-                                     'Натисніть:\n'
-                                     '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                     'або сформувати замовлення. \n'
-                                     '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                     '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
-                        , reply_markup=menu_kb())
+    # except KeyError:
+    #     await query.answer(text='Час для замовлення вийшов.')
+    #     await edit_text(query.message,
+    #                     message_text='<b>PEPSIBOT</b>\n'
+    #                                  'Натисніть:\n'
+    #                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+    #                                  'або сформувати замовлення. \n'
+    #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+    #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
+    #                     , reply_markup=menu_kb())
 
 
 async def new_custom(query: types.CallbackQuery):
