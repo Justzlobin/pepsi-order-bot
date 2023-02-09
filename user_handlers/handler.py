@@ -13,18 +13,14 @@ del_mes = Count()
 
 
 async def command_start(message: types.Message):
-    await message.delete()
-    message = await message.bot.send_message(message.from_user.id,
-                                             text='<b>PEPSIBOT</b>\n'
-                                                  'Натисніть:\n'
-                                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                                  'або сформувати замовлення. \n'
-                                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+    await edit_text(message, message_text='<b>PEPSIBOT</b>\n'
+                                          'Натисніть:\n'
+                                          '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                          'або сформувати замовлення. \n'
+                                          '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+                                          '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
 
-                                             reply_markup=menu_kb(), parse_mode='HTML')
-    del_mes.add_message(chat_id=message.chat.id, message_id=message)
-    await delete_message_from_dict(chat=message.chat.id)
+                    reply_markup=menu_kb())
 
 
 async def command_assort(query: types.CallbackQuery):
