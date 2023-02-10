@@ -10,7 +10,7 @@ Cat_KB = CallbackData('title', 'id', 'action')
 
 
 def cat_markup(admin=False):
-    action = 'cat->brand'
+    action = 'from_cat_to_brand'
     back_kb = back_to.back_to_order_menu()
     if admin:
         action = 'admin_from_cat_to_brand'
@@ -24,7 +24,7 @@ def cat_markup(admin=False):
 
 
 def brand_markup(cat_id, admin=False):
-    action = 'brand->pos'
+    action = 'from_brand_to_pos'
     back_kb = back_to.back_to_order_menu()
     if admin:
         action = 'admin_from_brand_to_pos'
@@ -50,7 +50,7 @@ def position_markup(brand_id, admin=False, price=False):
         list_pos = admin_select_product(brand_id)
     position_cb_markup = InlineKeyboardMarkup()
     if price:
-        action = 'price_position'
+        action = 'price_single_position'
         back_kb = back_to.back_to_order_menu()
         list_pos = sqlite_db.select_product(brand_id)
     for position_id, position_title in list_pos:
