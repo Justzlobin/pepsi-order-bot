@@ -4,8 +4,7 @@ from create_bot import dp
 from keyboards import *
 from config import ADMIN
 from datadase.admin_db import *
-from user_handlers.handler import del_mes, delete_message_from_dict, edit_text
-from aiogram.utils import exceptions
+from user_handlers.handler import edit_text
 
 
 async def admin_test(message: types.Message):
@@ -14,7 +13,7 @@ async def admin_test(message: types.Message):
         sqlite_db.delete_not_verification()
         message = await message.answer(text='Меню адміністратора',
                                        reply_markup=admin_menu_kb())
-        del_mes.add_message(chat_id=message.chat.id, message_id=message)
+        # del_mes.add_message(chat_id=message.chat.id, message_id=message)
     else:
         await message.answer('У вас немає доступу!')
 
@@ -99,11 +98,11 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
                                                        fr"image/{callback_data['id']}.png"))
-        del_mes.add_message_photo(chat_id=query.message.chat.id, message_id=message_photo)
+        # del_mes.add_message_photo(chat_id=query.message.chat.id, message_id=message_photo)
     except FileNotFoundError:
         pass
     await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
-                    chat_id=query.message.chat.id)
+                    )
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
@@ -112,10 +111,11 @@ async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
                                                  admin=True))
 
-    try:
-        await delete_message_from_dict(query.message.chat.id)
-    except exceptions.MessageToDeleteNotFound:
-        pass
+    # try:
+    #     # await delete_message_from_dict(query.message.chat.id)
+    # except exceptions.MessageToDeleteNotFound:
+    #     pass
+    #
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
@@ -123,10 +123,10 @@ async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Changed to FALSE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
                                                  admin=True))
-    try:
-        await delete_message_from_dict(query.message.chat.id)
-    except exceptions.MessageToDeleteNotFound:
-        pass
+    # try:
+    #     # await delete_message_from_dict(query.message.chat.id)
+    # except exceptions.MessageToDeleteNotFound:
+    #     pass
 
 
 def register_admin_handlers(dp: Dispatcher):

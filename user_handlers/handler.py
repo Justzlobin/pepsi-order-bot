@@ -1,7 +1,6 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from aiogram.utils import exceptions
 
 user_data = {}
 order_data = {}
