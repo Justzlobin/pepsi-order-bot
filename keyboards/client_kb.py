@@ -29,8 +29,11 @@ def cat_markup(admin=False, price=False, order=False):
 
 
 def brand_markup(cat_id, admin=False, price=False):
+    brand_cb_markup = InlineKeyboardMarkup()
+
     action = 'from_brand_to_pos'
     back_kb = back_to.back_to_order_menu()
+    action_back = 'back_to_cat'
 
     if admin:
         action = 'admin_from_brand_to_pos'
@@ -38,21 +41,24 @@ def brand_markup(cat_id, admin=False, price=False):
 
     if price:
         back_kb = back_to.back_to_menu()
+        action_back = 'price_back_to_cat'
 
-    brand_cb_markup = InlineKeyboardMarkup()
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action=action)))
 
-    if not admin:
-        brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                     action='back_to_cat')))
+    brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
+                                                                                 action=action_back)))
+
     brand_cb_markup.add(back_kb)
     return brand_cb_markup
 
 
 def position_markup(brand_id, admin=False, price=False):
+    position_cb_markup = InlineKeyboardMarkup()
+
     action = 'position'
+    action_back = 'back_to_brand'
     back_kb = back_to.back_to_order_menu()
     list_pos = sqlite_db.select_product(brand_id)
 
@@ -63,19 +69,18 @@ def position_markup(brand_id, admin=False, price=False):
 
     if price:
         action = 'price_single_position'
+        action_back = 'price_back_to_brand'
         back_kb = back_to.back_to_menu()
         list_pos = sqlite_db.select_product(brand_id)
 
-    position_cb_markup = InlineKeyboardMarkup()
     for position_id, position_title in list_pos:
         position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action=action
         )))
 
-    if not admin:
-        position_cb_markup.add(
-            InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                     action='cat->brand')))
+    position_cb_markup.add(
+        InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
+                                                                 action=action_back)))
     position_cb_markup.add(back_kb)
     return position_cb_markup
 
