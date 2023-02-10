@@ -2,13 +2,13 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from aiogram.utils import exceptions
-from delete.message_delete import Count
+from delete.photo_delete import PhotoDelete
 
 user_data = {}
 order_data = {}
 checkin = False
 
-del_mes = Count()
+del_mes = PhotoDelete()
 
 
 async def command_start(message: types.Message):

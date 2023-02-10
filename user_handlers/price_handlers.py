@@ -29,13 +29,11 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=f'{full_text}\n',
-                                   reply_markup=back_to_position_kb(callback_data['id']))
+                                   reply_markup=back_to_position_kb(callback_data['id'], price=True))
     except FileNotFoundError:
-
-        await query.bot.send_message(text=f'{full_text}\n'
-                                          f'Кількість: 0, Ціна: {dict_desc["price"]}'
-                                     , reply_markup=back_to_position_kb(callback_data['id']),
-                                     chat_id=query.message.chat.id)
+        await edit_text(message=query.message, message_text=f'{full_text}\n'
+                                                            f'Кількість: 0, Ціна: {dict_desc["price"]}'
+                        , reply_markup=back_to_position_kb(callback_data['id'], price=True), )
 
 
 async def price_back_to_cat_from_brand(query: types.CallbackQuery):
@@ -47,6 +45,13 @@ async def price_back_to_brand_from_position(query: types.CallbackQuery, callback
                     reply_markup=brand_markup(cat_id=callback_data['id'], price=True))
 
 
+async def price_back_to_position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
+    await query.bot.send_message(text='tasties of brand',
+                                 reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])),
+                                 chat_id=query.message.chat.id)
+
+
 def register_price_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(price_cat, Menu_KB.filter(action='price'))
     dp.register_callback_query_handler(price_brand, Cat_KB.filter(action='from_cat_to_brand'))
@@ -54,3 +59,4 @@ def register_price_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(price_single_position, Cat_KB.filter(action='price_single_position'))
     dp.register_callback_query_handler(price_back_to_cat_from_brand, Cat_KB.filter(action='price_back_to_cat'))
     dp.register_callback_query_handler(price_back_to_brand_from_position, Cat_KB.filter(action='price_back_to_brand'))
+    dp.register_callback_query_handler(price_back_to_position, Cat_KB.filter(action='price_back_to_position'))

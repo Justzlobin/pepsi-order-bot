@@ -1,1 +1,1 @@
-from .message_delete import Count
+from .photo_delete import PhotoDelete

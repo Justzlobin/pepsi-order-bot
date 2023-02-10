@@ -231,10 +231,13 @@ def cancel_state(register=False):
     return types.InlineKeyboardMarkup(inline_keyboard=button)
 
 
-def back_to_position_kb(pos_id):
+def back_to_position_kb(pos_id, price=True):
+    action = 'back_to_position'
+    if price:
+        action = 'price_back_to_position'
     keyboard = types.InlineKeyboardMarkup()
     return keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
-                                                                                 action='back_to_position')))
+                                                                                 action=action)))
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
