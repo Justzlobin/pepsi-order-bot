@@ -2,13 +2,10 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from aiogram.utils import exceptions
-from delete.photo_delete import PhotoDelete
 
 user_data = {}
 order_data = {}
 checkin = False
-
-del_mes = PhotoDelete()
 
 
 async def command_start(message: types.Message):
@@ -51,10 +48,10 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(callback_data['id']))
-    try:
-        await delete_message_from_dict(chat=query.message.chat.id)
-    except exceptions.MessageToDeleteNotFound:
-        pass
+    # try:
+    #     await delete_message_from_dict(chat=query.message.chat.id)
+    # except exceptions.MessageToDeleteNotFound:
+    #     pass
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
@@ -84,7 +81,6 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
                                                    caption=f'{full_text}\n'
                                                            f'Кількість: 0, Ціна: {text[5]}',
                                                    reply_markup=keyboard(callback_data['id']))
-        del_mes.add_message_photo(message_id=message_photo, chat_id=query.message.chat.id)
     except FileNotFoundError:
 
         await query.bot.send_message(text=f'{full_text}\n'
@@ -147,10 +143,10 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                      '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                      '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
                         reply_markup=menu_kb())
-    try:
-        await delete_message_from_dict(chat=query.message.chat.id)
-    except exceptions.MessageToDeleteNotFound:
-        pass
+    # try:
+    #     await delete_message_from_dict(chat=query.message.chat.id)
+    # except exceptions.MessageToDeleteNotFound:
+    #     pass
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
@@ -222,10 +218,10 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                     message_text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                     reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
                                                 query.from_user.id))
-    try:
-        await delete_message_from_dict(chat=query.message.chat.id)
-    except exceptions.MessageToDeleteNotFound:
-        pass
+    # try:
+    #     await delete_message_from_dict(chat=query.message.chat.id)
+    # except exceptions.MessageToDeleteNotFound:
+    #     pass
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):
@@ -282,17 +278,6 @@ async def back_to_order_menu(query: types.CallbackQuery):
                                  '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                  '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                     reply_markup=order_menu_kb())
-
-
-async def delete_message_from_dict(chat):
-    list_photo = del_mes.photo_dict[chat]
-    for message_in_dict in list_photo:
-        try:
-            await message_in_dict.delete()
-        except exceptions.MessageToDeleteNotFound:
-            pass
-        except AttributeError:
-            pass
 
 
 async def edit_text(message: types.Message, message_text, reply_markup):
