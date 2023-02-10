@@ -40,7 +40,7 @@ def brand_markup(cat_id, admin=False):
     return brand_cb_markup
 
 
-def position_markup(brand_id, admin=False):
+def position_markup(brand_id, admin=False, price=False):
     action = 'position'
     back_kb = back_to.back_to_order_menu()
     list_pos = sqlite_db.select_product(brand_id)
@@ -49,6 +49,10 @@ def position_markup(brand_id, admin=False):
         back_kb = back_to.back_to_admin_menu()
         list_pos = admin_select_product(brand_id)
     position_cb_markup = InlineKeyboardMarkup()
+    if price:
+        action = 'price_position'
+        back_kb = back_to.back_to_order_menu()
+        list_pos = sqlite_db.select_product(brand_id)
     for position_id, position_title in list_pos:
         position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action=action
