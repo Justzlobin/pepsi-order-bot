@@ -1,4 +1,6 @@
 from aiogram import Dispatcher
+
+from keyboards import back_to_order_menu
 from keyboards.client_kb import *
 from aiogram import types
 from aiogram.utils import exceptions
@@ -28,7 +30,7 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=f'{full_text}\n',
-                                   reply_markup=back_to.back_to_order_menu())
+                                   reply_markup=back_to_order_menu())
     except FileNotFoundError:
 
         await query.bot.send_message(text=f'{full_text}\n'
