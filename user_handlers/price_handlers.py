@@ -20,9 +20,20 @@ async def price_position(query: types.CallbackQuery, callback_data: dict):
 
 
 async def price_single_position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    await edit_text(message=query.message, message_text=full_text, reply_markup=back_to.back_to_menu())
+    try:
+        await query.bot.send_photo(chat_id=query.message.chat.id,
+                                   photo=types.InputFile(
+                                       fr"image/{callback_data['id']}.png"),
+                                   caption=f'{full_text}\n',
+                                   reply_markup=back_to.back_to_menu())
+    except FileNotFoundError:
+
+        await query.bot.send_message(text=f'{full_text}\n'
+                                          f'Кількість: 0, Ціна: {text[5]}'
+                                     , reply_markup=back_to.back_to_menu(), chat_id=query.message.chat.id)
 
 
 def register_price_handlers(dp: Dispatcher):
