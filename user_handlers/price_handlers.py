@@ -52,3 +52,5 @@ def register_price_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(price_brand, Cat_KB.filter(action='from_cat_to_brand'))
     dp.register_callback_query_handler(price_position, Cat_KB.filter(action='from_brand_to_pos'))
     dp.register_callback_query_handler(price_single_position, Cat_KB.filter(action='price_single_position'))
+    dp.register_callback_query_handler(price_back_to_cat_from_brand, Cat_KB.filter(action='price_back_to_cat'))
+    dp.register_callback_query_handler(price_back_to_brand_from_position, Cat_KB.filter(action='price_back_to_brand'))
