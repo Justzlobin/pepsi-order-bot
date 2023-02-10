@@ -66,7 +66,9 @@ def select_one_position(pos_id):
                             AND p.brand_id = b.brand_id
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id""", (pos_id,))
-    return cur.fetchone()
+    items = cur.fetchone()
+    return {'brand_title': items[0], 'size': items[1], 'type': items[2], 'tasty_title': items[3],
+            'tasty_desc': items[4], 'price': items[5]}
 
 
 def add_in_order(order_id, pos_id, quantity, price, user_id):

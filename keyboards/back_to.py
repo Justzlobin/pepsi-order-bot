@@ -1,6 +1,5 @@
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
-from config import ADMIN
 
 Back_to = CallbackData('title', 'action')
 

@@ -1,9 +1,7 @@
 from aiogram import Dispatcher
 
-from keyboards import back_to_order_menu
 from keyboards.client_kb import *
 from aiogram import types
-from aiogram.utils import exceptions
 from user_handlers.handler import edit_text
 
 
@@ -23,19 +21,21 @@ async def price_position(query: types.CallbackQuery, callback_data: dict):
 
 async def price_single_position(query: types.CallbackQuery, callback_data: dict):
     await query.message.delete()
-    text = sqlite_db.select_one_position(callback_data['id'])
-    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
+    dict_desc = sqlite_db.select_one_position(callback_data['id'])
+    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}"
     try:
         await query.bot.send_photo(chat_id=query.message.chat.id,
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=f'{full_text}\n',
-                                   reply_markup=cat_markup())
+                                   reply_markup=back_to_position_kb(callback_data['id']))
     except FileNotFoundError:
 
         await query.bot.send_message(text=f'{full_text}\n'
-                                          f'Кількість: 0, Ціна: {text[5]}'
-                                     , reply_markup=back_to.back_to_menu(), chat_id=query.message.chat.id)
+                                          f'Кількість: 0, Ціна: {dict_desc["price"]}'
+                                     , reply_markup=back_to_position_kb(callback_data['id']),
+                                     chat_id=query.message.chat.id)
 
 
 def register_price_handlers(dp: Dispatcher):

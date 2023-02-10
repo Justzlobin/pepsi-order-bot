@@ -9,12 +9,17 @@ from datadase.admin_db import *
 Cat_KB = CallbackData('title', 'id', 'action')
 
 
-def cat_markup(admin=False):
+def cat_markup(admin=False, price=False, order=False):
     action = 'from_cat_to_brand'
     back_kb = back_to.back_to_order_menu()
+
     if admin:
         action = 'admin_from_cat_to_brand'
         back_kb = back_to.back_to_admin_menu()
+
+    if price:
+        back_kb = back_to.back_to_menu()
+
     cat_kb_markup = InlineKeyboardMarkup()
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_kb_markup.add(InlineKeyboardButton(category_title, callback_data=Cat_KB.new(id=cat_id,
@@ -23,16 +28,22 @@ def cat_markup(admin=False):
     return cat_kb_markup
 
 
-def brand_markup(cat_id, admin=False):
+def brand_markup(cat_id, admin=False, price=False):
     action = 'from_brand_to_pos'
     back_kb = back_to.back_to_order_menu()
+
     if admin:
         action = 'admin_from_brand_to_pos'
         back_kb = back_to.back_to_admin_menu()
+
+    if price:
+        back_kb = back_to.back_to_menu()
+
     brand_cb_markup = InlineKeyboardMarkup()
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action=action)))
+
     if not admin:
         brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
                                                                                      action='back_to_cat')))
@@ -44,19 +55,23 @@ def position_markup(brand_id, admin=False, price=False):
     action = 'position'
     back_kb = back_to.back_to_order_menu()
     list_pos = sqlite_db.select_product(brand_id)
+
     if admin:
         action = 'admin_position'
         back_kb = back_to.back_to_admin_menu()
         list_pos = admin_select_product(brand_id)
-    position_cb_markup = InlineKeyboardMarkup()
+
     if price:
         action = 'price_single_position'
-        back_kb = back_to.back_to_order_menu()
+        back_kb = back_to.back_to_menu()
         list_pos = sqlite_db.select_product(brand_id)
+
+    position_cb_markup = InlineKeyboardMarkup()
     for position_id, position_title in list_pos:
         position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
             id=position_id, action=action
         )))
+
     if not admin:
         position_cb_markup.add(
             InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
