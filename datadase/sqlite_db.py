@@ -62,7 +62,7 @@ def select_brand_id(pos_id):
 
 
 def select_one_position(pos_id):
-    cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price
+    cur.execute("""SELECT brand_title, size, type, tasty_title, tasty_desc, price, box_size
                             FROM position p, brand_cat b, size s, tasty t
                             WHERE p.pos_id = %s
                             AND p.brand_id = b.brand_id
@@ -70,7 +70,7 @@ def select_one_position(pos_id):
                             AND p.tasty_id = t.tasty_id""", (pos_id,))
     items = cur.fetchone()
     return {'brand_title': items[0], 'size': items[1], 'type': items[2], 'tasty_title': items[3],
-            'tasty_desc': items[4], 'price': items[5]}
+            'tasty_desc': items[4], 'price': items[5], 'box_size': items[6]}
 
 
 def add_in_order(order_id, pos_id, quantity, price, user_id):

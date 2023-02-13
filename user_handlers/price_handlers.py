@@ -23,7 +23,10 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
     await query.message.delete()
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
-                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}"
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
+                f"Ціна: {dict_desc['price']}\n" \
+                f"В ящику: {dict_desc['box_size']}\n" \
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']}"
     try:
         await query.bot.send_photo(chat_id=query.message.chat.id,
                                    photo=types.InputFile(
