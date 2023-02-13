@@ -24,9 +24,9 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-                f"Ціна: {dict_desc['price']}\n" \
-                f"В ящику: {dict_desc['box_size']}\n" \
-                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']}"
+                f"Ціна: {dict_desc['price']} грн.\n" \
+                f"В ящику: {dict_desc['box_size']} ящ.\n" \
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     try:
         await query.bot.send_photo(chat_id=query.message.chat.id,
                                    photo=types.InputFile(
@@ -35,7 +35,6 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
                                    reply_markup=back_to_position_kb(callback_data['id'], price=True))
     except FileNotFoundError:
         await edit_text(message=query.message, message_text=f'{full_text}\n'
-                                                            f'Кількість: 0, Ціна: {dict_desc["price"]}'
                         , reply_markup=back_to_position_kb(callback_data['id'], price=True), )
 
 
