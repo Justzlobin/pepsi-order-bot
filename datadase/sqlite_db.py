@@ -57,8 +57,8 @@ def select_cat_id(brand_id):
 def select_brand_id(pos_id):
     print('pos ' + pos_id)
     cur.execute("""SELECT brand_id FROM position WHERE pos_id = %s""", (int(pos_id),))
-    print('cur ' + str(cur.fetchone()[0]))
-    return cur.fetchone()[0]
+    returned = cur.fetchone()[0]
+    return returned
 
 
 def select_one_position(pos_id):
