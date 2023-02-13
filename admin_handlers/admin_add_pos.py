@@ -20,7 +20,7 @@ async def admin_add_category(message: types.Message, state: FSMContext):
         data_position['category'] = message.text
     await edit_text(message=message, message_text=f'Бренди:\n'
                                                   f'{select_id_title_of_brand()}', reply_markup=None)
-    await AdminAddPosition.next()
+    await AdminAddPosition.states.next()
 
 
 def register_admin_add_pos_handlers(dp: Dispatcher):
