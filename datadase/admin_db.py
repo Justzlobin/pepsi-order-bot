@@ -34,3 +34,15 @@ def admin_select_one_position(pos_id):
                             AND p.size_id = s.size_id 
                             AND p.tasty_id = t.tasty_id""", (pos_id,))
     return cur.fetchone()
+
+
+def select_id_title_of_category():
+    cur.execute("""SELECT * FROM category""")
+    all_result = cur.fetchall()
+    return [f'{result[0]} - {result[1]}' for result in all_result]
+
+
+def select_id_title_of_brand():
+    cur.execute("""SELECT brand_id, brand_title FROM brand_cat""")
+    all_result = cur.fetchall()
+    return [f'{result[0]} - {result[1]}' for result in all_result]

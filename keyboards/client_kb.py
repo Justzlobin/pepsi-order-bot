@@ -9,7 +9,7 @@ from datadase.admin_db import *
 Cat_KB = CallbackData('title', 'id', 'action')
 
 
-def cat_markup(admin=False, price=False, order=False):
+def cat_markup(admin=False, price=False):
     action = 'from_cat_to_brand'
     back_kb = back_to.back_to_order_menu()
 
