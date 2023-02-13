@@ -49,7 +49,7 @@ async def price_back_to_position(query: types.CallbackQuery, callback_data: dict
     await query.message.delete()
     await query.bot.send_message(text='tasties of brand',
                                  reply_markup=position_markup(
-                                     brand_id=sqlite_db.select_brand_id(pos_id=callback_data['id']),
+                                     brand_id=callback_data['id'],
                                      price=True),
                                  chat_id=query.message.chat.id)
 

@@ -235,9 +235,14 @@ def back_to_position_kb(pos_id, price=True):
     action = 'back_to_position'
     if price:
         action = 'price_back_to_position'
+    # keyboard = types.InlineKeyboardMarkup()
+    # return keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
+    #                                                                              action=action)))
+    #
     keyboard = types.InlineKeyboardMarkup()
     return keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
                                                                                  action=action)))
+
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
