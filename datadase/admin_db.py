@@ -36,8 +36,25 @@ def admin_select_one_position(pos_id):
     return cur.fetchone()
 
 
-def select_id_title_from(name_table):
-    cur.execute("""SELECT * FROM %s""", (name_table,))
+def select_id_title_of_category():
+    cur.execute("""SELECT * FROM category""")
     all_result = cur.fetchall()
     return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
 
+
+def select_id_title_of_brand():
+    cur.execute("""SELECT brand_id, brand_title FROM brand_cat""")
+    all_result = cur.fetchall()
+    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+
+
+def select_id_title_of_size():
+    cur.execute("""SELECT * FROM size""")
+    all_result = cur.fetchall()
+    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+
+
+def select_id_title_of_tasty():
+    cur.execute("""SELECT * FROM tasty""")
+    all_result = cur.fetchall()
+    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
