@@ -58,3 +58,12 @@ def select_id_title_of_tasty(brand_id):
     cur.execute("""SELECT * FROM tasty WHERE brand_id = %s""", (brand_id,))
     all_result = cur.fetchall()
     return ''.join([f'{result[0]} - {result[1]} {result[2]}\n' for result in all_result])
+
+
+def admin_add_new_position(brand_id, tasty_id, size_id, price):
+    if cur.execute("""INSERT INTO position (brand_id, tasty_id, size_id, price) VALUES (%s, %s, %s, %s)""",
+                   (brand_id, tasty_id, size_id, price)):
+        conn.commit()
+        return True
+    else:
+        return False
