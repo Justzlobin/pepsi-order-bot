@@ -63,9 +63,5 @@ def select_id_title_of_tasty(brand_id):
 def admin_add_new_position(brand_id, tasty_id, size_id, price):
     cur.execute("""SELECT MAX(pos_id) FROM position""")
     pos_id = cur.fetchone()[0]
-    if cur.execute("""INSERT INTO position (brand_id, tasty_id, size_id, price, pos_id) VALUES (%s, %s, %s, %s, %s)""",
-                   (int(brand_id), int(tasty_id), int(size_id), float(price), int(pos_id) + 1)):
-        conn.commit()
-        return True
-    else:
-        return False
+    cur.execute("""INSERT INTO position (brand_id, tasty_id, size_id, price, pos_id) VALUES (%s, %s, %s, %s, %s)""",
+                   (int(brand_id), int(tasty_id), int(size_id), float(price), int(pos_id) + 1))
