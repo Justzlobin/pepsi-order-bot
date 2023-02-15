@@ -18,15 +18,15 @@ async def start_add_position(query: types.CallbackQuery):
 async def admin_add_category(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['category'] = message.text
-    await edit_text(message=message, message_text=f'Бренди:\n'
-                                                  f'{select_id_title_of_brand()}', reply_markup=None)
+    await message.answer(text=f'Бренди:\n'
+                              f'{select_id_title_of_brand()}', reply_markup=None)
     await AdminAddPosition.brand.set()
 
 
 async def admin_add_brand(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['brand'] = message.text
-    await message.edit_text(text='finish', reply_markup=None)
+    await message.answer(text='finish', reply_markup=None)
     print(data_position)
     await state.finish()
 
