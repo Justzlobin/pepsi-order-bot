@@ -36,7 +36,7 @@ async def admin_add_price(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['price'] = message.text
 
-    await admin_add_new_position(data_position['brand'], data_position['tasty'], data_position['size'],
+    admin_add_new_position(data_position['brand'], data_position['tasty'], data_position['size'],
                                      data_position['price'])
     await message.answer(text='Done')
 
