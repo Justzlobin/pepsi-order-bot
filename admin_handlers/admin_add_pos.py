@@ -26,7 +26,7 @@ async def admin_add_category(message: types.Message, state: FSMContext):
 async def admin_add_brand(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['brand'] = message.text
-    await edit_text(message=message, message_text='finish', reply_markup=None)
+    await message.edit_text(text='finish', reply_markup=None)
     print(data_position)
     await state.finish()
 
