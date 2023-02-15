@@ -14,22 +14,21 @@ async def start_add_position(query: types.CallbackQuery):
 async def admin_add_brand(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['brand'] = message.text
-    await message.answer(text=f'{select_id_title_of_size()}')
+    await message.answer(text=f'{select_id_title_of_tasty(data_position["brand"])}')
     await AdminAddPosition.tasty.set()
 
 
 async def admin_add_tasty(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['tasty'] = message.text
-    await message.answer(text='finish\n'
-                              f'{data_position}')
+    await message.answer(text=f'{select_id_title_of_size()}')
     await AdminAddPosition.size.set()
 
 
 async def admin_add_size(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['size'] = message.text
-    await message.answer(text=f"{select_id_title_of_tasty(data_position['brand'])}")
+    await message.answer(text='Введіть ціну')
     await AdminAddPosition.price()
 
 
