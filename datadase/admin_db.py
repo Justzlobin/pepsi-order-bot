@@ -39,22 +39,22 @@ def admin_select_one_position(pos_id):
 def select_id_title_of_category():
     cur.execute("""SELECT * FROM category""")
     all_result = cur.fetchall()
-    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+    return ''.join([f'{result[0]} - {result[1:]}\n' for result in all_result])
 
 
 def select_id_title_of_brand():
     cur.execute("""SELECT brand_id, brand_title FROM brand_cat""")
     all_result = cur.fetchall()
-    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+    return ''.join([f'{result[0]} - {result[1:]}\n' for result in all_result])
 
 
 def select_id_title_of_size():
     cur.execute("""SELECT * FROM size""")
     all_result = cur.fetchall()
-    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+    return ''.join([f'{result[0]} - {result[1:]}\n' for result in all_result])
 
 
-def select_id_title_of_tasty():
-    cur.execute("""SELECT * FROM tasty""")
+def select_id_title_of_tasty(brand_id):
+    cur.execute("""SELECT * FROM tasty WHERE brand_id = %s""", (brand_id,))
     all_result = cur.fetchall()
-    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
+    return ''.join([f'{result[0]} - {result[1:]}\n' for result in all_result])

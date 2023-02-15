@@ -33,7 +33,7 @@ async def admin_add_brand(message: types.Message, state: FSMContext):
 async def admin_add_size(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['size'] = message.text
-    await message.answer(text=f'{select_id_title_of_tasty()}')
+    await message.answer(text=f"{select_id_title_of_tasty(data_position['brand'])}")
     await AdminAddPosition.tasty.set()
 
 
