@@ -32,6 +32,6 @@ async def admin_add_brand(message: types.Message, state: FSMContext):
 
 
 def register_admin_add_pos_handlers(dp: Dispatcher):
-    dp.register_callback_query_handler(start_add_position, Admin_KB.filter(action='add_new_position'))
+    dp.register_callback_query_handler(start_add_position, Admin_KB.filter(action='add_new_position'), state=None)
     dp.register_message_handler(admin_add_category, state=AdminAddPosition.category)
     dp.register_message_handler(admin_add_brand, state=AdminAddPosition.brand)
