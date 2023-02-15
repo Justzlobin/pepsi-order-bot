@@ -29,7 +29,7 @@ async def admin_add_size(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['size'] = message.text
     await message.answer(text='Введіть ціну')
-    await AdminAddPosition.price()
+    await AdminAddPosition.price.set()
 
 
 async def admin_add_price(message: types.Message, state: FSMContext):
