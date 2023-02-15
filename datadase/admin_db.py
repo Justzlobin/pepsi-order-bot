@@ -45,7 +45,7 @@ def select_id_title_of_category():
 def select_id_title_of_brand():
     cur.execute("""SELECT brand_id, brand_title FROM brand_cat""")
     all_result = cur.fetchall()
-    return [f'{result[0]} - {result[1]}\n' for result in all_result]
+    return ''.join([f'{result[0]} - {result[1]}\n' for result in all_result])
 
 
 def select_id_title_of_size():
