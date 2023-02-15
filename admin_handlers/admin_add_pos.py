@@ -9,8 +9,9 @@ from datadase.admin_db import select_id_title_from
 
 
 async def start_add_position(query: types.CallbackQuery):
+    name_table = 'category'
     await edit_text(message=query.message, message_text=f'Категорії:\n'
-                                                        f'{select_id_title_from("category")}',
+                                                        f'{select_id_title_from(name_table)}',
                     reply_markup=None)
     await AdminAddPosition.category.set()
 
