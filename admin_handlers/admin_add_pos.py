@@ -13,6 +13,7 @@ async def start_add_position(query: types.CallbackQuery):
     await edit_text(message=query.message, message_text=f'Категорії:\n'
                                                         f'{select_id_title_of_category()}',
                     reply_markup=None)
+    await AdminAddPosition.states.next()
 
 
 async def admin_add_category(message: types.Message, state: FSMContext):
