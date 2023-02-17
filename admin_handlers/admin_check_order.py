@@ -93,12 +93,12 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
     print(text)
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]} {text[6]}'
     print(full_text)
-    try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                                   photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"))
-    except FileNotFoundError:
-        pass
+    # try:
+    #     await query.bot.send_photo(chat_id=query.message.chat.id,
+    #                                                photo=types.InputFile(
+    #                                                    fr"image/{callback_data['id']}.png"))
+    # except FileNotFoundError:
+    #     pass
     await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
                     )
 
