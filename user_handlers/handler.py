@@ -1,11 +1,13 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from classes.order import new_order
+from classes import Order
 
 user_data = {}
 order_data = {}
 checkin = False
+
+order = Order()
 
 
 async def command_start(message: types.Message):
@@ -170,18 +172,15 @@ async def order_view(query: types.CallbackQuery):
     #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
     #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
     #                     , reply_markup=menu_kb())
-    new_order.add_pos(1, 2)
-    await query.bot.send_message(text=str(new_order.order_dict), chat_id=query.message.chat.id)
-    print(new_order.order_dict)
+    await query.bot.send_message(text=order.add_pos(query.from_user.id, 3, 4), chat_id=query.message.chat.id)
 
 
 async def new_custom(query: types.CallbackQuery):
     text = """New order...."""
     # new_custom = sqlite_db.create_new_custom(query.from_user.id)
     # order_data[f'{query.from_user.id}'] = new_custom
-    new_order(query.message.from_user.id)
+    order.start_order(query.from_user.id)
     await edit_text(query.message, message_text=text, reply_markup=order_menu_kb())
-    print(new_order)
 
 
 async def box(query: types.CallbackQuery):

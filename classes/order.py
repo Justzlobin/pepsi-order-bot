@@ -1,11 +1,10 @@
 class Order:
 
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.order_dict = {user_id: {}}
+    def __init__(self):
+        self.order_dict = {}
 
-    def add_pos(self, pos_id, value):
-        self.order_dict[self.user_id][pos_id] = value
+    def start_order(self, user_id):
+        self.order_dict[user_id] = {}
 
-
-new_order = Order()
+    def add_pos(self, user_id, pos_id, value):
+        self.order_dict[user_id][pos_id] = value
