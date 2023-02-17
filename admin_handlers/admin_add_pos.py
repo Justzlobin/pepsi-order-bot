@@ -39,8 +39,6 @@ async def admin_add_price(message: types.Message, state: FSMContext):
     if admin_add_new_position(data_position['brand'], data_position['tasty'], data_position['size'],
                               data_position['price']):
         await message.answer(text='Done')
-    else:
-        await message.answer(text='error')
     await state.finish()
 
 

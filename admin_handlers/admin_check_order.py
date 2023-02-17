@@ -11,9 +11,8 @@ async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
-        message = await message.answer(text='Меню адміністратора',
-                                       reply_markup=admin_menu_kb())
-        # del_mes.add_message(chat_id=message.chat.id, message_id=message)
+        await message.answer(text='Меню адміністратора',
+                             reply_markup=admin_menu_kb())
     else:
         await message.answer('У вас немає доступу!')
 
@@ -95,10 +94,9 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]} {text[6]}'
     print(full_text)
     try:
-        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
+        await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
                                                        fr"image/{callback_data['id']}.png"))
-        # del_mes.add_message_photo(chat_id=query.message.chat.id, message_id=message_photo)
     except FileNotFoundError:
         pass
     await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
@@ -111,22 +109,12 @@ async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
                                                  admin=True))
 
-    # try:
-    #     # await delete_message_from_dict(query.message.chat.id)
-    # except exceptions.MessageToDeleteNotFound:
-    #     pass
-    #
-
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=False, pos_id=callback_data['id'])
     await edit_text(query.message, message_text='Changed to FALSE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
                                                  admin=True))
-    # try:
-    #     # await delete_message_from_dict(query.message.chat.id)
-    # except exceptions.MessageToDeleteNotFound:
-    #     pass
 
 
 def register_admin_handlers(dp: Dispatcher):
