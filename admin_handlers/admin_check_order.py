@@ -11,8 +11,8 @@ async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
         sqlite_db.delete_not_verification()
-        await edit_text(message=message, message_text='Меню адміністратора',
-                        reply_markup=admin_menu_kb())
+        await message.answer(text='Меню адміністратора',
+                             reply_markup=admin_menu_kb())
     else:
         await message.answer('У вас немає доступу!')
 
@@ -95,8 +95,8 @@ async def stock_single_position(query: types.CallbackQuery, callback_data: dict)
     print(full_text)
     try:
         await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(
-                                       fr"image/{callback_data['id']}.png"))
+                                                   photo=types.InputFile(
+                                                       fr"image/{callback_data['id']}.png"))
     except FileNotFoundError:
         pass
     await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
