@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from classes import Order
+from classes.order import new_order
 
 user_data = {}
 order_data = {}
@@ -179,8 +179,7 @@ async def new_custom(query: types.CallbackQuery):
     text = """New order...."""
     # new_custom = sqlite_db.create_new_custom(query.from_user.id)
     # order_data[f'{query.from_user.id}'] = new_custom
-    global new_order
-    new_order = Order(query.from_user.id)
+    new_order(query.message.from_user.id)
     await edit_text(query.message, message_text=text, reply_markup=order_menu_kb())
     print(new_order)
 
