@@ -287,7 +287,7 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
-    dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order'))
+    dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
     # MENU_ORDER
     dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
     dp.register_callback_query_handler(order_basket, Order_KB.filter(action='order_basket'))
