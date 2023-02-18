@@ -90,10 +90,14 @@ async def order_position(query: types.CallbackQuery, callback_data: dict):
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):
-    text = sqlite_db.select_one_position(pos_id)
-    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
+    dict_desc = sqlite_db.select_one_position(pos_id)
+    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
+                f"Ціна: {dict_desc['price']} грн.\n" \
+                f"В ящику: {dict_desc['box_size']} ящ.\n" \
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     await message.edit_text(text=f'{full_text}\n'
-                                 f'К-ть: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)}, '
+                                 f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
                             , reply_markup=keyboard(pos_id))
 
