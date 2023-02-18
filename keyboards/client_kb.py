@@ -2,7 +2,6 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from datadase import sqlite_db, user_db
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
-from keyboards import back_to
 from keyboards.menu_kb import Menu_KB
 from datadase.admin_db import *
 
@@ -18,29 +17,15 @@ def cat_markup():
     return cat_kb_markup
 
 
-def brand_markup(cat_id, admin=False, price=False):
+def brand_markup(cat_id):
     brand_cb_markup = InlineKeyboardMarkup()
-
-    action = 'from_brand_to_pos'
-    back_kb = back_to.back_to_order_menu()
-    action_back = 'back_to_cat'
-
-    if admin:
-        action = 'admin_from_brand_to_pos'
-        back_kb = back_to.back_to_admin_menu()
-
-    if price:
-        back_kb = back_to.back_to_menu()
-        action_back = 'price_back_to_cat'
 
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
-            InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action=action)))
+            InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='from_brand_to_pos')))
 
     brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                 action=action_back)))
-
-    brand_cb_markup.add(back_kb)
+                                                                                 action='back_to_cat')))
     return brand_cb_markup
 
 
@@ -49,18 +34,15 @@ def position_markup(brand_id, admin=False, price=False):
 
     action = 'position'
     action_back = 'back_to_brand'
-    back_kb = back_to.back_to_order_menu()
     list_pos = sqlite_db.select_product(brand_id)
 
     if admin:
         action = 'admin_position'
-        back_kb = back_to.back_to_admin_menu()
         list_pos = admin_select_product(brand_id)
 
     if price:
         action = 'price_single_position'
         action_back = 'price_back_to_brand'
-        back_kb = back_to.back_to_menu()
         list_pos = sqlite_db.select_product(brand_id)
 
     for position_id, position_title in list_pos:
@@ -71,7 +53,6 @@ def position_markup(brand_id, admin=False, price=False):
     position_cb_markup.add(
         InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
                                                                  action=action_back)))
-    position_cb_markup.add(back_kb)
     return position_cb_markup
 
 
@@ -130,8 +111,7 @@ def keyboard_settings(order_id):
                                     callback_data=Cat_KB.new(id=order_id, action='payment'))],
         [types.InlineKeyboardButton(text='💬 Примітка',
                                     callback_data=Cat_KB.new(id=order_id, action='comment'))]]
-    keyboards = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    return keyboards.add(back_to.back_to_order_menu())
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def chose_payment(user_id):
@@ -141,8 +121,8 @@ def chose_payment(user_id):
         [types.InlineKeyboardButton(text='💳 Банк',
                                     callback_data=Cat_KB.new(id=user_id, action='bank'))]
     ]
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    return keyboard.add(back_to.back_to_order_menu())
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
 
 
 def order_for_admin():
@@ -160,7 +140,6 @@ def order_for_user(user_id):
     for i in sqlite_db.list_order_to_user(user_id):
         order_to_user_markup.add(InlineKeyboardButton(text=f'{i[0]}  {sqlite_db.sum_order(i[1])}',
                                                       callback_data=Cat_KB.new(id=i[1], action='order_user')))
-    order_to_user_markup.add(back_to.back_to_menu())
     return order_to_user_markup
 
 
@@ -209,7 +188,7 @@ def user_register_kb(user_id):
                                        callback_data=Cat_KB.new(id=user_id, action='register_user_address'))
         ]
     ]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_menu())
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def cancel_state(register=False):
