@@ -13,13 +13,14 @@ order = Order()
 async def command_start(message: types.Message):
     await message.delete()
     await message.bot.send_message(message.from_user.id,
-                                   text='<b>PEPSIBOT</b>\n',
+                                   text='<b>PEPSIBOT</b>\n'
+                                        'MAIN MENU',
                                    reply_markup=menu_kb().add(back_to_menu_kb()),
                                    parse_mode='HTML')
 
 
 async def order_menu(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Меню замовлень...',
+    await edit_text(message=query.message, message_text='ORDER_MENU',
                     reply_markup=order_menu_kb())
 
 
@@ -38,7 +39,7 @@ async def last_order(query: types.CallbackQuery):
 
 async def order_product_list(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                    reply_markup=cat_markup().add(back_to_order_menu_kb()))
+                    reply_markup=cat_markup().add(back_to_order_kb()))
 
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
@@ -170,10 +171,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                      '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                      '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
                         reply_markup=menu_kb())
-    # try:
-    #     await delete_message_from_dict(chat=query.message.chat.id)
-    # except exceptions.MessageToDeleteNotFound:
-    #     pass
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
@@ -208,10 +205,6 @@ async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
                     message_text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
                     reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
                                                 query.from_user.id))
-    # try:
-    #     await delete_message_from_dict(chat=query.message.chat.id)
-    # except exceptions.MessageToDeleteNotFound:
-    #     pass
 
 
 async def update_plus(query: types.CallbackQuery, callback_data: dict):

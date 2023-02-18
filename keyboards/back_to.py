@@ -7,15 +7,19 @@ Back_to_id = CallbackData('title', 'id', 'action')
 
 
 def back_to_menu_kb():
-    return types.InlineKeyboardButton('📂 Головне меню', callback_data=Back_to.new(action='back_to_menu'))
+    return types.InlineKeyboardButton('MAIN MENU', callback_data=Back_to.new(action='back_to_menu'))
 
 
 def back_to_order_menu_kb():
-    return types.InlineKeyboardButton('📝 Меню замовлення', callback_data=Back_to.new(action='back_to_order_menu'))
+    return types.InlineKeyboardButton('ORDER_MENU', callback_data=Back_to.new(action='back_to_order_menu'))
 
 
 def back_to_admin_menu_kb():
-    return types.InlineKeyboardButton('admin меню', callback_data=Back_to.new(action='back_to_admin_menu'))
+    return types.InlineKeyboardButton('ADMIN MENU', callback_data=Back_to.new(action='back_to_admin_menu'))
+
+
+def back_to_order_kb():
+    return types.InlineKeyboardButton('ORDER_START', callback_data=Back_to.new(action='back_to_start_order'))
 
 
 def back_to(back_to_cat_from_brand=None, back_to_brand_from_pos=None, back_to_pos=None):
@@ -25,7 +29,6 @@ def back_to(back_to_cat_from_brand=None, back_to_brand_from_pos=None, back_to_po
     elif back_to_brand_from_pos:
         return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to.new(id=select_cat_id(back_to_brand_from_pos),
                                                                                action='back_to_brand'))
-
     elif back_to_pos:
         return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=select_brand_id(back_to_pos),
                                                                                   action='back_to_pos'))
