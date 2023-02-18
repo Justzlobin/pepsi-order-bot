@@ -18,10 +18,44 @@ async def command_start(message: types.Message):
                                    parse_mode='HTML')
 
 
+async def order_menu(query: types.CallbackQuery):
+    await edit_text(message=query.message, message_text='Меню замовлень...',
+                    reply_markup=order_menu_kb())
+
+
 async def order_product_list(query: types.CallbackQuery):
-    message = await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                              reply_markup=cat_markup().add(back_to_order_menu_kb()))
-    print(message)
+    await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+                    reply_markup=cat_markup().add(back_to_order_menu_kb()))
+
+
+async def order_basket(query: types.CallbackQuery):
+    # try:
+    #     if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
+    #         await query.answer(text='Корзина пуста')
+    #     else:
+    #         await edit_text(query.message,
+    #                         message_text=
+    #                         f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
+    #                         reply_markup=keyboard_order(order_data[f'{query.from_user.id}'], query.from_user.id))
+    # except KeyError:
+    #     await query.answer(text='Час для замовлення вийшов.')
+    #     await edit_text(query.message,
+    #                     message_text='<b>PEPSIBOT</b>\n'
+    #                                  'Натисніть:\n'
+    #                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+    #                                  'або сформувати замовлення. \n'
+    #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+    #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
+    #                     , reply_markup=menu_kb())
+    order.add_pos(query.from_user.id, 3, 4)
+    await edit_text(message=query.message, message_text=order.order_dict,
+                    reply_markup=order_menu_kb())
+
+
+async def order_settings(query: types.CallbackQuery):
+    await edit_text(query.message, message_text='Налаштування замовлення:',
+                    reply_markup=keyboard_settings(
+                        sqlite_db.select_last_order(query.from_user.id)))
 
 
 async def back_to_cat(query: types.CallbackQuery):
@@ -145,30 +179,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
-async def order_view(query: types.CallbackQuery):
-    # try:
-    #     if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
-    #         await query.answer(text='Корзина пуста')
-    #     else:
-    #         await edit_text(query.message,
-    #                         message_text=
-    #                         f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
-    #                         reply_markup=keyboard_order(order_data[f'{query.from_user.id}'], query.from_user.id))
-    # except KeyError:
-    #     await query.answer(text='Час для замовлення вийшов.')
-    #     await edit_text(query.message,
-    #                     message_text='<b>PEPSIBOT</b>\n'
-    #                                  'Натисніть:\n'
-    #                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-    #                                  'або сформувати замовлення. \n'
-    #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-    #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
-    #                     , reply_markup=menu_kb())
-    order.add_pos(query.from_user.id, 3, 4)
-    await query.bot.send_message(text=order.order_dict, chat_id=query.message.chat.id,
-                                 reply_markup=order_menu_kb().add(back_to_menu_kb()))
-
-
 async def new_custom(query: types.CallbackQuery):
     text = """New order...."""
     # new_custom = sqlite_db.create_new_custom(query.from_user.id)
@@ -251,12 +261,6 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
                     reply_markup=keyboard(pos_id, order=True))
 
 
-async def order_settings(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Налаштування замовлення:',
-                    reply_markup=keyboard_settings(
-                        sqlite_db.select_last_order(query.from_user.id)))
-
-
 async def back_to_menu_from_order(query: types.CallbackQuery):
     await edit_text(query.message, reply_markup=menu_kb(),
                     message_text='<b>PEPSIBOT</b>\n'
@@ -282,12 +286,15 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
+    # MAIN_MENU
+    dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order'))
     # MENU_ORDER
-    dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order')) #'order_product_list'
+    dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
+    dp.register_callback_query_handler(order_basket, Order_KB.filter(action='order_basket'))
+    dp.register_callback_query_handler(order_settings, Order_KB.filter(action='order_settings'))
     #
     dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(order_view, Order_KB.filter(action='basket'))
-    dp.register_callback_query_handler(order_settings, Order_KB.filter(action='settings'))
+
     #
     dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
     dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
