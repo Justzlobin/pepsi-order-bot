@@ -288,21 +288,19 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
-    # MENU_ORDER
+    # MAIN_ORDER
+    dp.register_callback_query_handler(new_custom, Order_KB.filter(action='new_order'))
+    dp.register_callback_query_handler(last_order, Order_KB.filter(action='last_orders'))
+    # MENU_NEW_ORDER
     dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
     dp.register_callback_query_handler(order_basket, Order_KB.filter(action='order_basket'))
     dp.register_callback_query_handler(order_settings, Order_KB.filter(action='order_settings'))
-    #
-    dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
-
-    #
-    dp.register_callback_query_handler(new_custom, Menu_KB.filter(action='new_order'))
-    dp.register_callback_query_handler(last_order, Menu_KB.filter(action='last_orders'))
     #
     dp.register_callback_query_handler(show_brand, Cat_KB.filter(action='cat->brand'))
     dp.register_callback_query_handler(show_position, Cat_KB.filter(action='brand->pos'))
     dp.register_callback_query_handler(cmd_numbers, Cat_KB.filter(action='position'))
     #
+    dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
     dp.register_callback_query_handler(back_to_cat, Cat_KB.filter(action='back_to_cat'))
     dp.register_callback_query_handler(back_to_position, Cat_KB.filter(action='back_to_position'))
     dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
