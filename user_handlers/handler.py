@@ -100,8 +100,12 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     order.add_pos(query.from_user.id, callback_data['id'], 0)
-    text = sqlite_db.select_one_position(callback_data['id'])
-    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
+    dict_desc = sqlite_db.select_one_position(callback_data['id'])
+    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
+                f"Ціна: {dict_desc['price']} грн.\n" \
+                f"В ящику: {dict_desc['box_size']} ящ.\n" \
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     # try:
     #     message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
     #                                                photo=types.InputFile(
@@ -112,7 +116,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     # except FileNotFoundError:
 
     await query.bot.send_message(text=f'{full_text}\n'
-                                      f'Кількість: 0, Ціна: {text[5]}'
+                                      f'Кількість: 0, Ціна: {dict_desc["price"]} uah.'
                                  , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
 
 
