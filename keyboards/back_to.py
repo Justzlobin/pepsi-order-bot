@@ -27,8 +27,9 @@ def back_to(back_to_cat_from_brand=None, back_to_brand_from_pos=None, back_to_po
         return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=int(back_to_cat_from_brand),
                                                                                   action='back_to_cat'))
     if back_to_brand_from_pos:
-        return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=select_cat_id(back_to_brand_from_pos),
-                                                                               action='back_to_brand'))
+        return types.InlineKeyboardButton('⬅ Назад',
+                                          callback_data=Back_to_id.new(id=select_cat_id(back_to_brand_from_pos),
+                                                                       action='back_to_brand'))
     if back_to_pos:
         return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=select_brand_id(back_to_pos),
                                                                                   action='back_to_pos'))
