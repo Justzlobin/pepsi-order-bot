@@ -13,4 +13,5 @@ def order_menu_kb():
         [types.InlineKeyboardButton(text='⚙ Налаштування', callback_data=Order_KB.new(action='settings'))]
     ]
 
-    return InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_menu())
+    # return InlineKeyboardMarkup(inline_keyboard=buttons).add(back_to.back_to_menu())
+    return buttons
