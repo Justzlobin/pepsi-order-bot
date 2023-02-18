@@ -21,7 +21,7 @@ async def command_start(message: types.Message):
                                         '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
                                         '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
 
-                                   reply_markup=InlineKeyboardMarkup.add(order_menu_kb(), menu_kb()),
+                                   reply_markup=InlineKeyboardMarkup(inline_keyboard=menu_kb()).add(order_menu_kb()),
                                    parse_mode='HTML')
 
 
