@@ -34,7 +34,7 @@ async def last_order(query: types.CallbackQuery):
     sqlite_db.delete_empty_orders()
     sqlite_db.delete_not_verification(user_id=query.from_user.id)
     await edit_text(query.message, message_text='Останні замовлення:',
-                    reply_markup=order_for_user(query.from_user.id))
+                    reply_markup=order_for_user(query.from_user.id).add(back_to_order_menu_kb()))
 
 
 async def order_product_list(query: types.CallbackQuery):
@@ -44,12 +44,13 @@ async def order_product_list(query: types.CallbackQuery):
 
 async def show_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні бренди в категорії:',
-                    reply_markup=brand_markup(callback_data['id']))
+                    reply_markup=brand_markup(callback_data['id']).add(back_to(back_to_cat_from_brand=True)))
 
 
 async def show_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(callback_data['id']))
+                    reply_markup=position_markup(callback_data['id']).add(
+                        back_to(back_to_brand_from_pos=callback_data['id'])))
 
 
 async def order_basket(query: types.CallbackQuery):
@@ -98,28 +99,27 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
-    user_data[callback_data['id']] = 0
+    order.add_pos(query.from_user.id, callback_data['id'], 0)
     text = sqlite_db.select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-    try:
-        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
-                                                   photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"),
-                                                   caption=f'{full_text}\n'
-                                                           f'Кількість: 0, Ціна: {text[5]}',
-                                                   reply_markup=keyboard(callback_data['id']))
-    except FileNotFoundError:
+    # try:
+    #     message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
+    #                                                photo=types.InputFile(
+    #                                                    fr"image/{callback_data['id']}.png"),
+    #                                                caption=f'{full_text}\n'
+    #                                                        f'Кількість: 0, Ціна: {text[5]}',
+    #                                                reply_markup=keyboard(callback_data['id']))
+    # except FileNotFoundError:
 
-        await query.bot.send_message(text=f'{full_text}\n'
-                                          f'Кількість: 0, Ціна: {text[5]}'
-                                     , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
+    await query.bot.send_message(text=f'{full_text}\n'
+                                      f'Кількість: 0, Ціна: {text[5]}'
+                                 , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'])
+    user_value = order.order_dict[query.from_user.id][callback_data['id']]
     result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
-    user_data[callback_data['id']] = result
+    order.order_dict[query.from_user.id][callback_data['id']] = result
     await update_num_text(query.message,
                           result,
                           callback_data['id'])

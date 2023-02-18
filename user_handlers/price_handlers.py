@@ -12,7 +12,7 @@ async def price_cat(query: types.CallbackQuery):
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні бренди в категорії:',
                     reply_markup=brand_markup(callback_data['id']).add(
-                        back_to(back_to_cat_from_brand=callback_data['id'])))
+                        back_to(back_to_cat_from_brand=True)))
 
 
 async def price_position(query: types.CallbackQuery, callback_data: dict):
