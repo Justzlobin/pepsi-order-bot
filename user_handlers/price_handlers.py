@@ -6,7 +6,7 @@ from user_handlers.handler import edit_text
 
 
 async def price_cat(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup().add(back_to_order_kb()))
+    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup().add(back_to_menu_kb()))
 
 
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
