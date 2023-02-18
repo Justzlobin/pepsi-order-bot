@@ -20,8 +20,9 @@ async def command_start(message: types.Message):
 
 async def order_product_list(query: types.CallbackQuery):
     message = await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                    reply_markup=cat_markup().add(back_to_order_menu_kb()))
+                              reply_markup=cat_markup().add(back_to_order_menu_kb()))
     print(message)
+
 
 async def back_to_cat(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
@@ -282,7 +283,7 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     # MENU_ORDER
-    dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
+    dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order')) #'order_product_list'
     #
     dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
     dp.register_callback_query_handler(order_view, Order_KB.filter(action='basket'))
