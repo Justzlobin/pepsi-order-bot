@@ -23,6 +23,21 @@ async def order_menu(query: types.CallbackQuery):
                     reply_markup=order_menu_kb())
 
 
+async def new_custom(query: types.CallbackQuery):
+    text = """New order...."""
+    # new_custom = sqlite_db.create_new_custom(query.from_user.id)
+    # order_data[f'{query.from_user.id}'] = new_custom
+    order.start_order(query.from_user.id)
+    await edit_text(query.message, message_text=text, reply_markup=order_kb())
+
+
+async def last_order(query: types.CallbackQuery):
+    sqlite_db.delete_empty_orders()
+    sqlite_db.delete_not_verification(user_id=query.from_user.id)
+    await edit_text(query.message, message_text='Останні замовлення:',
+                    reply_markup=order_for_user(query.from_user.id))
+
+
 async def order_product_list(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
                     reply_markup=cat_markup().add(back_to_order_menu_kb()))
@@ -175,14 +190,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
 
 
-async def new_custom(query: types.CallbackQuery):
-    text = """New order...."""
-    # new_custom = sqlite_db.create_new_custom(query.from_user.id)
-    # order_data[f'{query.from_user.id}'] = new_custom
-    order.start_order(query.from_user.id)
-    await edit_text(query.message, message_text=text, reply_markup=order_menu_kb().add(back_to_menu_kb()))
-
-
 async def box(query: types.CallbackQuery):
     global checkin
     checkin = True
@@ -193,13 +200,6 @@ async def multi(query: types.CallbackQuery):
     global checkin
     checkin = False
     await query.answer(text='Обрано поштучно')
-
-
-async def last_order(query: types.CallbackQuery):
-    sqlite_db.delete_empty_orders()
-    sqlite_db.delete_not_verification(user_id=query.from_user.id)
-    await edit_text(query.message, message_text='Останні замовлення:',
-                    reply_markup=order_for_user(query.from_user.id))
 
 
 async def update_numbers(query: types.CallbackQuery, callback_data: dict):
