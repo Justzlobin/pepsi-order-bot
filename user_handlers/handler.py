@@ -173,7 +173,8 @@ async def order_view(query: types.CallbackQuery):
     #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
     #                     , reply_markup=menu_kb())
     order.add_pos(query.from_user.id, 3, 4)
-    await query.bot.send_message(text=order.order_dict, chat_id=query.message.chat.id)
+    await query.bot.send_message(text=order.order_dict, chat_id=query.message.chat.id,
+                                 reply_markup=menu_kb() + back_to_menu(), )
 
 
 async def new_custom(query: types.CallbackQuery):
