@@ -24,10 +24,12 @@ async def order_menu(query: types.CallbackQuery):
 
 
 async def new_custom(query: types.CallbackQuery):
-    text = """New order...."""
+    order.start_order(query.from_user.id)
+    text = f'{order.order_dict}'
+
     # new_custom = sqlite_db.create_new_custom(query.from_user.id)
     # order_data[f'{query.from_user.id}'] = new_custom
-    order.start_order(query.from_user.id)
+
     await edit_text(query.message, message_text=text, reply_markup=order_kb())
 
 
