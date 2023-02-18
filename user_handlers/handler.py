@@ -2,7 +2,6 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from classes import Order
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 user_data = {}
 order_data = {}
@@ -14,25 +13,15 @@ order = Order()
 async def command_start(message: types.Message):
     await message.delete()
     await message.bot.send_message(message.from_user.id,
-                                   text='<b>PEPSIBOT</b>\n'
-                                        'Натисніть:\n'
-                                        '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                        'або сформувати замовлення. \n'
-                                        '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                        '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-
-                                   reply_markup=menu_kb().add(back_to_menu()),
+                                   text='<b>PEPSIBOT</b>\n',
+                                   reply_markup=menu_kb().add(back_to_menu_kb()),
                                    parse_mode='HTML')
 
 
-async def command_assort(query: types.CallbackQuery):
-    try:
-        await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                        reply_markup=cat_markup())
-    except KeyError:
-        await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                        reply_markup=cat_markup())
-
+async def order_product_list(query: types.CallbackQuery):
+    message = await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+                    reply_markup=cat_markup().add(back_to_order_menu_kb()))
+    print(message)
 
 async def back_to_cat(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
@@ -176,7 +165,7 @@ async def order_view(query: types.CallbackQuery):
     #                     , reply_markup=menu_kb())
     order.add_pos(query.from_user.id, 3, 4)
     await query.bot.send_message(text=order.order_dict, chat_id=query.message.chat.id,
-                                 reply_markup=order_menu_kb().add(back_to_menu()))
+                                 reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -184,7 +173,7 @@ async def new_custom(query: types.CallbackQuery):
     # new_custom = sqlite_db.create_new_custom(query.from_user.id)
     # order_data[f'{query.from_user.id}'] = new_custom
     order.start_order(query.from_user.id)
-    await edit_text(query.message, message_text=text, reply_markup=order_menu_kb())
+    await edit_text(query.message, message_text=text, reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 async def box(query: types.CallbackQuery):
@@ -292,9 +281,10 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
+    # MENU_ORDER
+    dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
     #
     dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(command_assort, Order_KB.filter(action='assort'))
     dp.register_callback_query_handler(order_view, Order_KB.filter(action='basket'))
     dp.register_callback_query_handler(order_settings, Order_KB.filter(action='settings'))
     #

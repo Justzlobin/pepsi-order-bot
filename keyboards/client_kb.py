@@ -9,22 +9,12 @@ from datadase.admin_db import *
 Cat_KB = CallbackData('title', 'id', 'action')
 
 
-def cat_markup(admin=False, price=False):
+def cat_markup():
     action = 'from_cat_to_brand'
-    back_kb = back_to.back_to_order_menu()
-
-    if admin:
-        action = 'admin_from_cat_to_brand'
-        back_kb = back_to.back_to_admin_menu()
-
-    if price:
-        back_kb = back_to.back_to_menu()
-
     cat_kb_markup = InlineKeyboardMarkup()
     for cat_id, category_title in sqlite_db.select_all_categories():
         cat_kb_markup.add(InlineKeyboardButton(category_title, callback_data=Cat_KB.new(id=cat_id,
                                                                                         action=action)))
-    cat_kb_markup.add(back_kb)
     return cat_kb_markup
 
 
