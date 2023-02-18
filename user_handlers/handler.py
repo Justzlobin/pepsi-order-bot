@@ -26,10 +26,6 @@ async def order_menu(query: types.CallbackQuery):
 async def new_custom(query: types.CallbackQuery):
     order.start_order(query.from_user.id)
     text = f'{order.order_dict}'
-
-    # new_custom = sqlite_db.create_new_custom(query.from_user.id)
-    # order_data[f'{query.from_user.id}'] = new_custom
-
     await edit_text(query.message, message_text=text, reply_markup=order_kb())
 
 
@@ -43,6 +39,16 @@ async def last_order(query: types.CallbackQuery):
 async def order_product_list(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
                     reply_markup=cat_markup().add(back_to_order_menu_kb()))
+
+
+async def show_brand(query: types.CallbackQuery, callback_data: dict):
+    await edit_text(query.message, message_text='Доступні бренди в категорії:',
+                    reply_markup=brand_markup(callback_data['id']))
+
+
+async def show_position(query: types.CallbackQuery, callback_data: dict):
+    await edit_text(query.message, message_text='Доступні смаки бренду:',
+                    reply_markup=position_markup(callback_data['id']))
 
 
 async def order_basket(query: types.CallbackQuery):
@@ -73,26 +79,6 @@ async def order_settings(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Налаштування замовлення:',
                     reply_markup=keyboard_settings(
                         sqlite_db.select_last_order(query.from_user.id)))
-
-
-async def back_to_cat(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
-                    reply_markup=cat_markup())
-
-
-async def show_brand(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Доступні бренди в категорії:',
-                    reply_markup=brand_markup(callback_data['id']))
-
-
-async def show_position(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(callback_data['id']))
-
-
-async def back_to_position(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(callback_data['id']))
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
@@ -259,25 +245,6 @@ async def update_num_text_in_order(message: types.Message, new_value: int, pos_i
                     reply_markup=keyboard(pos_id, order=True))
 
 
-async def back_to_menu_from_order(query: types.CallbackQuery):
-    await edit_text(query.message, reply_markup=menu_kb(),
-                    message_text='<b>PEPSIBOT</b>\n'
-                                 'Натисніть:\n'
-                                 '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                 'або сформувати замовлення. \n'
-                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n')
-    user_data[f'{query.from_user.id}'] = None
-
-
-async def back_to_order_menu(query: types.CallbackQuery):
-    await edit_text(query.message,
-                    message_text='1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                    reply_markup=order_menu_kb())
-
-
 async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
 
@@ -297,11 +264,6 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(show_brand, Cat_KB.filter(action='cat->brand'))
     dp.register_callback_query_handler(show_position, Cat_KB.filter(action='brand->pos'))
     dp.register_callback_query_handler(cmd_numbers, Cat_KB.filter(action='position'))
-    #
-    dp.register_callback_query_handler(back_to_menu_from_order, Back_to.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(back_to_cat, Cat_KB.filter(action='back_to_cat'))
-    dp.register_callback_query_handler(back_to_position, Cat_KB.filter(action='back_to_position'))
-    dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
     #
     dp.register_callback_query_handler(order_position_plus, Cat_KB.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, Cat_KB.filter(action='desc'))

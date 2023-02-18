@@ -6,17 +6,17 @@ from user_handlers.handler import edit_text
 
 
 async def price_cat(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup(price=True))
+    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup())
 
 
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні бренди в категорії:',
-                    reply_markup=brand_markup(callback_data['id'], price=True))
+                    reply_markup=brand_markup(callback_data['id']))
 
 
 async def price_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(callback_data['id'], price=True))
+                    reply_markup=position_markup(callback_data['id']))
 
 
 async def price_single_position(query: types.CallbackQuery, callback_data: dict):
@@ -39,12 +39,12 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
 
 
 async def price_back_to_cat_from_brand(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup(price=True))
+    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup())
 
 
 async def price_back_to_brand_from_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(message=query.message, message_text='Brands:',
-                    reply_markup=brand_markup(cat_id=callback_data['id'], price=True))
+                    reply_markup=brand_markup(cat_id=callback_data['id']))
 
 
 async def price_back_to_position(query: types.CallbackQuery, callback_data: dict):
