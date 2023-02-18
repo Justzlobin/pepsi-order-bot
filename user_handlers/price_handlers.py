@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
-
 from keyboards.client_kb import *
+from keyboards import back_to
 from aiogram import types
 from user_handlers.handler import edit_text
 
@@ -32,10 +32,10 @@ async def price_single_position(query: types.CallbackQuery, callback_data: dict)
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=f'{full_text}\n',
-                                   reply_markup=back_to_position_kb(callback_data['id'], price=True))
+                                   reply_markup=InlineKeyboardMarkup.add(back_to(back_to_pos=callback_data['id'])))
     except FileNotFoundError:
         await edit_text(message=query.message, message_text=f'{full_text}\n'
-                        , reply_markup=back_to_position_kb(callback_data['id'], price=True), )
+                        , reply_markup=InlineKeyboardMarkup.add(back_to(back_to_pos=callback_data['id'])))
 
 
 async def price_back_to_cat_from_brand(query: types.CallbackQuery):

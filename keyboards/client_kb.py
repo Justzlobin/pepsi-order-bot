@@ -24,8 +24,6 @@ def brand_markup(cat_id):
         brand_cb_markup.add(
             InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='from_brand_to_pos')))
 
-    brand_cb_markup.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=int(cat_id),
-                                                                                 action='back_to_cat')))
     return brand_cb_markup
 
 
@@ -33,7 +31,6 @@ def position_markup(brand_id, admin=False, price=False):
     position_cb_markup = InlineKeyboardMarkup()
 
     action = 'position'
-    action_back = 'back_to_brand'
     list_pos = sqlite_db.select_product(brand_id)
 
     if admin:
@@ -42,7 +39,6 @@ def position_markup(brand_id, admin=False, price=False):
 
     if price:
         action = 'price_single_position'
-        action_back = 'price_back_to_brand'
         list_pos = sqlite_db.select_product(brand_id)
 
     for position_id, position_title in list_pos:
@@ -50,9 +46,6 @@ def position_markup(brand_id, admin=False, price=False):
             id=position_id, action=action
         )))
 
-    position_cb_markup.add(
-        InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_cat_id(brand_id),
-                                                                 action=action_back)))
     return position_cb_markup
 
 
@@ -95,12 +88,7 @@ def keyboard(pos_id, order=False):
                                     callback_data=Cat_KB.new(id=pos_id, action=list_commands[3]))]
     ]
 
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    if not order:
-        keyboard.add(InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
-                                                                              action='back_to_position')))
-
-    return keyboard
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def keyboard_settings(order_id):
@@ -197,15 +185,6 @@ def cancel_state(register=False):
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
-
-
-def back_to_position_kb(pos_id, price=True):
-    action = 'back_to_position'
-    if price:
-        action = 'price_back_to_position'
-    return types.InlineKeyboardMarkup().add(
-        InlineKeyboardButton('⬅ Назад', callback_data=Cat_KB.new(id=sqlite_db.select_brand_id(pos_id),
-                                                                 action=action)))
 
 
 calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')
