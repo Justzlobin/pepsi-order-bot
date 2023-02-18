@@ -49,7 +49,7 @@ async def order_basket(query: types.CallbackQuery):
     #                     , reply_markup=menu_kb())
     order.add_pos(query.from_user.id, 3, 4)
     await edit_text(message=query.message, message_text=order.order_dict,
-                    reply_markup=order_menu_kb())
+                    reply_markup=order_kb())
 
 
 async def order_settings(query: types.CallbackQuery):
@@ -76,10 +76,6 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(callback_data['id']))
-    # try:
-    #     await delete_message_from_dict(chat=query.message.chat.id)
-    # except exceptions.MessageToDeleteNotFound:
-    #     pass
 
 
 async def order_position(query: types.CallbackQuery, callback_data: dict):
@@ -290,7 +286,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
     # MAIN_ORDER
     dp.register_callback_query_handler(new_custom, Order_KB.filter(action='new_order'))
-    dp.register_callback_query_handler(last_order, Order_KB.filter(action='last_orders'))
+    dp.register_callback_query_handler(last_order, Order_KB.filter(action='last_order'))
     # MENU_NEW_ORDER
     dp.register_callback_query_handler(order_product_list, Order_KB.filter(action='order_product_list'))
     dp.register_callback_query_handler(order_basket, Order_KB.filter(action='order_basket'))
