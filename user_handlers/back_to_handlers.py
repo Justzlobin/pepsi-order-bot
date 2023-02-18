@@ -6,12 +6,12 @@ from user_handlers.handler import edit_text
 
 async def back_to_cat(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Categories:',
-                    reply_markup=cat_markup())
+                    reply_markup=cat_markup().add(back_to_menu_kb()))
 
 
 async def back_to_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Brands:',
-                    reply_markup=position_markup(callback_data['id']).add(
+                    reply_markup=brand_markup(callback_data['id']).add(
                         back_to(back_to_cat_from_brand=callback_data['id'])))
 
 
