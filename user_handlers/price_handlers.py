@@ -1,22 +1,24 @@
 from aiogram import Dispatcher
 from keyboards.client_kb import *
-from keyboards import back_to
+from keyboards.back_to import *
 from aiogram import types
 from user_handlers.handler import edit_text
 
 
 async def price_cat(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup())
+    await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup().add(back_to_order_kb()))
 
 
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні бренди в категорії:',
-                    reply_markup=brand_markup(callback_data['id']))
+                    reply_markup=brand_markup(callback_data['id']).add(
+                        back_to(back_to_cat_from_brand=callback_data['id'])))
 
 
 async def price_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(callback_data['id']))
+                    reply_markup=position_markup(callback_data['id']).add(
+                        back_to(back_to_brand_from_pos=callback_data['id'])))
 
 
 async def price_single_position(query: types.CallbackQuery, callback_data: dict):
