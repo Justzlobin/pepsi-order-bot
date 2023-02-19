@@ -36,7 +36,7 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(message=query.message, message_text='POSITIONS',
                     reply_markup=position_markup(callback_data['id']).add(
                         back_to(back_to_brand_from_pos=callback_data['id'])))
-    del order.order_dict[query.from_user.id][str(callback_data['id'])]
+    del order.order_dict[query.from_user.id][callback_data['id']]
 
 
 def register_back_to_handlers(dp: Dispatcher):
