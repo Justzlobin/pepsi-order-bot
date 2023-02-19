@@ -99,7 +99,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
     await message.edit_text(text=f'{full_text}\n'
                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
-                            , reply_markup=keyboard(pos_id))
+                            , reply_markup=keyboard(pos_id).add(back_to(back_to_pos=pos_id)))
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
@@ -121,7 +121,8 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
     await query.bot.send_message(text=f'{full_text}\n'
                                       f'Кількість: 0, Ціна: {dict_desc["price"]} uah.'
-                                 , reply_markup=keyboard(callback_data['id']), chat_id=query.message.chat.id)
+                                 , reply_markup=keyboard(callback_data['id']).add(
+            back_to(back_to_pos=callback_data['id'])), chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
