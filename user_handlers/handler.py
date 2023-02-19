@@ -51,18 +51,18 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 async def order_basket(query: types.CallbackQuery):
     full_text = 'Ваше замовлення\n'
-    try:
-        for pos, value in order.order_dict.items():
+
+    for pos, value in order.order_dict.items():
+        try:
             dict_desc = sqlite_db.select_one_position(pos)
             full_text.join(
                 f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
                 f" {dict_desc['price'] * value}\n")
+        except TypeError:
+            pass
 
-        await edit_text(message=query.message, message_text=full_text,
-                        reply_markup=order_kb())
-    except TypeError:
-        await edit_text(message=query.message, message_text=full_text,
-                        reply_markup=order_kb())
+    await edit_text(message=query.message, message_text=full_text,
+                    reply_markup=order_kb())
 
 
 async def order_settings(query: types.CallbackQuery):
@@ -155,24 +155,15 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     # f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     quantity = order.pos_dict[query.from_user.id][callback_data['id']]
     amount = round(dict_desc['price'] * quantity, 2)
-    try:
-        if quantity != 0:
-            await query.answer(f'Добавлено: {full_text}\n'
-                               f'К-ть: {quantity}, Ціна: {amount}')
-            order.add_in_order_dict(query.from_user.id, callback_data['id'], quantity)
-        if quantity == 0:
-            del order.pos_dict[query.from_user.id][callback_data['id']]
-            del order.order_dict[query.from_user.id][callback_data['id']]
-    except KeyError:
-        await query.answer(text='Час для замовлення вийшов.')
-        await edit_text(query.message,
-                        message_text='<b>PEPSIBOT</b>\n'
-                                     'Натисніть:\n'
-                                     '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                     'або сформувати замовлення. \n'
-                                     '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                     '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
-                        reply_markup=menu_kb())
+
+    if quantity != 0:
+        await query.answer(f'Добавлено: {full_text}\n'
+                           f'К-ть: {quantity}, Ціна: {amount}')
+        order.add_in_order_dict(query.from_user.id, callback_data['id'], quantity)
+    if quantity == 0:
+        del order.pos_dict[query.from_user.id][callback_data['id']]
+        del order.order_dict[query.from_user.id][callback_data['id']]
+
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])).add(
                         back_to(back_to_brand_from_pos=callback_data['id'])
