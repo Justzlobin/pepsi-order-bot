@@ -107,6 +107,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
+        order.pos_dict[query.from_user.id][callback_data['id']] = value
     else:
         order.add_in_pos_dict(query.from_user.id, callback_data['id'], 0)
         value = 0
@@ -161,9 +162,9 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-                # f"Ціна: {dict_desc['price']} грн.\n" \
-                # f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                # f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+        # f"Ціна: {dict_desc['price']} грн.\n" \
+    # f"В ящику: {dict_desc['box_size']} ящ.\n" \
+    # f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     quantity = order.pos_dict[query.from_user.id][callback_data['id']]
     amount = round(dict_desc['price'] * quantity, 2)
     try:
@@ -187,6 +188,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])))
     print(order.order_dict)
     print(order.pos_dict)
+
 
 async def box(query: types.CallbackQuery):
     global checkin
