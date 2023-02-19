@@ -51,13 +51,18 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 async def order_basket(query: types.CallbackQuery):
     full_text = 'Ваше замовлення\n'
-    for pos, value in order.order_dict.items():
-        dict_desc = sqlite_db.select_one_position(pos)
-        full_text.join(
-            f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
-            f" {dict_desc['price'] * value}\n")
-    await edit_text(message=query.message, message_text=full_text,
-                    reply_markup=order_kb())
+    try:
+        for pos, value in order.order_dict.items():
+            dict_desc = sqlite_db.select_one_position(pos)
+            full_text.join(
+                f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
+                f" {dict_desc['price'] * value}\n")
+
+        await edit_text(message=query.message, message_text=full_text,
+                        reply_markup=order_kb())
+    except TypeError:
+        await edit_text(message=query.message, message_text=full_text,
+                        reply_markup=order_kb())
 
 
 async def order_settings(query: types.CallbackQuery):
