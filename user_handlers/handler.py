@@ -54,9 +54,9 @@ async def order_basket(query: types.CallbackQuery):
     print(order.order_dict)
     for key, value in order.order_dict[query.from_user.id].items():
         dict_desc = sqlite_db.select_one_position(int(key))
-        full_text.join(
+        full_text += ' '.join(
             [f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
-            f" {dict_desc['price'] * value}\n"])
+             f" {dict_desc['price'] * value}\n"])
 
     await edit_text(message=query.message, message_text=full_text,
                     reply_markup=order_kb())
