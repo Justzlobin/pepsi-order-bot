@@ -54,7 +54,7 @@ async def order_basket(query: types.CallbackQuery):
 
     for pos, value in order.order_dict.items():
         try:
-            dict_desc = sqlite_db.select_one_position(pos)
+            dict_desc = sqlite_db.select_one_position(int(pos))
             full_text.join(
                 f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
                 f" {dict_desc['price'] * value}\n")
@@ -70,11 +70,6 @@ async def order_settings(query: types.CallbackQuery):
                     reply_markup=keyboard_settings(
                         sqlite_db.select_last_order(query.from_user.id)))
 
-
-async def order_position(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text=f'{sqlite_db.select_one_position(callback_data["id"])}\n'
-                                                f'Кількість: 0, Ціна: {callback_data["id"][4]}',
-                    reply_markup=keyboard(callback_data['id']))
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):
