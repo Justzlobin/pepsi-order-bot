@@ -44,8 +44,8 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
 
 def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_main_menu, Back_to.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(back_to_cat, Back_to_id.filter(action='back_to_cat'))
-    dp.register_callback_query_handler(back_to_brand, Back_to.filter(action='back_to_brand'))
+    dp.register_callback_query_handler(back_to_cat, Back_to.filter(action='back_to_cat'))
+    dp.register_callback_query_handler(back_to_brand, Back_to_id.filter(action='back_to_brand'))
     dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
     dp.register_callback_query_handler(back_to_start_order, Back_to.filter(action='back_to_start_order'))
     dp.register_callback_query_handler(back_to_position, Back_to_id.filter(action='back_to_pos'))
