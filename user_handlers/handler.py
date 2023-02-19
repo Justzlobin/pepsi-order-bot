@@ -103,8 +103,6 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
-    print(callback_data['id'])
-    print(order.order_dict[query.from_user.id].keys())
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
     else:
