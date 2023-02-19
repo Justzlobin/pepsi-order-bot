@@ -174,6 +174,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
             order.add_in_order_dict(query.from_user.id, callback_data['id'], quantity)
         if quantity == 0:
             del order.pos_dict[query.from_user.id][callback_data['id']]
+            del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
         await query.answer(text='Час для замовлення вийшов.')
         await edit_text(query.message,
