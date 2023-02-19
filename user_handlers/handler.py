@@ -51,7 +51,7 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 async def order_basket(query: types.CallbackQuery):
     full_text = 'Ваше замовлення\n'
-
+    print(order.order_dict)
     for pos, value in order.order_dict.items():
         dict_desc = sqlite_db.select_one_position(int(pos))
         full_text.join(
