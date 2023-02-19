@@ -6,7 +6,7 @@ Back_to = CallbackData('title', 'action')
 Back_to_id = CallbackData('title', 'id', 'action')
 
 
-def back_to_menu_kb():
+def back_to_menu_kb() -> object:
     return types.InlineKeyboardButton('MAIN MENU', callback_data=Back_to.new(action='back_to_menu'))
 
 

@@ -6,7 +6,7 @@ from user_handlers.handler import edit_text, order
 
 async def back_to_cat(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Categories:',
-                    reply_markup=cat_markup().add(back_to_menu_kb()))
+                    reply_markup=cat_markup().add(back_to_order_kb()))
 
 
 async def back_to_brand(query: types.CallbackQuery, callback_data: dict):

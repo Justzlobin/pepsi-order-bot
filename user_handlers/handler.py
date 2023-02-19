@@ -17,7 +17,7 @@ async def command_start(message: types.Message):
 
 async def order_menu(query: types.CallbackQuery):
     await edit_text(message=query.message, message_text='ORDER_MENU',
-                    reply_markup=order_menu_kb())
+                    reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 async def new_custom(query: types.CallbackQuery):
