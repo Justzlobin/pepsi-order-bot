@@ -136,7 +136,6 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
 async def order_position_minus(query: types.CallbackQuery, callback_data: dict):
     user_value = order.order_dict[query.from_user.id][callback_data['id']]
     result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
-
     if result < 0:
         result = 0
     order.order_dict[query.from_user.id][callback_data['id']] = result
