@@ -34,7 +34,7 @@ async def back_to_start_order(query: types.CallbackQuery):
 
 async def back_to_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(message=query.message, message_text='POSITIONS',
-                    reply_markup=position_markup(1).add(
+                    reply_markup=position_markup(select_brand_id(callback_data['id'])).add(
                         back_to(back_to_brand_from_pos=callback_data['id'])))
 
 
