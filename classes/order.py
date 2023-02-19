@@ -6,6 +6,7 @@ class Order:
 
     def start_order(self, user_id):
         self.order_dict[user_id] = {}
+        self.pos_dict[user_id] = {}
 
     def add_in_pos_dict(self, user_id, pos_id, value):
         self.pos_dict[user_id][pos_id] = value
