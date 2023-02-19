@@ -72,7 +72,7 @@ async def order_basket(query: types.CallbackQuery):
     #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
     #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
     #                     , reply_markup=menu_kb())
-    order.add_pos(query.from_user.id, 3, 4)
+    order.add_in_pos_dict(query.from_user.id, 3, 4)
     await edit_text(message=query.message, message_text=order.order_dict,
                     reply_markup=order_kb())
 
