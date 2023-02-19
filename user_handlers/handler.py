@@ -119,10 +119,9 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     #                                                reply_markup=keyboard(callback_data['id']))
     # except FileNotFoundError:
 
-    await query.bot.send_message(text=f'{full_text}\n'
-                                      f'Кількість: 0, Ціна: {dict_desc["price"]} uah.'
-                                 , reply_markup=keyboard(callback_data['id']).add(
-            back_to(back_to_pos=callback_data['id'])), chat_id=query.message.chat.id)
+    await edit_text(message=query.message, message_text=f'{full_text}\n'
+                                                        f'Кількість: 0, Ціна: {dict_desc["price"]} uah.'
+                    , reply_markup=keyboard(callback_data['id']).add(back_to(back_to_pos=callback_data['id'])))
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
