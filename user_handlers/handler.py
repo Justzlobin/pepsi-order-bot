@@ -103,7 +103,12 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
-    order.add_pos(query.from_user.id, callback_data['id'], 0)
+    if callback_data['id'] in order.order_dict[query.from_user.id].items():
+        order.add_pos(query.from_user.id, callback_data['id'], 0)
+        value = order.order_dict[query.from_user.id][callback_data['id']]
+    else:
+        order.add_pos(query.from_user.id, callback_data['id'], 0)
+        value = 0
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
@@ -120,7 +125,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
     # except FileNotFoundError:
 
     await edit_text(message=query.message, message_text=f'{full_text}\n'
-                                                        f'Кількість: 0, Ціна: {dict_desc["price"]} uah.',
+                                                        f'Кількість: {value}, Ціна: {dict_desc["price"]} uah.',
                     reply_markup=keyboard(callback_data['id']).add(back_to(back_to_pos=callback_data['id'])))
 
 
