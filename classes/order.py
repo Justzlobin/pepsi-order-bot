@@ -3,6 +3,7 @@ class Order:
     def __init__(self):
         self.order_dict = {}
         self.pos_dict = {}
+        self.checkin = False
 
     def start_order(self, user_id):
         self.order_dict[user_id] = {}

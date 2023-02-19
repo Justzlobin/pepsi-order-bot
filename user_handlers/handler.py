@@ -3,10 +3,6 @@ from keyboards import *
 from aiogram import types
 from classes import Order
 
-user_data = {}
-order_data = {}
-checkin = False
-
 order = Order()
 
 
@@ -54,26 +50,13 @@ async def show_position(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_basket(query: types.CallbackQuery):
-    # try:
-    #     if sqlite_db.sum_order(order_data[f'{query.from_user.id}']) == 0:
-    #         await query.answer(text='Корзина пуста')
-    #     else:
-    #         await edit_text(query.message,
-    #                         message_text=
-    #                         f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
-    #                         reply_markup=keyboard_order(order_data[f'{query.from_user.id}'], query.from_user.id))
-    # except KeyError:
-    #     await query.answer(text='Час для замовлення вийшов.')
-    #     await edit_text(query.message,
-    #                     message_text='<b>PEPSIBOT</b>\n'
-    #                                  'Натисніть:\n'
-    #                                  '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-    #                                  'або сформувати замовлення. \n'
-    #                                  '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-    #                                  '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n'
-    #                     , reply_markup=menu_kb())
-    order.add_in_pos_dict(query.from_user.id, 3, 4)
-    await edit_text(message=query.message, message_text=order.order_dict,
+    full_text = 'Ваше замовлення\n'
+    for pos, value in order.order_dict.items():
+        dict_desc = sqlite_db.select_one_position(pos)
+        full_text.join(
+            f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
+            f" {dict_desc['price'] * value}\n")
+    await edit_text(message=query.message, message_text=full_text,
                     reply_markup=order_kb())
 
 
@@ -133,7 +116,7 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
     user_value = order.pos_dict[query.from_user.id][callback_data['id']]
-    result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
+    result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[order.checkin]
     order.pos_dict[query.from_user.id][callback_data['id']] = result
     await update_num_text(query.message,
                           result,
@@ -142,7 +125,7 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
 
 async def order_position_minus(query: types.CallbackQuery, callback_data: dict):
     user_value = order.pos_dict[query.from_user.id][callback_data['id']]
-    result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
+    result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[order.checkin]
     if result < 0:
         result = 0
     order.pos_dict[query.from_user.id][callback_data['id']] = result
@@ -192,66 +175,13 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 
 async def box(query: types.CallbackQuery):
-    global checkin
-    checkin = True
+    order.checkin = True
     await query.answer(text='Обрано в ящиках')
 
 
 async def multi(query: types.CallbackQuery):
-    global checkin
-    checkin = False
+    order.checkin = False
     await query.answer(text='Обрано поштучно')
-
-
-async def update_numbers(query: types.CallbackQuery, callback_data: dict):
-    sum1 = user_data[callback_data['id']]
-    update_text = sqlite_db.select_one_position(callback_data['id'])
-    full_text = f'{update_text[0]} {update_text[1]} {update_text[2]} {update_text[3]} {update_text[4]}'
-    order = True
-    await edit_text(query.message, message_text=f'{full_text}\n'
-                                                f'Кількість: {sum1}, Ціна: {update_text[5]}'
-                    , reply_markup=keyboard(callback_data['id'], order))
-
-
-async def update_order_finish(query: types.CallbackQuery, callback_data: dict):
-    sqlite_db.update_order_pos_id(user_data[callback_data['id']],
-                                  sqlite_db.select_last_order(query.from_user.id),
-                                  callback_data['id'])
-    await edit_text(query.message,
-                    message_text=f'Ваше замовлення: <b>{sqlite_db.sum_order(order_data[f"{query.from_user.id}"])}</b>',
-                    reply_markup=keyboard_order(sqlite_db.select_last_order(query.from_user.id),
-                                                query.from_user.id))
-
-
-async def update_plus(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'])
-    result = user_value + sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
-    user_data[callback_data['id']] = result
-    await update_num_text_in_order(query.message, result, callback_data['id'])
-
-
-async def update_zero(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'], 0)
-    user_data[callback_data['id']] = user_value - user_value
-    await update_num_text_in_order(query.message, user_value - user_value, callback_data['id'])
-
-
-async def update_minus(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'], 0)
-    result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
-    if result < 0:
-        result = 0
-    user_data[callback_data['id']] = result
-    await update_num_text_in_order(query.message, result, callback_data['id'])
-
-
-async def update_num_text_in_order(message: types.Message, new_value: int, pos_id):
-    text = sqlite_db.select_one_position(pos_id)
-    full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]}'
-
-    await edit_text(message, message_text=f'{full_text}\n'
-                                          f'Кількість: {new_value}, Ціна: {round(float(text[5]) * new_value, 2)}',
-                    reply_markup=keyboard(pos_id, order=True))
 
 
 async def edit_text(message: types.Message, message_text, reply_markup):
@@ -277,13 +207,8 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_position_plus, Cat_KB.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, Cat_KB.filter(action='desc'))
     dp.register_callback_query_handler(order_position_zero, Cat_KB.filter(action='zero'))
-    dp.register_callback_query_handler(update_order_finish, Cat_KB.filter(action='update_finish'))
+
     dp.register_callback_query_handler(order_position_finish, Cat_KB.filter(action='finish'))
     #
     dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
-    #
-    dp.register_callback_query_handler(update_numbers, Cat_KB.filter(action='position_order'))
-    dp.register_callback_query_handler(update_plus, Cat_KB.filter(action='update_incr'))
-    dp.register_callback_query_handler(update_minus, Cat_KB.filter(action='update_desc'))
-    dp.register_callback_query_handler(update_zero, Cat_KB.filter(action='update_zero'))
