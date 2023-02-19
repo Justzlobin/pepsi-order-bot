@@ -23,7 +23,7 @@ async def order_menu(query: types.CallbackQuery):
 async def new_custom(query: types.CallbackQuery):
     order.start_order(query.from_user.id)
     text = f'{order.order_dict}'
-    await edit_text(query.message, message_text=text, reply_markup=order_kb())
+    await edit_text(query.message, message_text=text, reply_markup=order_kb().add(back_to_menu_kb()))
 
 
 async def last_order(query: types.CallbackQuery):
