@@ -38,7 +38,9 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
                         back_to(back_to_brand_from_pos=callback_data['id'])))
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
-    except KeyError: pass
+    except KeyError:
+        pass
+
 
 def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_main_menu, Back_to.filter(action='back_to_menu'))
