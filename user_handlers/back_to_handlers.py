@@ -10,6 +10,7 @@ async def back_to_cat(query: types.CallbackQuery):
 
 
 async def back_to_brand(query: types.CallbackQuery, callback_data: dict):
+    print(callback_data['id'])
     await edit_text(query.message, message_text='Brands:',
                     reply_markup=brand_markup(callback_data['id']).add(
                         back_to(back_to_cat_from_brand=True)))
