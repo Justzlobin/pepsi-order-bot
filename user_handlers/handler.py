@@ -134,22 +134,20 @@ async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_position_minus(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'], 0)
+    user_value = order.order_dict[query.from_user.id][callback_data['id']]
     result = user_value - sqlite_db.select_multiplicity_and_box_size(callback_data['id'])[checkin]
 
     if result < 0:
         result = 0
-    user_data[callback_data['id']] = result
+    order.order_dict[query.from_user.id][callback_data['id']] = result
     await update_num_text(query.message,
                           result,
                           callback_data['id'])
 
 
 async def order_position_zero(query: types.CallbackQuery, callback_data: dict):
-    user_value = user_data.get(callback_data['id'], 0)
-    user_data[callback_data['id']] = user_value - user_value
-
-    await update_num_text(query.message, user_value - user_value, callback_data['id'])
+    order.order_dict[query.from_user.id][callback_data['id']] = 0
+    await update_num_text(query.message, 0, callback_data['id'])
 
 
 async def order_position_finish(query: types.CallbackQuery, callback_data: dict):
