@@ -38,7 +38,7 @@ def position_markup(brand_id, admin=False, price=False):
         list_pos = admin_select_product(brand_id)
 
     if price:
-        action = 'price_single_position'
+        action = 'price_show_position'
         list_pos = sqlite_db.select_product(brand_id)
 
     for position_id, position_title in list_pos:

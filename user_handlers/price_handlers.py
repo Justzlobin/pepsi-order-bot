@@ -24,7 +24,20 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
                         back_to_brand_from_tasty_kb(brand_id)))
 
 
+async def price_show_position(query: types.CallbackQuery, callback_data: dict):
+    dict_desc = sqlite_db.select_one_position(callback_data['id'])
+    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
+                f"Ціна: {dict_desc['price']} грн.\n" \
+                f"В ящику: {dict_desc['box_size']} ящ.\n" \
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+    brand_id = sqlite_db.select_brand_id(callback_data['id'])
+    await edit_text(message=query.message, message_text=full_text,
+                    reply_markup=InlineKeyboardMarkup.add(back_to_tasty_from_pos_kb(brand_id)))
+
+
 def register_price_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(price_cat, Menu_KB.filter(action='price'))
     dp.register_callback_query_handler(price_brand, Cat_KB.filter(action='from_cat_to_brand'))
     dp.register_callback_query_handler(price_tasty, Cat_KB.filter(action='from_brand_to_tasty'))
+    dp.register_callback_query_handler(price_show_position, Cat_KB.filter(action='price_show_position'))

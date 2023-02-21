@@ -153,12 +153,12 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
 
 
 async def box(query: types.CallbackQuery):
-    order.checkin = True
+    order.checkin[query.from_user.id] = True
     await query.answer(text='Обрано в ящиках')
 
 
 async def multi(query: types.CallbackQuery):
-    order.checkin = False
+    order.checkin[query.from_user.id] = False
     await query.answer(text='Обрано поштучно')
 
 
