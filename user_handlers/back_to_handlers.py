@@ -4,16 +4,16 @@ from aiogram import types
 from user_handlers.handler import edit_text, order
 
 
-async def back_to_cat(query: types.CallbackQuery):
+async def back_to_cat_from_brand(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Categories:',
                     reply_markup=cat_markup().add(back_to_order_kb()))
 
 
-async def back_to_brand(query: types.CallbackQuery, callback_data: dict):
+async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: dict):
     print(callback_data['id'])
     await edit_text(query.message, message_text='Brands:',
                     reply_markup=brand_markup(callback_data['id']).add(
-                        back_to(back_to_cat_from_brand=True)))
+                        back_to_cat_from_brand()))
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
@@ -33,10 +33,11 @@ async def back_to_start_order(query: types.CallbackQuery):
                     reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
-async def back_to_position(query: types.CallbackQuery, callback_data: dict):
+async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
+    brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text='POSITIONS',
-                    reply_markup=position_markup(callback_data['id']).add(
-                        back_to(back_to_brand_from_pos=callback_data['id'])))
+                    reply_markup=position_markup(brand_id).add(
+                        back_to_brand_from_tasty(sqlite_db.select_cat_id(brand_id))))
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
@@ -44,9 +45,9 @@ async def back_to_position(query: types.CallbackQuery, callback_data: dict):
 
 
 def register_back_to_handlers(dp: Dispatcher):
-    dp.register_callback_query_handler(back_to_main_menu, Back_to.filter(action='back_to_menu'))
-    dp.register_callback_query_handler(back_to_cat, Back_to.filter(action='back_to_cat'))
-    dp.register_callback_query_handler(back_to_brand, Back_to_id.filter(action='back_to_brand'))
+    dp.register_callback_query_handler(back_to_tasty_from_pos, Back_to_id.filter(action='back_to_tasty_from_pos'))
+    dp.register_callback_query_handler(back_to_cat_from_brand, Back_to.filter(action='back_to_cat_from_brand'))
+    dp.register_callback_query_handler(back_to_brand_from_tasty, Back_to_id.filter(action='back_to_brand_from_tasty'))
     dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
     dp.register_callback_query_handler(back_to_start_order, Back_to.filter(action='back_to_start_order'))
-    dp.register_callback_query_handler(back_to_position, Back_to_id.filter(action='back_to_pos'))
+    dp.register_callback_query_handler(back_to_main_menu, Back_to.filter(action='back_to_menu'))

@@ -22,7 +22,7 @@ def brand_markup(cat_id):
 
     for brand_id, brand_title in sqlite_db.select_brand(cat_id):
         brand_cb_markup.add(
-            InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='from_brand_to_pos')))
+            InlineKeyboardButton(brand_title, callback_data=Cat_KB.new(id=brand_id, action='from_brand_to_tasty')))
 
     return brand_cb_markup
 

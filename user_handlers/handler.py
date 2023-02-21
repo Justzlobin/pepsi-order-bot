@@ -38,18 +38,6 @@ async def order_product_list(query: types.CallbackQuery):
                     reply_markup=cat_markup().add(back_to_order_kb()))
 
 
-async def show_brand(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Доступні бренди в категорії:',
-                    reply_markup=brand_markup(callback_data['id']).add(back_to(back_to_cat_from_brand=True)))
-
-
-async def show_position(query: types.CallbackQuery, callback_data: dict):
-    print('handler')
-    await edit_text(query.message, message_text='handler_brand:',
-                    reply_markup=position_markup(callback_data['id']).add(
-                        back_to(back_to_brand_from_pos=callback_data['id'])))
-
-
 async def order_basket(query: types.CallbackQuery):
     full_text = 'Ваше замовлення.\n'
     print(order.order_dict)
@@ -79,12 +67,13 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
     await message.edit_text(text=f'{full_text}\n'
                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
-                            , reply_markup=keyboard(pos_id).add(back_to(back_to_pos=pos_id)))
+                            , reply_markup=keyboard(pos_id).add(
+            back_to_tasty_from_pos(sqlite_db.select_brand_id(pos_id))))
     print(order.order_dict)
     print(order.pos_dict)
 
 
-async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
+async def position(query: types.CallbackQuery, callback_data: dict):
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
         order.pos_dict[query.from_user.id][callback_data['id']] = value
@@ -108,7 +97,8 @@ async def cmd_numbers(query: types.CallbackQuery, callback_data: dict):
 
     await edit_text(message=query.message, message_text=f'{full_text}\n'
                                                         f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
-                    reply_markup=keyboard(callback_data['id']).add(back_to(back_to_pos=callback_data['id'])))
+                    reply_markup=keyboard(callback_data['id']).add(
+                        back_to_tasty_from_pos(sqlite_db.select_brand_id(callback_data['id']))))
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
@@ -155,11 +145,9 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     if quantity == 0:
         del order.pos_dict[query.from_user.id][callback_data['id']]
         del order.order_dict[query.from_user.id][callback_data['id']]
-
+    brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id'])).add(
-                        back_to(back_to_brand_from_pos=callback_data['id'])
-                    ))
+                    reply_markup=position_markup(brand_id).add(brand_id))
     print(order.order_dict)
     print(order.pos_dict)
 
@@ -190,14 +178,11 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_basket, Order_KB.filter(action='order_basket'))
     dp.register_callback_query_handler(order_settings, Order_KB.filter(action='order_settings'))
     #
-    dp.register_callback_query_handler(show_brand, Cat_KB.filter(action='cat->brand'))
-    dp.register_callback_query_handler(show_position, Cat_KB.filter(action='brand->pos'))
-    dp.register_callback_query_handler(cmd_numbers, Cat_KB.filter(action='position'))
+    dp.register_callback_query_handler(position, Cat_KB.filter(action='position'))
     #
     dp.register_callback_query_handler(order_position_plus, Cat_KB.filter(action='incr'))
     dp.register_callback_query_handler(order_position_minus, Cat_KB.filter(action='desc'))
     dp.register_callback_query_handler(order_position_zero, Cat_KB.filter(action='zero'))
-
     dp.register_callback_query_handler(order_position_finish, Cat_KB.filter(action='finish'))
     #
     dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
