@@ -44,7 +44,7 @@ async def show_brand(query: types.CallbackQuery, callback_data: dict):
 
 
 async def show_position(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Доступні смаки бренду:',
+    await edit_text(query.message, message_text='Доступні смаки бренду1:',
                     reply_markup=position_markup(callback_data['id']).add(
                         back_to(back_to_brand_from_pos=callback_data['id'])))
 
