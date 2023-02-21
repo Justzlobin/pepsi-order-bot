@@ -21,18 +21,18 @@ def back_to_order_kb():
     return types.InlineKeyboardButton('ORDER_START', callback_data=Back_to.new(action='back_to_start_order'))
 
 
-def back_to_cat_from_brand():
+def back_to_cat_from_brand_kb():
     return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to.new(
         action='back_to_cat_from_brand'))
 
 
-def back_to_brand_from_tasty(cat_id):
+def back_to_brand_from_tasty_kb(cat_id):
     return types.InlineKeyboardButton('⬅ Назад',
                                       callback_data=Back_to_id.new(id=cat_id,
                                                                    action='back_to_brand_from_tasty'))
 
 
-def back_to_tasty_from_pos(brand_id):
+def back_to_tasty_from_pos_kb(brand_id):
     return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=brand_id,
                                                                               action='back_to_tasty_from_pos'))
 
