@@ -27,7 +27,7 @@ def brand_markup(cat_id):
     return brand_cb_markup
 
 
-def position_markup(brand_id, status=None):
+def position_markup(brand_id, status):
     position_cb_markup = InlineKeyboardMarkup()
     if status == 'order':
         action = 'position'
