@@ -1,9 +1,10 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from classes import Order
+from classes import Order, Status
 
 order = Order()
+status = Status()
 
 
 async def command_start(message: types.Message):
@@ -21,6 +22,7 @@ async def order_menu(query: types.CallbackQuery):
 
 
 async def new_custom(query: types.CallbackQuery):
+    status.current_dialog_status_order(query.from_user.id)
     order.start_order(query.from_user.id)
     text = f'{order.order_dict}'
     await edit_text(query.message, message_text=text, reply_markup=order_kb().add(back_to_menu_kb()))

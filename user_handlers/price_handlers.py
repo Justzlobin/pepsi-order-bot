@@ -2,10 +2,11 @@ from aiogram import Dispatcher
 from keyboards.client_kb import *
 from keyboards.back_to import *
 from aiogram import types
-from user_handlers.handler import edit_text
+from user_handlers.handler import edit_text, status
 
 
 async def price_cat(query: types.CallbackQuery):
+    status.current_dialog_status_price(query.from_user.id)
     await edit_text(message=query.message, message_text='Category:', reply_markup=cat_markup().add(back_to_menu_kb()))
 
 
@@ -20,7 +21,7 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
     print('price_tasty id')
     brand_id = callback_data['id']
     await edit_text(query.message, message_text='price_handler:',
-                    reply_markup=position_markup(brand_id).add(
+                    reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
                         back_to_brand_from_tasty_kb(brand_id)))
 
 

@@ -27,24 +27,31 @@ def brand_markup(cat_id):
     return brand_cb_markup
 
 
-def position_markup(brand_id, admin=False, price=False):
+def position_markup(brand_id, status=None):
     position_cb_markup = InlineKeyboardMarkup()
+    if status == 'order':
+        action = 'position'
+        list_pos = sqlite_db.select_product(brand_id)
+        for position_id, position_title in list_pos:
+            position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
+                id=position_id, action=action
+            )))
 
-    action = 'position'
-    list_pos = sqlite_db.select_product(brand_id)
-
-    if admin:
+    if status == 'admin':
         action = 'admin_position'
         list_pos = admin_select_product(brand_id)
+        for position_id, position_title in list_pos:
+            position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
+                id=position_id, action=action
+            )))
 
-    if price:
+    if status == 'price':
         action = 'price_show_position'
         list_pos = sqlite_db.select_product(brand_id)
-
-    for position_id, position_title in list_pos:
-        position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
-            id=position_id, action=action
-        )))
+        for position_id, position_title in list_pos:
+            position_cb_markup.add(InlineKeyboardButton(f'{position_title}', callback_data=Cat_KB.new(
+                id=position_id, action=action
+            )))
 
     return position_cb_markup
 
