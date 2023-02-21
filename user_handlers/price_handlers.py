@@ -16,6 +16,8 @@ async def price_brand(query: types.CallbackQuery, callback_data: dict):
 
 
 async def price_tasty(query: types.CallbackQuery, callback_data: dict):
+    print(callback_data['id'])
+    print('price_tasty id')
     brand_id = callback_data['id']
     await edit_text(query.message, message_text='price_handler:',
                     reply_markup=position_markup(brand_id).add(
