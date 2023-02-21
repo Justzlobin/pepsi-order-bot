@@ -11,7 +11,7 @@ async def back_to_cat_from_brand(query: types.CallbackQuery):
 
 async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Brands:',
-                    reply_markup=brand_markup(sqlite_db.select_cat_id(callback_data['id'])).add(
+                    reply_markup=brand_markup(callback_data['id']).add(
                         back_to_cat_from_brand_kb()))
 
 
