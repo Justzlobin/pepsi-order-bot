@@ -34,7 +34,7 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text=full_text,
-                    reply_markup=InlineKeyboardMarkup.add(back_to_tasty_from_pos_kb(brand_id)))
+                    reply_markup=InlineKeyboardMarkup(inline_keyboard=back_to_tasty_from_pos_kb(brand_id)))
 
 
 def register_price_handlers(dp: Dispatcher):
