@@ -12,14 +12,14 @@ async def price_cat(query: types.CallbackQuery):
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Доступні бренди в категорії:',
                     reply_markup=brand_markup(callback_data['id']).add(
-                        back_to_cat_from_brand()))
+                        back_to_cat_from_brand_kb()))
 
 
 async def price_tasty(query: types.CallbackQuery, callback_data: dict):
     brand_id = callback_data['id']
     await edit_text(query.message, message_text='price_handler:',
                     reply_markup=position_markup(brand_id).add(
-                        back_to_brand_from_tasty(brand_id)))
+                        back_to_brand_from_tasty_kb(brand_id)))
 
 
 def register_price_handlers(dp: Dispatcher):

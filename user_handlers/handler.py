@@ -68,7 +68,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
                             , reply_markup=keyboard(pos_id).add(
-            back_to_tasty_from_pos(sqlite_db.select_brand_id(pos_id))))
+            back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(pos_id))))
     print(order.order_dict)
     print(order.pos_dict)
 
@@ -98,7 +98,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(message=query.message, message_text=f'{full_text}\n'
                                                         f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
                     reply_markup=keyboard(callback_data['id']).add(
-                        back_to_tasty_from_pos(callback_data['id'])))
+                        back_to_tasty_from_pos_kb(callback_data['id'])))
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
