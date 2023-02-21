@@ -4,7 +4,7 @@ from create_bot import dp
 from keyboards import *
 from config import ADMIN
 from datadase.admin_db import *
-from user_handlers.handler import edit_text
+from user_handlers.handler import edit_text, status
 
 
 async def admin_test(message: types.Message):
@@ -70,7 +70,7 @@ async def last_order_admin(query: types.CallbackQuery):
 
 async def stock(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Category:',
-                    reply_markup=cat_markup(admin=True))
+                    reply_markup=cat_markup())
 
 
 async def back_to_admin_menu(query: types.CallbackQuery):
@@ -80,12 +80,12 @@ async def back_to_admin_menu(query: types.CallbackQuery):
 
 async def stock_brand(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Brands:',
-                    reply_markup=brand_markup(callback_data['id'], admin=True))
+                    reply_markup=brand_markup(callback_data['id']))
 
 
 async def stock_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Positions:',
-                    reply_markup=position_markup(callback_data['id'], admin=True))
+                    reply_markup=position_markup(callback_data['id'], status.dialog_status[query.from_user.id]))
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
@@ -107,14 +107,14 @@ async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=True, pos_id=callback_data['id'])
     await edit_text(query.message, message_text='Changed to TRUE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                 admin=True))
+                                                 status.dialog_status[query.from_user.id]))
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=False, pos_id=callback_data['id'])
     await edit_text(query.message, message_text='Changed to FALSE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                 admin=True))
+                                                 status.dialog_status[query.from_user.id]))
 
 
 def register_admin_handlers(dp: Dispatcher):
