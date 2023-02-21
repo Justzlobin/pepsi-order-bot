@@ -37,7 +37,7 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text='POSITIONS',
                     reply_markup=position_markup(brand_id).add(
-                        back_to_brand_from_tasty(sqlite_db.select_cat_id(brand_id))))
+                        back_to_brand_from_tasty(brand_id)))
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
