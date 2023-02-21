@@ -96,11 +96,11 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     #                                                        f'Кількість: 0, Ціна: {text[5]}',
     #                                                reply_markup=keyboard(callback_data['id']))
     # except FileNotFoundError:
-
+    print(f'pos_id {callback_data["id"]}')
     await edit_text(message=query.message, message_text=f'{full_text}\n'
                                                         f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
                     reply_markup=keyboard(callback_data['id']).add(
-                        back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(callback_data['id']))))
+                        back_to_tasty_from_pos_kb(callback_data['id'])))
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
