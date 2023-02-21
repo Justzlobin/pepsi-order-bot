@@ -148,6 +148,8 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
         del order.pos_dict[query.from_user.id][callback_data['id']]
         del order.order_dict[query.from_user.id][callback_data['id']]
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
+    print(brand_id)
+    print(sqlite_db.select_cat_id(brand_id))
     await edit_text(query.message, message_text='Доступні смаки бренду:',
                     reply_markup=position_markup(brand_id).add(
                         back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))))
