@@ -8,6 +8,8 @@ order = Order()
 
 async def command_start(message: types.Message):
     await message.delete()
+    del order.order_dict
+    del order.pos_dict
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
                                         'MAIN MENU',
