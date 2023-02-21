@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text, order, status
-
+from datadase.sqlite_db import select_cat_id
 
 async def back_to_cat_from_brand(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Categories:',
@@ -36,7 +36,7 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text='POSITIONS',
                     reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                        back_to_brand_from_tasty_kb(brand_id)))
+                        back_to_brand_from_tasty_kb(select_cat_id(brand_id))))
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
