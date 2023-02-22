@@ -4,6 +4,7 @@ from aiogram import types
 from user_handlers.handler import edit_text, order, status
 from datadase.sqlite_db import select_cat_id
 
+
 async def back_to_cat_from_brand(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Categories:',
                     reply_markup=cat_markup().add(back_to_order_kb()))

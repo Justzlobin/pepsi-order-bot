@@ -22,7 +22,7 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
     brand_id = callback_data['id']
     await edit_text(query.message, message_text='price_handler:',
                     reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                        back_to_brand_from_tasty_kb(brand_id)))
+                        back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))))
 
 
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):
