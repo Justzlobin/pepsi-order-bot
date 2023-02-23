@@ -35,8 +35,7 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
     try:
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"),
-                                                   reply_markup=keyboard(callback_data['id']))
+                                                       fr"image/{callback_data['id']}.png"))
         photo.add(chat_id=query.message.chat.id, photo=message_photo)
     except FileNotFoundError:
         pass
