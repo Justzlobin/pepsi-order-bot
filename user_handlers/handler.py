@@ -1,10 +1,11 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from classes import Order, Status
+from classes import Order, Status, PhotoDelete
 
 order = Order()
 status = Status()
+photo = PhotoDelete()
 
 
 async def command_start(message: types.Message):
@@ -88,14 +89,14 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
-    # try:
-    #     message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
-    #                                                photo=types.InputFile(
-    #                                                    fr"image/{callback_data['id']}.png"),
-    #                                                caption=f'{full_text}\n'
-    #                                                        f'Кількість: 0, Ціна: {text[5]}',
-    #                                                reply_markup=keyboard(callback_data['id']))
-    # except FileNotFoundError:
+    try:
+        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                                   photo=types.InputFile(
+                                                       fr"image/{callback_data['id']}.png"),
+                                                   reply_markup=keyboard(callback_data['id']))
+        photo.add(chat_id=query.message.chat.id, photo=message_photo)
+    except FileNotFoundError:
+        pass
     print(f'pos_id {callback_data["id"]}')
     await edit_text(message=query.message, message_text=f'{full_text}\n'
                                                         f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
@@ -171,6 +172,12 @@ async def multi(query: types.CallbackQuery):
 
 async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
+
+
+async def delete_photo(chat_id):
+    for image in photo.photo_dict[chat_id]:
+        await image.delete()
+    photo.delete(chat_id)
 
 
 def register_user_handlers(dp: Dispatcher):

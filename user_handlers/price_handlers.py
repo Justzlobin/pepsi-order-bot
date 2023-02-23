@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards.client_kb import *
 from keyboards.back_to import *
 from aiogram import types
-from user_handlers.handler import edit_text, status
+from user_handlers.handler import edit_text, status, photo
 
 
 async def price_cat(query: types.CallbackQuery):
@@ -32,6 +32,14 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+    try:
+        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                                   photo=types.InputFile(
+                                                       fr"image/{callback_data['id']}.png"),
+                                                   reply_markup=keyboard(callback_data['id']))
+        photo.add(chat_id=query.message.chat.id, photo=message_photo)
+    except FileNotFoundError:
+        pass
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text=full_text,
                     reply_markup=InlineKeyboardMarkup(inline_keyboard=back_to_tasty_from_pos_kb(brand_id)))
