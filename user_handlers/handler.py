@@ -97,6 +97,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     except FileNotFoundError:
         pass
     print(f'pos_id {callback_data["id"]}')
+    print(photo.photo_dict)
     await edit_text(message=query.message, message_text=f'{full_text}\n'
                                                         f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
                     reply_markup=keyboard(callback_data['id']).add(
