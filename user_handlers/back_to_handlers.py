@@ -34,6 +34,7 @@ async def back_to_start_order(query: types.CallbackQuery):
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
+    await delete_photo(query.message.chat.id)
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await edit_text(message=query.message, message_text='POSITIONS',
                     reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
@@ -42,10 +43,8 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
         pass
-    try:
-        await delete_photo(query.message.chat.id)
-    except:
-        pass
+
+
 
 
 def register_back_to_handlers(dp: Dispatcher):
