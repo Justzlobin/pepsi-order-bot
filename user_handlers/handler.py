@@ -99,13 +99,11 @@ async def position(query: types.CallbackQuery, callback_data: dict):
         pass
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
-    message = await query.bot.send_message(text=f'{full_text}\n'
-                                                f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
-                                           reply_markup=keyboard(callback_data['id']).add(
-                                               back_to_tasty_from_pos_kb(callback_data['id'])),
-                                           chat_id=query.message.chat.id)
-    photo.add(chat_id=query.message.chat.id, message=message)
-    await delete_extra_messages(chat_id=query.message.chat.id)
+    await query.bot.send_message(text=f'{full_text}\n'
+                                      f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
+                                 reply_markup=keyboard(callback_data['id']).add(
+                                     back_to_tasty_from_pos_kb(callback_data['id'])),
+                                 chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
