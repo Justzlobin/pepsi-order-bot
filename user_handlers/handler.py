@@ -14,7 +14,6 @@ async def messages(message: types.Message):
 
 async def command_start(message: types.Message):
     await message.delete()
-
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
                                         'MAIN MENU',
@@ -101,18 +100,12 @@ async def position(query: types.CallbackQuery, callback_data: dict):
         await query.bot.send_photo(chat_id=query.message.chat.id,
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
-                                   caption=full_text,reply_markup=keyboard(callback_data['id']).add(
-                                     back_to_tasty_from_pos_kb(callback_data['id'])))
-        # photo.add(chat_id=query.message.chat.id, message=message_photo)
+                                   caption=full_text, reply_markup=keyboard(callback_data['id']).add(
+                back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
         pass
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
-    # await query.bot.send_message(text=f'{full_text}\n'
-    #                                   f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
-    #                              reply_markup=keyboard(callback_data['id']).add(
-    #                                  back_to_tasty_from_pos_kb(callback_data['id'])),
-    #                              chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
@@ -143,6 +136,7 @@ async def order_position_zero(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_position_finish(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     print(order.order_dict)
     print(order.pos_dict)
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
@@ -162,13 +156,10 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
         del order.pos_dict[query.from_user.id][callback_data['id']]
         del order.order_dict[query.from_user.id][callback_data['id']]
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
-    print(brand_id)
-    print(sqlite_db.select_cat_id(brand_id))
-    await edit_text(query.message, message_text='Доступні смаки бренду:',
-                    reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                        back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))))
-    print(order.order_dict)
-    print(order.pos_dict)
+    await query.bot.send_message(text='Доступні смаки бренду:',
+                                 reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
+                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))),
+                                 chat_id=query.message.chat.id)
     await delete_photo(query.message.chat.id)
 
 

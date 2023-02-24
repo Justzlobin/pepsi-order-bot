@@ -34,16 +34,16 @@ async def back_to_start_order(query: types.CallbackQuery):
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
-    await edit_text(message=query.message, message_text='POSITIONS',
-                    reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                        back_to_brand_from_tasty_kb(select_cat_id(brand_id))))
+    await query.bot.send_message(text='Доступні смаки бренду:',
+                                 reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
+                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))),
+                                 chat_id=query.message.chat.id)
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
         pass
-    await delete_photo(query.message.chat.id)
-
 
 def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_tasty_from_pos, Back_to_id.filter(action='back_to_tasty_from_pos'))
