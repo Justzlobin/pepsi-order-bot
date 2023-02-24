@@ -38,8 +38,8 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=full_text,
-                                   reply_markup=InlineKeyboardMarkup(
-                                       back_to_tasty_from_pos_kb(callback_data['id'])))
+                                   reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                                       back_to_tasty_from_pos_kb(callback_data['id'])]))
 
     except FileNotFoundError:
         await query.bot.send_message(chat_id=query.message.chat.id,
