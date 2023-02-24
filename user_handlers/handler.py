@@ -77,6 +77,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
         order.pos_dict[query.from_user.id][callback_data['id']] = value
@@ -99,11 +100,12 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
     message = await query.bot.send_message(text=f'{full_text}\n'
-                                      f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
-                                 reply_markup=keyboard(callback_data['id']).add(
-                                     back_to_tasty_from_pos_kb(callback_data['id'])),
-                                 chat_id=query.message.chat.id)
+                                                f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
+                                           reply_markup=keyboard(callback_data['id']).add(
+                                               back_to_tasty_from_pos_kb(callback_data['id'])),
+                                           chat_id=query.message.chat.id)
     photo.add(chat_id=query.message.chat.id, message=message)
+    await delete_extra_messages(chat_id=query.message.chat.id)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
@@ -180,6 +182,11 @@ async def delete_photo(chat_id):
     for image in photo.photo_dict[chat_id]:
         await image.delete()
     photo.delete(chat_id)
+
+
+async def delete_extra_messages(chat_id):
+    for message in photo.photo_dict[chat_id][1:]:
+        await message.delete()
 
 
 def register_user_handlers(dp: Dispatcher):
