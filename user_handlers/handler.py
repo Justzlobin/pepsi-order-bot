@@ -92,23 +92,18 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     try:
         message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
                                                    photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"),
-                                                   caption=f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
-                                                           f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-                                                           f"Ціна: {dict_desc['price']} грн.\n" \
-                                                           f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                                                           f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн.",
-                                                   reply_markup=keyboard(callback_data['id']).add(
-                                                       back_to_tasty_from_pos_kb(callback_data['id'])))
+                                                       fr"image/{callback_data['id']}.png"))
         photo.add(chat_id=query.message.chat.id, message=message_photo)
     except FileNotFoundError:
-
-        await edit_text(message=query.message, message_text=f'{full_text}\n'
-                                                            f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
-                        reply_markup=keyboard(callback_data['id']).add(
-                            back_to_tasty_from_pos_kb(callback_data['id'])))
+        pass
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
+    message = await query.bot.send_message(text=f'{full_text}\n'
+                                      f'Кількість: {value}, Ціна: {dict_desc["price"] * value} uah.',
+                                 reply_markup=keyboard(callback_data['id']).add(
+                                     back_to_tasty_from_pos_kb(callback_data['id'])),
+                                 chat_id=query.message.chat.id)
+    photo.add(chat_id=query.message.chat.id, message=message)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):
