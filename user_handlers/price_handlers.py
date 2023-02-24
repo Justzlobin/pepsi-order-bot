@@ -38,7 +38,7 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=full_text,
-                                   reply_markup=InlineKeyboardMarkup.add(
+                                   reply_markup=InlineKeyboardMarkup(
                                        back_to_tasty_from_pos_kb(callback_data['id'])))
 
     except FileNotFoundError:
