@@ -9,4 +9,4 @@ class PhotoDelete:
         self.photo_dict[chat_id] = self.photo_list
 
     def delete(self, chat_id):
-        del self.photo_dict[chat_id]
+        self.photo_dict[chat_id].clear()
