@@ -160,6 +160,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                         back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))))
     print(order.order_dict)
     print(order.pos_dict)
+    await delete_photo(query.message.chat.id)
 
 
 async def box(query: types.CallbackQuery):
