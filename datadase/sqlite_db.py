@@ -74,14 +74,6 @@ def select_one_position(pos_id):
             'tasty_desc': items[4], 'price': items[5], 'box_size': items[6]}
 
 
-def add_in_order(order_id, pos_id, quantity, price, user_id):
-    if quantity != 0:
-        cur.execute("""INSERT INTO "order" (order_id, pos_id, quantity, full_price, user_id)
-                VALUES (%s, %s, %s, %s, %s)""",
-                    (order_id, pos_id, quantity, price, user_id))
-        return conn.commit()
-
-
 def list_from_order(order_id, user_id):
     text_order_list = []
     text_order = select_from_order(order_id, user_id)
@@ -102,29 +94,6 @@ def select_from_order(order_id, user_id):
                         AND p.size_id = s.size_id 
                         """, (order_id, user_id))
     return cur.fetchall()
-
-
-def create_new_custom(user_id):
-    if check_list_order_id():
-        new_custom = check_list_order_id() + 1
-    else:
-        new_custom = 1
-    cur.execute("""INSERT INTO list (list_id, user_id, date, payment, comment, status)
-                VALUES (%s, %s, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT)
-                """,
-                (new_custom, user_id))
-    return new_custom
-
-
-def check_list_order_id():
-    cur.execute("""SELECT MAX(list_id) FROM list """)
-    return cur.fetchone()[0]
-
-
-def delete_from_order(order_id):
-    cur.execute("""DELETE FROM "order" WHERE order_id = %s""", (order_id,))
-    cur.execute("""DELETE FROM list WHERE list_id = %s""", (order_id,))
-    return conn.commit()
 
 
 def sum_order(order_id) -> float:
@@ -268,11 +237,6 @@ def select_price_of_box(pos_id, amount):
     return round(amount / box_size, 1)
 
 
-def order_verification(order_id):
-    cur.execute("""UPDATE list SET check_order = %s WHERE list_id = %s""", (True, order_id))
-    return conn.commit()
-
-
 def delete_not_verification(user_id=None):
     if user_id:
         cur.execute("""DELETE FROM list  WHERE check_order = %s AND user_id = %s""", (False, user_id))
@@ -282,11 +246,6 @@ def delete_not_verification(user_id=None):
         cur.execute("""DELETE FROM "order" WHERE order_id IS NULL""")
 
     return conn.commit()
-
-
-def check_position_in_stock(pos_id):
-    cur.execute("""SELECT in_stock FROM position WHERE pos_id = %s""", (pos_id,))
-    return cur.fetchall()[0]
 
 
 def close(self):
