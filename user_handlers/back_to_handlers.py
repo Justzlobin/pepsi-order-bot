@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from user_handlers.handler import edit_text, order, status,  delete_photo
+from user_handlers.handler import edit_text, order, status, delete_photo
 from datadase.sqlite_db import select_cat_id
 
 
@@ -38,12 +38,14 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await query.bot.send_message(text='Доступні смаки бренду:',
                                  reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))),
+                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id)),
+                                     back_to_order_kb()),
                                  chat_id=query.message.chat.id)
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
         pass
+
 
 def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_tasty_from_pos, Back_to_id.filter(action='back_to_tasty_from_pos'))
