@@ -34,7 +34,6 @@ async def back_to_start_order(query: types.CallbackQuery):
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
-    await delete_photo(query.message.chat.id)
 
     # await delete_photo(query.message.chat.id)
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
