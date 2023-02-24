@@ -69,9 +69,9 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     await message.edit_text(text=f'{full_text}\n'
                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
-                                 f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} '
-                            , reply_markup=keyboard(pos_id).add(
-            back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(pos_id))))
+                                 f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                            reply_markup=keyboard(
+                                pos_id).add(back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(pos_id))))
     print(order.order_dict)
     print(order.pos_dict)
 
