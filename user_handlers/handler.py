@@ -8,8 +8,11 @@ status = Status()
 photo = PhotoDelete()
 
 
+async def messages(message: types.Message):
+    await message.delete()
+
+
 async def command_start(message: types.Message):
-    message.chat.clean()
     await message.delete()
 
     await message.bot.send_message(message.from_user.id,
@@ -211,3 +214,6 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
+    #
+    #
+    dp.register_message_handler(messages)
