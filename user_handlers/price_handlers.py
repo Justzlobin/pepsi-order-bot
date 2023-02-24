@@ -26,6 +26,7 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
 
 
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
@@ -33,15 +34,18 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     try:
-        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
-                                                   photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"))
-        photo.add(chat_id=query.message.chat.id, photo=message_photo)
+        await query.bot.send_photo(chat_id=query.message.chat.id,
+                                   photo=types.InputFile(
+                                       fr"image/{callback_data['id']}.png"),
+                                   caption=full_text,
+                                   reply_markup=keyboard(callback_data['id']).add(
+                                       back_to_tasty_from_pos_kb(callback_data['id'])))
+
     except FileNotFoundError:
-        pass
-    brand_id = sqlite_db.select_brand_id(callback_data['id'])
-    await edit_text(message=query.message, message_text=full_text,
-                    reply_markup=InlineKeyboardMarkup(inline_keyboard=back_to_tasty_from_pos_kb(brand_id)))
+        await query.bot.send_message(chat_id=query.message.chat.id,
+                                     text=full_text,
+                                     reply_markup=keyboard(callback_data['id']).add(
+                                         back_to_tasty_from_pos_kb(callback_data['id'])))
 
 
 def register_price_handlers(dp: Dispatcher):
