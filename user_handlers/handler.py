@@ -73,10 +73,10 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
     await message.edit_caption(caption=f'{full_text}\n'
-                                 f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
-                                 f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
-                            reply_markup=keyboard(
-                                pos_id).add(back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(pos_id))))
+                                       f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
+                                       f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                               reply_markup=keyboard(
+                                   pos_id).add(back_to_tasty_from_pos_kb(sqlite_db.select_brand_id(pos_id))))
     print(order.order_dict)
     print(order.pos_dict)
 
@@ -94,12 +94,15 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн.\n" \
+                f"Кількість: {value}, Ціна: {dict_desc['price'] * value} uah."
+
     try:
-        message_photo = await query.bot.send_photo(chat_id=query.message.chat.id,
-                                                   photo=types.InputFile(
-                                                       fr"image/{callback_data['id']}.png"),
-                                                   caption=full_text)
+        await query.bot.send_photo(chat_id=query.message.chat.id,
+                                   photo=types.InputFile(
+                                       fr"image/{callback_data['id']}.png"),
+                                   caption=full_text,reply_markup=keyboard(callback_data['id']).add(
+                                     back_to_tasty_from_pos_kb(callback_data['id'])))
         # photo.add(chat_id=query.message.chat.id, message=message_photo)
     except FileNotFoundError:
         pass
