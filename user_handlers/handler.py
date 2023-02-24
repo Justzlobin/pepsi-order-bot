@@ -9,7 +9,9 @@ photo = PhotoDelete()
 
 
 async def command_start(message: types.Message):
+    message.chat.clean()
     await message.delete()
+
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
                                         'MAIN MENU',
