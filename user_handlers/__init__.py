@@ -4,3 +4,4 @@ from user_handlers import comment
 from user_handlers import update_order_handler
 from user_handlers import price_handlers
 from user_handlers import back_to_handlers
+from user_handlers import order_handler

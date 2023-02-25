@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards.client_kb import *
 from keyboards.back_to import *
 from aiogram import types
-from user_handlers.handler import edit_text, status, photo
+from user_handlers.handler import edit_text, status
 
 
 async def price_cat(query: types.CallbackQuery):
@@ -38,9 +38,8 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=full_text,
-                                   reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                                       back_to_tasty_from_pos_kb(callback_data['id'])]))
-
+                                   reply_markup=InlineKeyboardMarkup(inline_keyboard=
+                                                                     back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
         await query.bot.send_message(chat_id=query.message.chat.id,
                                      text=full_text,
