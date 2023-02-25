@@ -251,7 +251,8 @@ def delete_not_verification(user_id=None):
 def save_order(user_id, order_dict):
     def add_order_in_list():
         cur.execute("""INSERT INTO list (user_id) VALUES (%s)""", (user_id,))
-        return conn.commit()
+        conn.commit()
+        return True
 
     try:
         if add_order_in_list():
