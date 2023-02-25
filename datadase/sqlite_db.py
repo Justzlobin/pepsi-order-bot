@@ -248,18 +248,19 @@ def delete_not_verification(user_id=None):
     return conn.commit()
 
 
-def save_order(user_id, order_dict):
-    def add_order_in_list():
-        cur.execute("""INSERT INTO list (user_id) VALUES %s""", (user_id,))
-        return conn.commit()
+def add_order_in_list(user_id):
+    cur.execute("""INSERT INTO list (user_id) VALUES %s""", (user_id,))
+    return conn.commit()
 
+
+def save_order(user_id, order_dict):
     try:
-        if add_order_in_list():
+        if add_order_in_list(user_id):
             cur.execute("""SELECT list_id FROM list WHERE user_id""", (user_id,))
             order_id = cur.fetchall()[-1]
             for pos_id, quantity in order_dict[user_id].items():
                 cur.execute("""INSERT INTO 'order' (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
-                            (pos_id, quantity, round(pos_id * quantity, 2), order_id))
+                            (int(pos_id), quantity, round(pos_id * quantity, 2), order_id))
                 conn.commit()
         return True
     except:
