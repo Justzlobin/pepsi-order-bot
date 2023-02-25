@@ -249,7 +249,7 @@ def delete_not_verification(user_id=None):
 
 
 def add_order_in_list(user_id):
-    cur.execute("""INSERT INTO list (user_id) VALUES %s""", (user_id,))
+    cur.execute("""INSERT INTO list (user_id) VALUES (%s)""", (user_id,))
     return conn.commit()
 
 
