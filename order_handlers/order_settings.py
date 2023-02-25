@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 from keyboards import *
-from user_handlers.handler import edit_text
+from user_handlers.handler import edit_text, order
 
 
 async def calendar(query: types.CallbackQuery):
@@ -19,7 +19,7 @@ async def payment_cash(query: types.CallbackQuery):
                                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                     reply_markup=order_menu_kb())
-    sqlite_db.update_payment(query.from_user.id, payment='💰 Готівка')
+    order.order_settings_dict(user_id=query.from_user.id, payment='💰 Готівка')
 
 
 async def payment_bank(query: types.CallbackQuery):
@@ -28,7 +28,7 @@ async def payment_bank(query: types.CallbackQuery):
                                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
                                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                     reply_markup=order_menu_kb())
-    sqlite_db.update_payment(query.from_user.id, payment='💳 Банк')
+    order.order_settings_dict(user_id=query.from_user.id, payment='💳 Банк')
 
 
 def register_order_settings(dp: Dispatcher):

@@ -4,12 +4,13 @@ class Order:
         self.order_dict = {}
         self.pos_dict = {}
         self.checkin = {}
-        self.comment_dict = {}
+        self.order_settings_dict = {}
 
     def start_order(self, user_id):
         self.order_dict[user_id] = {}
         self.pos_dict[user_id] = {}
         self.checkin[user_id] = False
+        self.order_settings_dict[user_id] = {}
 
     def add_in_pos_dict(self, user_id, pos_id, value):
         self.pos_dict[user_id][pos_id] = value
@@ -19,4 +20,7 @@ class Order:
         self.order_dict[user_id][pos_id] = value
 
     def add_comment(self, user_id, comment):
-        self.comment_dict[user_id] = comment
+        self.order_settings_dict[user_id]['comment'] = comment
+
+    def add_payment(self, user_id, payment):
+        self.order_settings_dict[user_id]['payment'] = payment

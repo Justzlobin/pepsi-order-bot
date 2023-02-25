@@ -250,7 +250,8 @@ def delete_not_verification(user_id=None):
 
 def save_order(user_id, order):
     def add_order_in_list():
-        cur.execute("""INSERT INTO list (user_id, comment) VALUES (%s, %s)""", (user_id, order.comment_dict[user_id]))
+        cur.execute("""INSERT INTO list (user_id, date, payment, comment) VALUES (%s, DATETIME(), %s, %s)""",
+                    (user_id, order.order_settings_dict['payment'], order.comment_dict[user_id]))
         conn.commit()
         return True
 
