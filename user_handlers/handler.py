@@ -190,9 +190,6 @@ async def delete_photo(chat_id):
     except KeyError:
         pass
 
-async def delete_extra_messages(chat_id):
-    for message in photo.photo_dict[chat_id][2:]:
-        await message.delete()
 
 
 def register_user_handlers(dp: Dispatcher):

@@ -71,7 +71,7 @@ def select_one_position(pos_id):
                             AND p.tasty_id = t.tasty_id""", (pos_id,))
     items = cur.fetchone()
     return {'brand_title': items[0], 'size': items[1], 'type': items[2], 'tasty_title': items[3],
-            'tasty_desc': items[4], 'price': items[5], 'box_size': items[6]}
+            'tasty_desc': items[4], 'price': round(items[5], 2), 'box_size': items[6]}
 
 
 def list_from_order(order_id, user_id):
@@ -175,14 +175,14 @@ def update_payment(user_id, payment):
     return conn.commit()
 
 
-async def update_comment(user_id, state):
-    async with state.proxy() as data:
-        dit = data.values()
-        print(dit)
-    cur.execute("""UPDATE list SET comment = %s WHERE list_id = %s AND user_id = %s""",
-                (tuple(dit)[0], select_last_order(user_id), user_id))
-
-    return conn.commit()
+# async def update_comment(user_id, state):
+#     async with state.proxy() as data:
+#         dit = data.values()
+#         print(dit)
+#     cur.execute("""UPDATE list SET comment = %s WHERE list_id = %s AND user_id = %s""",
+#                 (tuple(dit)[0], select_last_order(user_id), user_id))
+#
+#     return conn.commit()
 
 
 def list_order_to_admin():
@@ -248,16 +248,16 @@ def delete_not_verification(user_id=None):
     return conn.commit()
 
 
-def save_order(user_id, order_dict):
+def save_order(user_id, order):
     def add_order_in_list():
-        cur.execute("""INSERT INTO list (user_id) VALUES (%s)""", (user_id,))
+        cur.execute("""INSERT INTO list (user_id, comment) VALUES (%s, %s)""", (user_id, order.comment_dict[user_id]))
         conn.commit()
         return True
 
     if add_order_in_list():
         cur.execute("""SELECT list_id FROM list WHERE user_id = %s""", (user_id,))
         order_id = cur.fetchall()[-1]
-        for pos_id, quantity in order_dict.items():
+        for pos_id, quantity in order.order_dict[user_id].items():
             cur.execute("""INSERT INTO "order" (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
                         (int(pos_id), quantity, round(int(pos_id) * quantity, 2), order_id))
             conn.commit()

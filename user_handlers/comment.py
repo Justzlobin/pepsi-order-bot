@@ -2,7 +2,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram import Dispatcher
 from keyboards import *
 from states.comment_states import CommentToOrder
-from user_handlers.handler import edit_text
+from user_handlers.handler import edit_text, order
 
 
 async def comment(query: types.CallbackQuery):
@@ -33,7 +33,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
         print(tuple(data_comment.values()))
-    await sqlite_db.update_comment(message.from_user.id, state)
+    order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
     await state.finish()
     await edit_text(message, message_text='*Примітка збережена*\n'
                                           '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
