@@ -13,7 +13,9 @@ async def order_basket_confirm(query: types.CallbackQuery):
 
 
 async def order_basket_cancel(query: types.CallbackQuery):
-    pass
+    del order.order_dict[query.from_user.id]
+    await edit_text(message=query.message, message_text='MAIN MENU',
+                    reply_markup=order_menu_kb())
 
 
 def register_order_handlers(dp: Dispatcher):
