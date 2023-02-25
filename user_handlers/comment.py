@@ -30,6 +30,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
 
 
 async def write_comment(message: types.Message, state: FSMContext):
+    await message.delete()
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
         print(tuple(data_comment.values()))
