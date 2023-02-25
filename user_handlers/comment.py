@@ -26,11 +26,8 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await edit_text(query.message, message_text='*Дію скасовано*\n'
-                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                    reply_markup=order_menu_kb())
+    await edit_text(query.message, message_text='ORDER KB',
+                    reply_markup=order_kb())
 
 
 async def write_comment(message: types.Message, state: FSMContext):
