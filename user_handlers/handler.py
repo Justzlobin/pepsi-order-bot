@@ -56,10 +56,10 @@ async def order_basket(query: types.CallbackQuery):
                  f" {dict_desc['price'] * value}\n"])
 
         await edit_text(message=query.message, message_text=full_text,
-                    reply_markup=order_basket_kb().add(back_to_order_kb()))
+                        reply_markup=order_basket_kb().add(back_to_order_kb()))
     else:
         await edit_text(message=query.message, message_text='ORDER MENU KB',
-                        reply_markup=order_basket_kb().add(back_to_order_kb()))
+                        reply_markup=order_menu_kb().add(back_to_order_kb()))
 
 
 async def order_settings(query: types.CallbackQuery):
@@ -105,7 +105,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                                    photo=types.InputFile(
                                        fr"image/{callback_data['id']}.png"),
                                    caption=full_text, reply_markup=keyboard(callback_data['id']).add(
-                                                                    back_to_tasty_from_pos_kb(callback_data['id'])))
+                back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
         pass
     print(f'pos_id {callback_data["id"]}')
