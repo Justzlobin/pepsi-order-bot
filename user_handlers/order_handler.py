@@ -1,14 +1,13 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from datadase.sqlite_db import save_order, add_order_in_list
+from datadase.sqlite_db import save_order
 from .handler import order, edit_text
 
 
 async def order_basket_confirm(query: types.CallbackQuery):
-    add_order_in_list(user_id=query.from_user.id)
-    print(add_order_in_list(user_id=query.from_user.id))
-    # save_order(user_id=query.from_user.id, order_dict=order.order_dict)
+
+    save_order(user_id=query.from_user.id, order_dict=order.order_dict)
     await edit_text(message=query.message, message_text='Додано',
                     reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
