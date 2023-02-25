@@ -259,7 +259,7 @@ def save_order(user_id, order_dict):
         order_id = cur.fetchall()[-1]
         for pos_id, quantity in order_dict.items():
             cur.execute("""INSERT INTO 'order' (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
-                        (int(pos_id), quantity, round(pos_id * quantity, 2), order_id))
+                        (int(pos_id), quantity, round(int(pos_id) * quantity, 2), order_id))
             conn.commit()
         return True
 
