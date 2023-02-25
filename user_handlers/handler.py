@@ -183,10 +183,12 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 
 
 async def delete_photo(chat_id):
-    for image in photo.photo_dict[chat_id]:
-        await image.delete()
-    photo.delete(chat_id)
-
+    try:
+        for image in photo.photo_dict[chat_id]:
+            await image.delete()
+        photo.delete(chat_id)
+    except KeyError:
+        pass
 
 async def delete_extra_messages(chat_id):
     for message in photo.photo_dict[chat_id][2:]:
