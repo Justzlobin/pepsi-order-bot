@@ -263,5 +263,6 @@ def save_order(user_id, order_dict):
             conn.commit()
         return True
 
+
 def close(self):
     self.close()
