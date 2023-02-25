@@ -7,7 +7,7 @@ from .handler import order, edit_text
 
 async def order_basket_confirm(query: types.CallbackQuery):
 
-    save_order(user_id=query.from_user.id, order_dict=order.order_dict)
+    save_order(user_id=query.from_user.id, order_dict=order.order_dict[query.from_user.id])
     await edit_text(message=query.message, message_text='Додано',
                     reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
