@@ -38,11 +38,8 @@ async def write_comment(message: types.Message, state: FSMContext):
     order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
     await state.finish()
     await edit_text(message=comment_message['message'],
-                    message_text='*Примітка збережена*\n'
-                                 '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                    reply_markup=order_menu_kb())
+                    message_text='ORDER KB',
+                    reply_markup=order_kb())
 
 
 def comment_order_handlers(dp: Dispatcher):
