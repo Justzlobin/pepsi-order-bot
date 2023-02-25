@@ -9,7 +9,7 @@ comment_message = {}
 
 async def comment(query: types.CallbackQuery):
     await CommentToOrder.write_comment.set()
-    message = await edit_text(query.message,
+    await edit_text(query.message,
                               message_text='Введіть примітку.\n'
                                            'Приклад:\n'
                                            '<b>Дата доставки</b>\n'
@@ -17,7 +17,7 @@ async def comment(query: types.CallbackQuery):
                                            '<b>"Серт"</b> - сертифікат\n'
                                            '<b>"ТТН"</b> - товаро-транспортна накладна\n',
                               reply_markup=cancel_state())
-    comment_message['message'] = message
+    comment_message['message'] = query.message
     print(comment_message)
 
 
