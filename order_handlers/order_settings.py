@@ -14,20 +14,16 @@ async def payment(query: types.CallbackQuery):
 
 
 async def payment_cash(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='*Обрано: "💰 Готівка"*\n'
-                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                    reply_markup=order_menu_kb())
+    await query.answer(text='Cash!')
+    await edit_text(query.message, message_text='ORDER KB',
+                    reply_markup=order_kb().add(back_to_menu_kb()))
     order.order_settings_dict(user_id=query.from_user.id, payment='💰 Готівка')
 
 
 async def payment_bank(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='*Обрано: "💳 Банк"*\n'
-                                                '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                                '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                                '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
-                    reply_markup=order_menu_kb())
+    await query.answer(text='Bank!')
+    await edit_text(query.message, message_text='ORDER KB',
+                    reply_markup=order_kb().add(back_to_menu_kb()))
     order.order_settings_dict(user_id=query.from_user.id, payment='💳 Банк')
 
 
