@@ -6,7 +6,7 @@ from .handler import order, edit_text
 
 
 async def order_basket_confirm(query: types.CallbackQuery):
-    save_order(user_id=query.from_user.id, order_dict=order.order_dict[query.from_user.id])
+    save_order(user_id=query.from_user.id, order=order.order_dict[query.from_user.id])
     await query.answer(text='Додано')
     await edit_text(message=query.message, message_text='ORDER MENU KB',
                     reply_markup=order_menu_kb().add(back_to_menu_kb()))
@@ -15,7 +15,7 @@ async def order_basket_confirm(query: types.CallbackQuery):
 async def order_basket_cancel(query: types.CallbackQuery):
     del order.order_dict[query.from_user.id]
     await edit_text(message=query.message, message_text='MAIN MENU',
-                    reply_markup=order_menu_kb())
+                    reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 def register_order_handlers(dp: Dispatcher):
