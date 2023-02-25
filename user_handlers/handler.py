@@ -58,8 +58,8 @@ async def order_basket(query: types.CallbackQuery):
         await edit_text(message=query.message, message_text=full_text,
                         reply_markup=order_basket_kb().add(back_to_order_kb()))
     else:
-        await edit_text(message=query.message, message_text='ORDER MENU KB',
-                        reply_markup=order_menu_kb().add(back_to_order_kb()))
+        await edit_text(message=query.message, message_text='ORDER KB',
+                        reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
 async def order_settings(query: types.CallbackQuery):
