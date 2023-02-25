@@ -255,7 +255,7 @@ def save_order(user_id, order_dict):
         return True
 
     if add_order_in_list():
-        cur.execute("""SELECT list_id FROM list WHERE user_id""", (user_id,))
+        cur.execute("""SELECT list_id FROM list WHERE user_id = %s""", (user_id,))
         order_id = cur.fetchall()[-1]
         for pos_id, quantity in order_dict.items():
             cur.execute("""INSERT INTO 'order' (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
