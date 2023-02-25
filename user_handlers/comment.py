@@ -4,17 +4,20 @@ from keyboards import *
 from states.comment_states import CommentToOrder
 from user_handlers.handler import edit_text, order
 
+comment_message = {}
+
 
 async def comment(query: types.CallbackQuery):
     await CommentToOrder.write_comment.set()
-    await edit_text(query.message,
-                    message_text='Введіть примітку.\n'
-                                 'Приклад:\n'
-                                 '<b>Дата доставки</b>\n'
-                                 '<b>"Штрих"</b> - штрихкоди\n'
-                                 '<b>"Серт"</b> - сертифікат\n'
-                                 '<b>"ТТН"</b> - товаро-транспортна накладна\n',
-                    reply_markup=cancel_state())
+    message = await edit_text(query.message,
+                              message_text='Введіть примітку.\n'
+                                           'Приклад:\n'
+                                           '<b>Дата доставки</b>\n'
+                                           '<b>"Штрих"</b> - штрихкоди\n'
+                                           '<b>"Серт"</b> - сертифікат\n'
+                                           '<b>"ТТН"</b> - товаро-транспортна накладна\n',
+                              reply_markup=cancel_state())
+    comment_message['message'] = message
 
 
 async def stop_comment(query: types.CallbackQuery, state: FSMContext):
@@ -36,10 +39,11 @@ async def write_comment(message: types.Message, state: FSMContext):
         print(tuple(data_comment.values()))
     order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
     await state.finish()
-    await edit_text(message, message_text='*Примітка збережена*\n'
-                                          '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
-                                          '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
-                                          '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
+    await edit_text(comment_message['message'],
+                    message_text='*Примітка збережена*\n'
+                                 '1. Натисність <b>🛍️ Товари</b>, щоб почати формувати замовлення.\n'
+                                 '2. <b>🛒 Корзина</b>, щоб перевірити та підтвердити заамовлення.\n'
+                                 '3. <b>⚙ Налаштування</b>, щоб внести свої побажання чи дату доставки.',
                     reply_markup=order_menu_kb())
 
 
