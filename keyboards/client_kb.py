@@ -170,7 +170,7 @@ def order_update_user_kb(order_id):
 
 
 def user_register_kb(user_id):
-    if user_db.check_user_for_registration(user_id):
+    if sqlite_db.user_exist(user_id):
         list_kb = user_db.select_name_address_title_from_users(user_id)[0]
     else:
         list_kb = ('ПІБ ФОПа', 'АДРЕСА', 'НАЗВА ТТ')
