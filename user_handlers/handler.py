@@ -14,6 +14,8 @@ photo = PhotoDelete()
 async def command_start(message: types.Message):
     print('chat id below')
     print(message.chat.id)
+    print('user id below')
+    print(message.from_user.id)
     await message.delete()
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
