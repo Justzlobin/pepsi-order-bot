@@ -10,7 +10,7 @@ def start_db():
         print('Data base connected OK!')
 
 
-def user_exist(user_id):
+def user_exist(user_id) -> bool:
     cur.execute("SELECT user_id FROM users")
     list_users = cur.fetchall()
     if (user_id,) in list_users:
@@ -19,7 +19,7 @@ def user_exist(user_id):
         return False
 
 
-def select_all_categories():
+def select_all_categories() -> list:
     cur.execute("""SELECT * FROM category""")
     return cur.fetchall()
 
