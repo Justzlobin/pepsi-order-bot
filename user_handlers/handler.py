@@ -13,7 +13,7 @@ async def messages(message: types.Message):
 
 
 async def stickers(message: types.Sticker):
-    message.clean()
+    await message.delete_from_set()
 
 
 async def command_start(message: types.Message):
@@ -223,3 +223,4 @@ def register_user_handlers(dp: Dispatcher):
     #
     #
     dp.register_message_handler(messages)
+    dp.register_message_handler(stickers)
