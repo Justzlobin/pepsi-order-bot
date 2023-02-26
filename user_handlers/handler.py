@@ -69,8 +69,7 @@ async def order_basket(query: types.CallbackQuery):
 
 async def order_settings(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Налаштування замовлення:',
-                    reply_markup=keyboard_settings(
-                        sqlite_db.select_last_order(query.from_user.id)))
+                    reply_markup=keyboard_settings())
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):

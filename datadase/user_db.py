@@ -1,6 +1,5 @@
 import psycopg2
 from config import DB_TOKEN
-from . import sqlite_db
 
 conn = psycopg2.connect(DB_TOKEN, sslmode='require')
 cur = conn.cursor()

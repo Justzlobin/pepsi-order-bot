@@ -1,8 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from user_handlers.handler import edit_text, order, status, delete_photo
-from datadase.sqlite_db import select_cat_id
+from user_handlers.handler import edit_text, order, status
 
 
 async def back_to_cat_from_brand(query: types.CallbackQuery):
