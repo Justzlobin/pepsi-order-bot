@@ -173,13 +173,18 @@ def user_register_kb(user_id):
     if user_db.check_user_for_registration(user_id):
         list_kb = user_db.select_name_and_address_from_users(user_id)[0]
     else:
-        list_kb = ('ПІБ ФОПа', 'АДРЕСА')
+        list_kb = ('ПІБ ФОПа', 'АДРЕСА', 'НАЗВА ТТ')
     buttons = [
         [
             types.InlineKeyboardButton(text=list_kb[0],
-                                       callback_data=Cat_KB.new(id=user_id, action='register_user_name')),
-            types.InlineKeyboardButton(text=list_kb[1],
-                                       callback_data=Cat_KB.new(id=user_id, action='register_user_address'))
+                                       callback_data=Cat_KB.new(id=user_id, action='register_user_name'))
+        ],
+        [types.InlineKeyboardButton(text=list_kb[1],
+                                    callback_data=Cat_KB.new(id=user_id, action='register_user_address'))
+         ],
+        [
+            types.InlineKeyboardButton(text=list_kb[2],
+                                       callback_data=Cat_KB.new(id=user_id, action='register_user_title'))
         ]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)

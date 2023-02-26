@@ -39,12 +39,19 @@ async def user_register_address(query: types.CallbackQuery):
     await UserRegisterName.user_enter_address.set()
 
 
+async def user_register_title(query: types.CallbackQuery):
+    await edit_text(message=query.message, message_text='Vvedit` nazvu magazina',
+                    reply_markup=cancel_state(register=True))
+    await UserRegisterName.states_names.set()
+
+
 async def name_enter(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['user_name'] = message.text
     if not user_db.check_user_for_registration(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True, register=True)
-    user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
+    else:
+        user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     await state.finish()
     await edit_text(message, message_text='*Дані оновлені*\n'
                                           '<b>PEPSIBOT</b>\n'
@@ -75,10 +82,33 @@ async def address_enter(message: types.Message, state: FSMContext):
                     reply_markup=menu_kb())
 
 
+async def title_enter(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['user_title'] = message.text
+    if not user_db.check_user_for_registration(message.from_user.id):
+        user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True, register=True)
+    else:
+        user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True)
+    await state.finish()
+    await edit_text(message, message_text='*Дані оновлені*\n'
+                                          '<b>PEPSIBOT</b>\n'
+                                          'Натисніть:\n'
+                                          '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
+                                          'або сформувати замовлення. \n'
+                                          '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
+                                          '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+                    reply_markup=menu_kb())
+
+
 def register_register_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(user_register, Menu_KB.filter(action='register'))
+    #
     dp.register_callback_query_handler(user_register_name, Cat_KB.filter(action='register_user_name'), state=None)
     dp.register_callback_query_handler(user_register_address, Cat_KB.filter(action='register_user_address'), state=None)
+    dp.register_callback_query_handler(user_register_title, Cat_KB.filter(action='register_user_title'), state=None)
+    #
     dp.register_message_handler(name_enter, state=UserRegisterName.user_enter_name)
     dp.register_message_handler(address_enter, state=UserRegisterName.user_enter_address)
+    dp.register_message_handler(title_enter, state=UserRegisterName.user_enter_title)
+    #
     dp.register_callback_query_handler(stop_register, Cat_KB.filter(action='stop_register'), state='*')
