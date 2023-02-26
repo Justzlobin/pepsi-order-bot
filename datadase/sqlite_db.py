@@ -263,7 +263,7 @@ def save_order(user_id, order):
             cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (int(pos_id),))
             price = cur.fetchone()
             cur.execute("""INSERT INTO "order" (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
-                        (int(pos_id), quantity, round(price * quantity, 2), order_id))
+                        (int(pos_id), quantity, price * quantity, order_id))
             conn.commit()
         return True
 

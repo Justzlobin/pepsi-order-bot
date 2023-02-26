@@ -18,7 +18,7 @@ def order_kb():
 def order_menu_kb():
     buttons = [
         [types.InlineKeyboardButton(text='Нове замовлення', callback_data=Order_KB.new(action='new_order'))],
-        [types.InlineKeyboardButton(text='Останні замовлення', callback_data=Order_KB.new(action='last_order'))],
+        # [types.InlineKeyboardButton(text='Останні замовлення', callback_data=Order_KB.new(action='last_order'))],
     ]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
