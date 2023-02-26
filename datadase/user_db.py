@@ -29,3 +29,8 @@ def register_or_update_user_data(user_id, value, name=False, address=False, regi
 
     conn.commit()
     return True
+
+
+def get_user_id_to_order_id(order_id):
+    cur.execute("""SELECT user_id FROM list WHERE list_id = %s""", (order_id,))
+    return cur.fetchone()[0]

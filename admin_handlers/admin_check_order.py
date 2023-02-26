@@ -28,6 +28,7 @@ async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено')
+    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']), text='✅ Погоджено')
     await query.answer(text='статус змінено на ✅ Погоджено')
     await query.message.delete()
 

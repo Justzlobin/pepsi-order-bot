@@ -179,16 +179,6 @@ def update_payment(user_id, payment):
     return conn.commit()
 
 
-# async def update_comment(user_id, state):
-#     async with state.proxy() as data:
-#         dit = data.values()
-#         print(dit)
-#     cur.execute("""UPDATE list SET comment = %s WHERE list_id = %s AND user_id = %s""",
-#                 (tuple(dit)[0], select_last_order(user_id), user_id))
-#
-#     return conn.commit()
-
-
 def list_order_to_admin():
     cur.execute("""SELECT list_id, user_full_name, date, payment
                     FROM list, users
@@ -204,20 +194,6 @@ def list_order_to_user(user_id):
 
 def update_order_state(order_id, state):
     cur.execute("""UPDATE list SET status = %s WHERE list_id = %s""", (state, order_id))
-    return conn.commit()
-
-
-def empty_list_id():
-    cur.execute("""SELECT list_id FROM list""")
-    list_list_id = [i[0] for i in cur.fetchall()]
-    cur.execute("""SELECT order_id FROM "order" """)
-    list_order_id = [i[0] for i in cur.fetchall()]
-    return list(set(list_list_id) - set(list_order_id))
-
-
-def delete_empty_orders():
-    for i in empty_list_id():
-        cur.execute("""DELETE FROM list WHERE list_id = %s""", (i,))
     return conn.commit()
 
 
@@ -239,17 +215,6 @@ def select_price_of_box(pos_id, amount):
     box_size = cur.fetchone()[0]
 
     return round(amount / box_size, 1)
-
-
-def delete_not_verification(user_id=None):
-    if user_id:
-        cur.execute("""DELETE FROM list  WHERE check_order = %s AND user_id = %s""", (False, user_id))
-        cur.execute("""DELETE FROM "order" WHERE order_id IS NULL and user_id = %s""", (user_id,))
-    else:
-        cur.execute("""DELETE FROM list  WHERE check_order = %s""", (False,))
-        cur.execute("""DELETE FROM "order" WHERE order_id IS NULL""")
-
-    return conn.commit()
 
 
 def save_order(user_id, order):

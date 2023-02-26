@@ -38,9 +38,7 @@ async def new_custom(query: types.CallbackQuery):
 
 
 async def last_order(query: types.CallbackQuery):
-    sqlite_db.delete_empty_orders()
-    sqlite_db.delete_not_verification(user_id=query.from_user.id)
-    await edit_text(query.message, message_text='Останні замовлення:',
+      await edit_text(query.message, message_text='Останні замовлення:',
                     reply_markup=order_for_user(query.from_user.id).add(back_to_order_menu_kb()))
 
 
