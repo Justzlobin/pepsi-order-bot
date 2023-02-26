@@ -10,3 +10,12 @@ class PhotoDelete:
 
     def delete(self, chat_id):
         self.photo_dict[chat_id].clear()
+
+
+class StateMessage:
+
+    def __init__(self):
+        self.message_dict = {}
+
+    def add_message(self, message):
+        self.message_dict['message'] = message

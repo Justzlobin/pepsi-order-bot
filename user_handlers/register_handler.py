@@ -3,6 +3,9 @@ from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
+from classes.delete import StateMessage
+
+register_delete = StateMessage()
 
 
 async def stop_register(query: types.CallbackQuery, state: FSMContext):
@@ -26,22 +29,24 @@ async def user_register(query: types.CallbackQuery):
 
 
 async def user_register_name(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Введіть ПІБ ФОП',
-                    reply_markup=cancel_state(register=True))
-
+    message = await edit_text(query.message, message_text='Введіть ПІБ ФОП',
+                              reply_markup=cancel_state(register=True))
+    register_delete.add_message(message)
     await UserRegisterName.user_enter_name.set()
 
 
 async def user_register_address(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Введіть адресу\n'
-                                                'Приклад: м.Вінниця, Пирогова, 100',
-                    reply_markup=cancel_state(register=True))
+    message = await edit_text(query.message, message_text='Введіть адресу\n'
+                                                          'Приклад: м.Вінниця, Пирогова, 100',
+                              reply_markup=cancel_state(register=True))
+    register_delete.add_message(message)
     await UserRegisterName.user_enter_address.set()
 
 
 async def user_register_title(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='Vvedit` nazvu magazina',
-                    reply_markup=cancel_state(register=True))
+    message = await edit_text(message=query.message, message_text='Vvedit` nazvu magazina',
+                              reply_markup=cancel_state(register=True))
+    register_delete.add_message(message)
     await UserRegisterName.user_enter_title.set()
 
 
@@ -53,7 +58,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     else:
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     await state.finish()
-    await edit_text(message, message_text='*Дані оновлені*\n'
+    await edit_text(message=register_delete.message_dict['message'], message_text='*Дані оновлені*\n'
                                           '<b>PEPSIBOT</b>\n'
                                           'Натисніть:\n'
                                           '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
@@ -72,7 +77,7 @@ async def address_enter(message: types.Message, state: FSMContext):
         user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
     print(data)
     await state.finish()
-    await edit_text(message, message_text='*Дані оновлені*\n'
+    await edit_text(message=register_delete.message_dict['message'], message_text='*Дані оновлені*\n'
                                           '<b>PEPSIBOT</b>\n'
                                           'Натисніть:\n'
                                           '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
@@ -90,7 +95,7 @@ async def title_enter(message: types.Message, state: FSMContext):
     else:
         user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True)
     await state.finish()
-    await edit_text(message, message_text='*Дані оновлені*\n'
+    await edit_text(message=register_delete.message_dict['message'], message_text='*Дані оновлені*\n'
                                           '<b>PEPSIBOT</b>\n'
                                           'Натисніть:\n'
                                           '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
