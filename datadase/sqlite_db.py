@@ -261,9 +261,9 @@ def save_order(user_id, order):
         order_id = cur.fetchall()[-1]
         for pos_id, quantity in order.order_dict[user_id].items():
             cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (int(pos_id),))
-            price = cur.fetchone()
+            price = cur.fetchone()[0]
             cur.execute("""INSERT INTO "order" (pos_id, quantity, full_price, order_id ) VALUES (%s, %s, %s, %s)""",
-                        (int(pos_id), quantity, float(price * quantity), order_id))
+                        (int(pos_id), quantity, price * quantity, order_id))
             conn.commit()
         return True
 
