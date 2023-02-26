@@ -12,6 +12,10 @@ async def messages(message: types.Message):
     await message.delete()
 
 
+async def stickers(message: types.Sticker):
+    message.clean()
+
+
 async def command_start(message: types.Message):
     await message.delete()
     await message.bot.send_message(message.from_user.id,
