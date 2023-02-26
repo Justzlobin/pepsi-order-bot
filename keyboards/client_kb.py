@@ -98,9 +98,6 @@ def keyboard(pos_id, order=False):
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-
-
-
 def order_for_admin():
     order_to_admin_markup = InlineKeyboardMarkup()
     for i in sqlite_db.list_order_to_admin():
