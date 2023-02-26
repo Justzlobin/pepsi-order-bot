@@ -10,7 +10,7 @@ async def calendar(query: types.CallbackQuery):
 
 async def payment(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Оберіть спосіб оплати:',
-                    reply_markup=chose_payment(query.from_user.id))
+                    reply_markup=chose_payment())
 
 
 async def payment_cash(query: types.CallbackQuery):
@@ -29,6 +29,6 @@ async def payment_bank(query: types.CallbackQuery):
 
 def register_order_settings(dp: Dispatcher):
     dp.register_callback_query_handler(calendar, Cat_KB.filter(action='date_deliver'))
-    dp.register_callback_query_handler(payment, Cat_KB.filter(action='payment'))
-    dp.register_callback_query_handler(payment_cash, Cat_KB.filter(action='cash'))
-    dp.register_callback_query_handler(payment_bank, Cat_KB.filter(action='bank'))
+    dp.register_callback_query_handler(payment, Order_KB.filter(action='payment'))
+    dp.register_callback_query_handler(payment_cash, Order_KB.filter(action='cash'))
+    dp.register_callback_query_handler(payment_bank, Order_KB.filter(action='bank'))

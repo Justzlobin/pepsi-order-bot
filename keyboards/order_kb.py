@@ -31,3 +31,25 @@ def order_basket_kb():
     ]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def keyboard_settings():
+    buttons = [
+        # [types.InlineKeyboardButton(text='Дата доставки',
+        #                             callback_data=cat_cb.new(id=order_id, action='date_deliver'))],
+        [types.InlineKeyboardButton(text='💰 Спосіб оплати',
+                                    callback_data=Order_KB.new(action='payment'))],
+        [types.InlineKeyboardButton(text='💬 Примітка',
+                                    callback_data=Order_KB.new(action='comment'))]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def chose_payment():
+    buttons = [
+        [types.InlineKeyboardButton(text='💰 Готівкою',
+                                    callback_data=Order_KB.new(action='cash'))],
+        [types.InlineKeyboardButton(text='💳 Банк',
+                                    callback_data=Order_KB.new(action='bank'))]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)

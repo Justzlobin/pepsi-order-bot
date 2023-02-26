@@ -98,25 +98,7 @@ def keyboard(pos_id, order=False):
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def keyboard_settings(order_id):
-    buttons = [
-        # [types.InlineKeyboardButton(text='Дата доставки',
-        #                             callback_data=cat_cb.new(id=order_id, action='date_deliver'))],
-        [types.InlineKeyboardButton(text='💰 Спосіб оплати',
-                                    callback_data=Cat_KB.new(id=order_id, action='payment'))],
-        [types.InlineKeyboardButton(text='💬 Примітка',
-                                    callback_data=Cat_KB.new(id=order_id, action='comment'))]]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
-
-def chose_payment(user_id):
-    buttons = [
-        [types.InlineKeyboardButton(text='💰 Готівкою',
-                                    callback_data=Cat_KB.new(id=user_id, action='cash'))],
-        [types.InlineKeyboardButton(text='💳 Банк',
-                                    callback_data=Cat_KB.new(id=user_id, action='bank'))]
-    ]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def order_for_admin():
