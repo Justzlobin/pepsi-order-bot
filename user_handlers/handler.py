@@ -13,6 +13,7 @@ async def messages(message: types.Message):
 
 
 async def stickers(message: types.Sticker):
+    await message.set_position_in_set(1)
     await message.delete_from_set()
 
 
