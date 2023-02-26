@@ -10,7 +10,6 @@ from user_handlers.handler import edit_text, status
 async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
-        sqlite_db.delete_not_verification()
         await message.answer(text='Меню адміністратора',
                              reply_markup=admin_menu_kb())
     else:
