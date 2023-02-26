@@ -10,10 +10,14 @@ def start_db():
         print('Data base connected OK!')
 
 
-def user_exist():
+def user_exist(user_id):
     cur.execute("SELECT user_id FROM users")
-    return [i[0] for i in cur.fetchall()]
-
+    list_users = cur.fetchall()
+    print(list_users)
+    if user_id in list_users:
+        return True
+    else:
+        return False
 
 def select_all_categories():
     cur.execute("""SELECT * FROM category""")

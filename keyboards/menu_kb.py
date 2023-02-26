@@ -10,6 +10,13 @@ def menu_kb():
         [types.InlineKeyboardButton('ПРАЙС', callback_data=Menu_KB.new(action='price'))],
         [types.InlineKeyboardButton('ЗАМОВЛЕННЯ', callback_data=Menu_KB.new(action='order_menu'))],
         # [types.InlineKeyboardButton('🗃 Історія замовлень', callback_data=Menu_KB.new(action='last_orders'))],
+    ]
+
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def register_kb():
+    buttons = [
         [types.InlineKeyboardButton('📝 Реєстрація', callback_data=Menu_KB.new(action='register'))]
     ]
 

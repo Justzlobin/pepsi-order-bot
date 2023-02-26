@@ -22,8 +22,12 @@ async def command_start(message: types.Message):
 
 
 async def order_menu(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='ORDER_MENU',
-                    reply_markup=order_menu_kb().add(back_to_menu_kb()))
+    if sqlite_db.user_exist(query.from_user.id):
+        await edit_text(message=query.message, message_text='ORDER_MENU',
+                        reply_markup=order_menu_kb().add(register_kb(), back_to_menu_kb()))
+    else:
+        await edit_text(message=query.message, message_text='ORDER_MENU',
+                        reply_markup=register_kb().add(back_to_menu_kb()))
 
 
 async def new_custom(query: types.CallbackQuery):
@@ -189,7 +193,6 @@ async def delete_photo(chat_id):
         photo.delete(chat_id)
     except KeyError:
         pass
-
 
 
 def register_user_handlers(dp: Dispatcher):
