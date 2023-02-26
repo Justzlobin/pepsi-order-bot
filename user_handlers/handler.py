@@ -8,16 +8,12 @@ status = Status()
 photo = PhotoDelete()
 
 
-async def messages(message: types.Message):
-    await message.delete()
-
-
-async def stickers(message: types.Sticker):
-    await message.set_position_in_set(1)
-    await message.delete_from_set()
-
+# async def command_send(message: types.Message):
+#     await message.bot.send_message()
 
 async def command_start(message: types.Message):
+    print('chat id below')
+    print(message.chat.id)
     await message.delete()
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
@@ -200,6 +196,10 @@ async def delete_photo(chat_id):
         pass
 
 
+async def messages(message: types.Message):
+    await message.delete()
+
+
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
@@ -224,4 +224,3 @@ def register_user_handlers(dp: Dispatcher):
     #
     #
     dp.register_message_handler(messages)
-    dp.register_message_handler(stickers)
