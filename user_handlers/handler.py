@@ -24,7 +24,7 @@ async def command_start(message: types.Message):
 async def order_menu(query: types.CallbackQuery):
     if sqlite_db.user_exist(query.from_user.id):
         await edit_text(message=query.message, message_text='ORDER_MENU',
-                        reply_markup=order_menu_kb().add(back_to_menu_kb()))
+                        reply_markup=order_menu_kb().add(register_kb(button=True), back_to_menu_kb()))
     else:
         await edit_text(message=query.message, message_text='ORDER_MENU',
                         reply_markup=register_kb().add(back_to_menu_kb()))

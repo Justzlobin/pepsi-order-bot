@@ -15,9 +15,11 @@ def menu_kb():
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def register_kb():
-    buttons = [
-        [types.InlineKeyboardButton('📝 Реєстрація', callback_data=Menu_KB.new(action='register'))]
-    ]
-
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+def register_kb(button=False):
+    if button:
+        return types.InlineKeyboardButton('📝 Реєстрація', callback_data=Menu_KB.new(action='register'))
+    else:
+        buttons = [
+            [types.InlineKeyboardButton('📝 Реєстрація', callback_data=Menu_KB.new(action='register'))]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=buttons)
