@@ -10,7 +10,7 @@ class Order:
         self.order_dict[user_id] = {}
         self.pos_dict[user_id] = {}
         self.checkin[user_id] = False
-        self.order_settings_dict[user_id] = {}
+        self.order_settings_dict[user_id] = {'payment': None, 'comment': None}
 
     def add_in_pos_dict(self, user_id, pos_id, value):
         self.pos_dict[user_id][pos_id] = value
