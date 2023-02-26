@@ -13,11 +13,11 @@ def start_db():
 def user_exist(user_id):
     cur.execute("SELECT user_id FROM users")
     list_users = cur.fetchall()
-    print(list_users)
     if (user_id,) in list_users:
         return True
     else:
         return False
+
 
 def select_all_categories():
     cur.execute("""SELECT * FROM category""")

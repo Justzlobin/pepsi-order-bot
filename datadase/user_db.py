@@ -11,13 +11,6 @@ def select_name_address_title_from_users(user_id):
     return cur.fetchall()
 
 
-def check_user_for_registration(user_id):
-    if user_id in sqlite_db.user_exist():
-        return True
-    else:
-        return False
-
-
 def register_or_update_user_data(user_id, value, name=False, address=False, register=False, title=False):
     if register:
         if name:

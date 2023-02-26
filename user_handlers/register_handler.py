@@ -54,7 +54,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     await message.delete()
     async with state.proxy() as data:
         data['user_name'] = message.text
-    if not user_db.check_user_for_registration(message.from_user.id):
+    if not sqlite_db.user_exist(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True, register=True)
     else:
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
@@ -74,7 +74,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     await message.delete()
     async with state.proxy() as data:
         data['user_address'] = message.text
-    if not user_db.check_user_for_registration(message.from_user.id):
+    if not sqlite_db.user_exist(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True, register=True)
     else:
         user_db.register_or_update_user_data(message.from_user.id, data['user_address'], address=True)
@@ -95,7 +95,7 @@ async def title_enter(message: types.Message, state: FSMContext):
     await message.delete()
     async with state.proxy() as data:
         data['user_title'] = message.text
-    if not user_db.check_user_for_registration(message.from_user.id):
+    if not sqlite_db.user_exist(message.from_user.id):
         user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True, register=True)
     else:
         user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True)
