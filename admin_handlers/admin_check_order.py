@@ -132,4 +132,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(stock_single_position, Cat_KB.filter(action='admin_position'))
     dp.register_callback_query_handler(in_stock_true, Admin_cat_KB.filter(action='in_stock_true'))
     dp.register_callback_query_handler(in_stock_false, Admin_cat_KB.filter(action='in_stock_false'))
-    dp.register_callback_query_handler(admin_test_kb, Admin_KB.filter(action='order_admin'))
+    dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
