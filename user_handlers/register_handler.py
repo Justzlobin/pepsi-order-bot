@@ -42,7 +42,7 @@ async def user_register_address(query: types.CallbackQuery):
 async def user_register_title(query: types.CallbackQuery):
     await edit_text(message=query.message, message_text='Vvedit` nazvu magazina',
                     reply_markup=cancel_state(register=True))
-    await UserRegisterName.states_names.set()
+    await UserRegisterName.user_enter_title.set()
 
 
 async def name_enter(message: types.Message, state: FSMContext):
