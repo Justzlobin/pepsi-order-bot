@@ -1,5 +1,3 @@
-import types
-
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -30,27 +28,36 @@ async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено')
-    message = await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
-                                           text='✅ Погоджено',
-                                           reply_markup=collapse_message_for_user_kb())
+    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
+                                 text='✅ Погоджено',
+                                 reply_markup=collapse_message_for_user_kb())
     await query.answer(text='статус змінено на ✅ Погоджено')
     await query.message.delete()
 
 
 async def order_status_agreed_but(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено (зі змінами)')
+    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
+                                 text='✅ Погоджено(зі змінами)',
+                                 reply_markup=collapse_message_for_user_kb())
     await query.answer(text='статус змінено на ✅ Погоджено(зі змінами)')
     await query.message.delete()
 
 
 async def order_status_blocked_debt(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Дебіт)')
+    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
+                                 text='❌ Заблоковано(дебіт)',
+                                 reply_markup=collapse_message_for_user_kb())
     await query.answer(text='статус змінено на ❌ Заблоковано(дебіт)')
     await query.message.delete()
 
 
 async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='❌ Заблоковано (Ліміт)')
+    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
+                                 text='❌ Заблоковано(ліміт)',
+                                 reply_markup=collapse_message_for_user_kb())
     await query.answer(text='статус змінено на ❌ Заблоковано(ліміт)')
     await query.message.delete()
 
