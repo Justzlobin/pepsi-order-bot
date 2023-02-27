@@ -11,8 +11,8 @@ photo = PhotoDelete()
 async def command_send(message: types.Message):
     await message.bot.send_message(chat_id=496056946, text='pidor')
 
-async def command_start(message: types.Message):
 
+async def command_start(message: types.Message):
     await message.delete()
     await message.bot.send_message(message.from_user.id,
                                    text='<b>PEPSIBOT</b>\n'
@@ -38,7 +38,7 @@ async def new_custom(query: types.CallbackQuery):
 
 
 async def last_order(query: types.CallbackQuery):
-      await edit_text(query.message, message_text='Останні замовлення:',
+    await edit_text(query.message, message_text='Останні замовлення:',
                     reply_markup=order_for_user(query.from_user.id).add(back_to_order_menu_kb()))
 
 

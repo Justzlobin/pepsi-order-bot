@@ -62,12 +62,7 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
     await query.message.delete()
 
 
-async def order_delete(query: types.CallbackQuery, callback_data: dict):
-    if sqlite_db.delete_order(callback_data['id']):
-        await query.answer(text='Заявка видалена')
-    else:
-        await query.answer(text='Заявка вже проведена')
-    await query.message.delete()
+
 
 
 async def close_order_for_admin(query: types.CallbackQuery):
@@ -136,7 +131,6 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(order_status_agreed_but, Cat_KB.filter(action='order_agreed_but'))
     dp.register_callback_query_handler(order_status_blocked_debt, Cat_KB.filter(action='order_blocked_debt'))
     dp.register_callback_query_handler(order_status_blocked_limit, Cat_KB.filter(action='order_blocked_limit'))
-    dp.register_callback_query_handler(order_delete, Cat_KB.filter(action='order_delete'))
     dp.register_callback_query_handler(close_order_for_admin, Menu_KB.filter(action='close_admin'))
     dp.register_callback_query_handler(last_order_admin, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(stock, Admin_KB.filter(action='stock'))
