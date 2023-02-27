@@ -3,7 +3,7 @@ from keyboards import *
 from aiogram import types
 from datadase.sqlite_db import save_order
 from .handler import order, edit_text
-from texts import   menu
+from texts import  menu
 
 
 async def order_basket_confirm(query: types.CallbackQuery):
