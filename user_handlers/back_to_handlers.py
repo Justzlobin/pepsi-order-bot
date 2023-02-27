@@ -38,8 +38,7 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await query.bot.send_message(text='Доступні смаки бренду:',
                                  reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
-                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id)),
-                                     back_to_order_kb()),
+                                     back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))),
                                  chat_id=query.message.chat.id)
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
