@@ -3,6 +3,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from states.comment_states import CommentToOrder
 from user_handlers.handler import edit_text, order
+from texts import main_menu, menu_order, menu
 
 comment_message = {}
 
@@ -26,7 +27,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await edit_text(query.message, message_text='ORDER KB',
+    await edit_text(query.message, message_text=menu_order,
                     reply_markup=order_kb())
 
 
@@ -38,7 +39,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
     await state.finish()
     await edit_text(message=comment_message['message'],
-                    message_text='ORDER KB',
+                    message_text=menu_order,
                     reply_markup=order_kb())
 
 

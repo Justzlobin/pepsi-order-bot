@@ -3,6 +3,7 @@ from keyboards.client_kb import *
 from keyboards.back_to import *
 from aiogram import types
 from user_handlers.handler import edit_text, status
+from texts import main_menu, order_menu, menu
 
 
 async def price_cat(query: types.CallbackQuery):

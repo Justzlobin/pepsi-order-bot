@@ -4,6 +4,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
 from classes.delete import StateMessage
+from texts import main_menu, order_menu, menu
 
 register_delete = StateMessage()
 
@@ -13,7 +14,7 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await edit_text(query.message, message_text='Головне меню:',
+    await edit_text(query.message, message_text=main_menu,
                     reply_markup=menu_kb())
 
 
@@ -55,7 +56,7 @@ async def name_enter(message: types.Message, state: FSMContext):
         user_db.register_or_update_user_data(message.from_user.id, data['user_name'], name=True)
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
-                    message_text='Головне меню:',
+                    message_text=main_menu,
                     reply_markup=menu_kb())
 
 
@@ -70,13 +71,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     print(data)
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
-                    message_text='*Дані оновлені*\n'
-                                 '<b>PEPSIBOT</b>\n'
-                                 'Натисніть:\n'
-                                 '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                 'або сформувати замовлення. \n'
-                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+                    message_text=main_menu,
                     reply_markup=menu_kb())
 
 
@@ -90,13 +85,7 @@ async def title_enter(message: types.Message, state: FSMContext):
         user_db.register_or_update_user_data(message.from_user.id, data['user_title'], title=True)
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
-                    message_text='*Дані оновлені*\n'
-                                 '<b>PEPSIBOT</b>\n'
-                                 'Натисніть:\n'
-                                 '<b>💲 Замовлення</b> - щоб переглянути асортимент\n'
-                                 'або сформувати замовлення. \n'
-                                 '<b>🗃 Історія замовлень</b> - переглянути попередні замовлення.\n'
-                                 '<b>📝 Реєстрація</b> - щоб розуміти кому відправляти замовлення.\n',
+                    message_text=main_menu,
                     reply_markup=menu_kb())
 
 

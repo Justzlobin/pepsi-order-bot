@@ -1,6 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from user_handlers.handler import edit_text, order
+from texts import main_menu, menu_order, menu
 
 
 async def calendar(query: types.CallbackQuery):
@@ -15,14 +16,14 @@ async def payment(query: types.CallbackQuery):
 
 async def payment_cash(query: types.CallbackQuery):
     await query.answer(text='Cash!')
-    await edit_text(query.message, message_text='ORDER KB',
+    await edit_text(query.message, message_text=menu_order,
                     reply_markup=order_kb().add(back_to_menu_kb()))
     order.order_settings_dict(user_id=query.from_user.id, payment='💰 Готівка')
 
 
 async def payment_bank(query: types.CallbackQuery):
     await query.answer(text='Bank!')
-    await edit_text(query.message, message_text='ORDER KB',
+    await edit_text(query.message, message_text=menu_order,
                     reply_markup=order_kb().add(back_to_menu_kb()))
     order.order_settings_dict(user_id=query.from_user.id, payment='💳 Банк')
 

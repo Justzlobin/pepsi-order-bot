@@ -2,6 +2,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text, order, status
+from texts import main_menu, menu_order, menu
 
 
 async def back_to_cat_from_brand(query: types.CallbackQuery):
@@ -18,17 +19,17 @@ async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: di
 async def back_to_main_menu(query: types.CallbackQuery):
     await edit_text(query.message, reply_markup=menu_kb(),
                     message_text='<b>PEPSIBOT</b>\n'
-                                 'MAIN MENU')
+                                 f'{main_menu}')
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
     await edit_text(query.message,
-                    message_text='ORDER MENU',
+                    message_text=menu,
                     reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 async def back_to_start_order(query: types.CallbackQuery):
-    await edit_text(message=query.message, message_text='ORDER_START',
+    await edit_text(message=query.message, message_text=menu_order,
                     reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 

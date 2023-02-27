@@ -1,6 +1,8 @@
 from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
+from texts import menu
+
 
 
 async def view_order_for_user(query: types.CallbackQuery, callback_data: dict):
@@ -24,7 +26,7 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
         await query.answer(text='Заявка видалена')
     else:
         await query.answer(text='Заявка вже проведена')
-    await edit_text(message=query.message, message_text='ORDER MENU KB', reply_markup=order_menu_kb().add(
+    await edit_text(message=query.message, message_text=menu, reply_markup=order_menu_kb().add(
         back_to_menu_kb()))
 
 
