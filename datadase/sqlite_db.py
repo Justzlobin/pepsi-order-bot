@@ -188,12 +188,9 @@ def list_order_to_admin():
 
 def list_order_for_user(user_id):
     cur.execute("""SELECT date,  list_id, SUM(full_price)
-                    FROM list l, "order" o 
-                    WHERE l.list_id = o.order_id 
-                    AND l.user_id = %s
-                    GROUP BY  date 
-                    GROUP BY  list_id
-                    ORDER BY  date
+                    FROM list , "order" 
+                    WHERE list.list_id = "order".order_id 
+                    AND list.user_id = %s
                     """, (user_id,))
     return cur.fetchall()
 
