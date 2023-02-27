@@ -23,12 +23,12 @@ async def order_delete(query: types.CallbackQuery, callback_data: dict):
         await query.answer(text='Заявка видалена')
     else:
         await query.answer(text='Заявка вже проведена')
-    await edit_text(message=query.message, message_text='ORDER MENU KB', reply_markup=
-                    order_menu_kb().add(back_to_menu_kb()))
+    await edit_text(message=query.message, message_text='ORDER MENU KB', reply_markup=order_menu_kb().add(
+        back_to_menu_kb()))
+
 
 def register_update_order_handler(dp: Dispatcher):
     dp.register_callback_query_handler(view_order_for_user, Cat_KB.filter(action='order_user'))
     dp.register_callback_query_handler(order_correct_user, Cat_KB.filter(action='order_correct'))
     dp.register_callback_query_handler(order_close_user, Cat_KB.filter(action='order_close'))
     dp.register_callback_query_handler(order_delete, Cat_KB.filter(action='order_delete'))
-
