@@ -4,7 +4,6 @@ from .handler import edit_text
 from text.texts import menu
 
 
-
 async def view_order_for_user(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text=f'{sqlite_db.select_order_to_user_or_admin(callback_data["id"])}',
                     reply_markup=order_update_user_kb(callback_data['id']))
