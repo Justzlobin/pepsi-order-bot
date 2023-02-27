@@ -17,8 +17,8 @@ def order_kb():
 
 def order_menu_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='Нове замовлення', callback_data=Order_KB.new(action='new_order'))],
-        [types.InlineKeyboardButton(text='Останні замовлення', callback_data=Order_KB.new(action='last_order'))],
+        [types.InlineKeyboardButton(text='📝 Нове замовлення', callback_data=Order_KB.new(action='new_order'))],
+        [types.InlineKeyboardButton(text='🗃 Історія замовлень', callback_data=Order_KB.new(action='last_order'))],
     ]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
@@ -26,8 +26,8 @@ def order_menu_kb():
 
 def order_basket_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='Підтвердити', callback_data=Order_KB.new(action='order_basket_confirm'))],
-        [types.InlineKeyboardButton(text='Скасувати', callback_data=Order_KB.new(action='order_basket_cancel'))],
+        [types.InlineKeyboardButton(text='✅ Підтвердити', callback_data=Order_KB.new(action='order_basket_confirm'))],
+        [types.InlineKeyboardButton(text='🛑 Скасувати', callback_data=Order_KB.new(action='order_basket_cancel'))],
     ]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)

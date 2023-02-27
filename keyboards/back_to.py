@@ -6,19 +6,19 @@ Back_to_id = CallbackData('title', 'id', 'action')
 
 
 def back_to_menu_kb() -> object:
-    return types.InlineKeyboardButton('MAIN MENU', callback_data=Back_to.new(action='back_to_menu'))
+    return types.InlineKeyboardButton('🔙 Головне меню', callback_data=Back_to.new(action='back_to_menu'))
 
 
 def back_to_order_menu_kb():
-    return types.InlineKeyboardButton('ORDER_MENU', callback_data=Back_to.new(action='back_to_order_menu'))
+    return types.InlineKeyboardButton('🔙 Меню', callback_data=Back_to.new(action='back_to_order_menu'))
 
 
 def back_to_admin_menu_kb():
-    return types.InlineKeyboardButton('ADMIN MENU', callback_data=Back_to.new(action='back_to_admin_menu'))
+    return types.InlineKeyboardButton('🔙 Адмін меню', callback_data=Back_to.new(action='back_to_admin_menu'))
 
 
 def back_to_order_kb():
-    return types.InlineKeyboardButton('ORDER_START', callback_data=Back_to.new(action='back_to_start_order'))
+    return types.InlineKeyboardButton('🔙 Меню замовлення', callback_data=Back_to.new(action='back_to_start_order'))
 
 
 def back_to_cat_from_brand_kb():

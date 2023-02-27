@@ -10,19 +10,17 @@ photo = PhotoDelete()
 
 async def command_start(message: types.Message):
     await message.delete()
-    await message.bot.send_message(message.from_user.id,
-                                   text='<b>PEPSIBOT</b>\n'
-                                        'MAIN MENU',
-                                   reply_markup=menu_kb().add(back_to_menu_kb()),
-                                   parse_mode='HTML')
+    await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
+                                                              '🗃 Головне меню',
+                                   reply_markup=menu_kb(), parse_mode='HTML')
 
 
 async def order_menu(query: types.CallbackQuery):
     if sqlite_db.user_exist(query.from_user.id):
-        await edit_text(message=query.message, message_text='ORDER_MENU',
+        await edit_text(message=query.message, message_text='🗂 Меню',
                         reply_markup=order_menu_kb().add(register_kb(button=True), back_to_menu_kb()))
     else:
-        await edit_text(message=query.message, message_text='ORDER_MENU',
+        await edit_text(message=query.message, message_text='🗂 Меню',
                         reply_markup=register_kb().add(back_to_menu_kb()))
 
 
@@ -34,12 +32,12 @@ async def new_custom(query: types.CallbackQuery):
 
 
 async def last_order(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Останні замовлення:',
+    await edit_text(query.message, message_text='🕐 Останні замовлення:',
                     reply_markup=order_for_user(query.from_user.id).add(back_to_order_menu_kb()))
 
 
 async def order_product_list(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Оберіть цікаву вам категорію:',
+    await edit_text(query.message, message_text='Категорії:',
                     reply_markup=cat_markup().add(back_to_order_kb()))
 
 
@@ -57,12 +55,12 @@ async def order_basket(query: types.CallbackQuery):
                         reply_markup=order_basket_kb().add(back_to_order_kb()))
     else:
         await query.answer(text='Корзина пуста')
-        await edit_text(message=query.message, message_text='ORDER KB',
+        await edit_text(message=query.message, message_text='🛒 Меню замовлення',
                         reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
 async def order_settings(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Налаштування замовлення:',
+    await edit_text(query.message, message_text='⚙ Налаштування замовлення:',
                     reply_markup=keyboard_settings())
 
 

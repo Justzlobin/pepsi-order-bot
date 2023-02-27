@@ -81,7 +81,7 @@ def keyboard(pos_id, order=False):
         [
             types.InlineKeyboardButton(text='➖',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[0])),
-            types.InlineKeyboardButton(text='⭕',
+            types.InlineKeyboardButton(text='0⃣',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[1])),
             types.InlineKeyboardButton(text='➕',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[2]))
@@ -91,7 +91,7 @@ def keyboard(pos_id, order=False):
                                        callback_data=Cat_KB.new(id=pos_id, action='multi')),
             types.InlineKeyboardButton(text='Ящ',
                                        callback_data=Cat_KB.new(id=pos_id, action='box'))],
-        [types.InlineKeyboardButton(text='Підтвердити',
+        [types.InlineKeyboardButton(text='✅ Підтвердити',
                                     callback_data=Cat_KB.new(id=pos_id, action=list_commands[3]))]
     ]
 
@@ -138,9 +138,9 @@ def order_state_kb(order_id):
 def order_update_user_kb(order_id):
     buttons = [
         [
-            types.InlineKeyboardButton(text='Видалити',
+            types.InlineKeyboardButton(text='❌ Видалити',
                                        callback_data=Cat_KB.new(id=order_id, action='order_delete')),
-            types.InlineKeyboardButton(text='Згорнути',
+            types.InlineKeyboardButton(text='⬅ Згорнути',
                                        callback_data=Cat_KB.new(id=order_id, action='order_close'))
         ]
     ]
