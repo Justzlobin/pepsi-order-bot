@@ -3,7 +3,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from states.comment_states import CommentToOrder
 from user_handlers.handler import edit_text, order
-from texts import main_menu, menu_order, menu
+from text.texts import menu_order
 
 comment_message = {}
 

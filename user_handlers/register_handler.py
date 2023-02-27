@@ -4,7 +4,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
 from classes.delete import StateMessage
-from texts import main_menu, order_menu, menu
+from text.texts import main_menu
 
 register_delete = StateMessage()
 

@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
-from texts import menu
+from text.texts import menu
 
 
 
