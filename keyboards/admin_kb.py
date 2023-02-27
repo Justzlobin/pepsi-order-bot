@@ -22,3 +22,11 @@ def in_stock_kb(pos_id):
         [types.InlineKeyboardButton(text='FALSE', callback_data=Admin_cat_KB.new(id=pos_id, action='in_stock_false'))]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def collapse_message_for_user_kb():
+    buttons = [
+        [types.InlineKeyboardButton(text='Згорнути',
+                                    callback_data=Admin_KB.new(action='collapse_message_for_user'))]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)

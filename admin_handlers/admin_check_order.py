@@ -1,3 +1,5 @@
+import types
+
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from create_bot import dp
@@ -28,7 +30,9 @@ async def admin_test_kb(query: types.CallbackQuery, callback_data: dict):
 
 async def order_status_agreed(query: types.CallbackQuery, callback_data: dict):
     sqlite_db.update_order_state(callback_data['id'], state='✅ Погоджено')
-    await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']), text='✅ Погоджено')
+    message = await query.bot.send_message(chat_id=user_db.get_user_id_to_order_id(callback_data['id']),
+                                           text='✅ Погоджено',
+                                           reply_markup=collapse_message_for_user_kb())
     await query.answer(text='статус змінено на ✅ Погоджено')
     await query.message.delete()
 
@@ -90,9 +94,7 @@ async def stock_position(query: types.CallbackQuery, callback_data: dict):
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = admin_select_one_position(callback_data['id'])
-    print(text)
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]} {text[6]}'
-    print(full_text)
     # try:
     #     await query.bot.send_photo(chat_id=query.message.chat.id,
     #                                                photo=types.InputFile(
@@ -117,6 +119,10 @@ async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
                                                  status.dialog_status[query.from_user.id]))
 
 
+async def collapse_message_for_user(query: types.CallbackQuery):
+    await query.message.delete()
+
+
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_test, text='admin')
     dp.register_callback_query_handler(order_status_agreed, Cat_KB.filter(action='order_agreed'))
@@ -134,3 +140,4 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(in_stock_true, Admin_cat_KB.filter(action='in_stock_true'))
     dp.register_callback_query_handler(in_stock_false, Admin_cat_KB.filter(action='in_stock_false'))
     dp.register_callback_query_handler(admin_test_kb, Cat_KB.filter(action='order_admin'))
+    dp.register_callback_query_handler(collapse_message_for_user, Admin_KB.filter(action='collapse_message_for_user'))
