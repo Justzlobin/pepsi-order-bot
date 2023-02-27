@@ -14,7 +14,6 @@ def admin_menu_kb():
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-
 def in_stock_kb(pos_id):
     buttons = [
         [types.InlineKeyboardButton(text='TRUE', callback_data=Admin_cat_KB.new(id=pos_id, action='in_stock_true'))],
@@ -24,8 +23,5 @@ def in_stock_kb(pos_id):
 
 
 def collapse_message_for_user_kb():
-    buttons = [
-        [types.InlineKeyboardButton(text='Згорнути',
-                                    callback_data=Admin_KB.new(action='collapse_message_for_user'))]
-    ]
-    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return types.InlineKeyboardButton(text='Згорнути',
+                                      callback_data=Admin_KB.new(action='collapse_message_for_user'))
