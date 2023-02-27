@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text, order, status
-from text.text import main_menu, menu_order, menu
+from text.text_in_message import main_menu, menu_order, menu
 
 
 async def back_to_cat_from_brand(query: types.CallbackQuery):

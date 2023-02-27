@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from classes import Order, Status, PhotoDelete
-from text.text import main_menu, menu_order, menu
+from text.text_in_message import main_menu, menu_order, menu
 
 
 order = Order()

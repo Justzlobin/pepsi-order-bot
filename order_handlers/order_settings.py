@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from user_handlers.handler import edit_text, order
-from text.text import menu_order
+from text.text_in_message import menu_order
 
 
 async def calendar(query: types.CallbackQuery):
