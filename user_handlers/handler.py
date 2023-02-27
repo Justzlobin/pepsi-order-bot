@@ -8,8 +8,6 @@ status = Status()
 photo = PhotoDelete()
 
 
-async def command_send(message: types.Message):
-    await message.bot.send_message(chat_id=496056946, text='pidor')
 
 
 async def command_start(message: types.Message):
@@ -197,7 +195,6 @@ async def messages(message: types.Message):
 
 
 def register_user_handlers(dp: Dispatcher):
-    dp.register_message_handler(command_send, commands='boris')
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))

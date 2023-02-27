@@ -44,8 +44,9 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
     except FileNotFoundError:
         await query.bot.send_message(chat_id=query.message.chat.id,
                                      text=full_text,
-                                     reply_markup=keyboard(callback_data['id']).add(
-                                         back_to_tasty_from_pos_kb(callback_data['id'])))
+                                     reply_markup=types.InlineKeyboardMarkup().add(
+                                         back_to_tasty_from_pos_kb(
+                                             callback_data['id'])))
 
 
 def register_price_handlers(dp: Dispatcher):
