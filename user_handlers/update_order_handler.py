@@ -15,7 +15,8 @@ async def order_correct_user(query: types.CallbackQuery, callback_data: dict):
 
 
 async def order_close_user(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Останні замовлення:', reply_markup=order_for_user(query.from_user.id))
+    await edit_text(query.message, message_text='Останні замовлення:',
+                    reply_markup=order_for_user(query.from_user.id).add(back_to_order_menu_kb()))
 
 
 async def order_delete(query: types.CallbackQuery, callback_data: dict):
