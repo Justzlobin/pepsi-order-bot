@@ -28,7 +28,7 @@ async def stop_comment(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await edit_text(query.message, message_text=menu_order,
-                    reply_markup=order_kb())
+                    reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
 async def write_comment(message: types.Message, state: FSMContext):
@@ -40,7 +40,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     await state.finish()
     await edit_text(message=comment_message['message'],
                     message_text=menu_order,
-                    reply_markup=order_kb())
+                    reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
 def comment_order_handlers(dp: Dispatcher):
