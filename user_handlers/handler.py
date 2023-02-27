@@ -8,8 +8,6 @@ status = Status()
 photo = PhotoDelete()
 
 
-
-
 async def command_start(message: types.Message):
     await message.delete()
     await message.bot.send_message(message.from_user.id,
@@ -145,10 +143,7 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
     print(order.pos_dict)
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
-                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-        # f"Ціна: {dict_desc['price']} грн.\n" \
-    # f"В ящику: {dict_desc['box_size']} ящ.\n" \
-    # f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n"
     quantity = order.pos_dict[query.from_user.id][callback_data['id']]
     amount = round(dict_desc['price'] * quantity, 2)
 
