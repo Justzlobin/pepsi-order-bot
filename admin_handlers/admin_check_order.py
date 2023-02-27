@@ -62,9 +62,6 @@ async def order_status_blocked_limit(query: types.CallbackQuery, callback_data: 
     await query.message.delete()
 
 
-
-
-
 async def close_order_for_admin(query: types.CallbackQuery):
     await query.message.delete()
 
@@ -97,14 +94,7 @@ async def stock_position(query: types.CallbackQuery, callback_data: dict):
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = admin_select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]} {text[6]}'
-    # try:
-    #     await query.bot.send_photo(chat_id=query.message.chat.id,
-    #                                                photo=types.InputFile(
-    #                                                    fr"image/{callback_data['id']}.png"))
-    # except FileNotFoundError:
-    #     pass
-    await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']),
-                    )
+    await edit_text(query.message, message_text=f'{full_text}\n', reply_markup=in_stock_kb(callback_data['id']))
 
 
 async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
