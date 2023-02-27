@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from keyboards import *
 from .handler import edit_text
-from text.texts import menu
+from text.text import menu
 
 
 async def view_order_for_user(query: types.CallbackQuery, callback_data: dict):
