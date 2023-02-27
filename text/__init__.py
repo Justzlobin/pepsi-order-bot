@@ -1,1 +1,1 @@
-from text_in_message import *
+from text import text_in_message
