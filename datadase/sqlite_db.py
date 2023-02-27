@@ -190,7 +190,9 @@ def list_order_for_user(user_id):
     cur.execute("""SELECT date,  list_id, SUM(full_price)
                     FROM list l, "order" o 
                     WHERE l.list_id = o.order_id 
-                    AND l.user_id = %s """, (user_id,))
+                    AND l.user_id = %s 
+                    ORDER BY l.date
+                    """, (user_id,))
     return cur.fetchall()
 
 
@@ -221,7 +223,7 @@ def select_price_of_box(pos_id, amount):
 
 def save_order(user_id, order):
     def add_order_in_list():
-        cur.execute("""INSERT INTO list (user_id, date, payment, comment) VALUES (%s, NOW(), %s, %s)""",
+        cur.execute("""INSERT INTO list (user_id, date, payment, comment) VALUES (%s, DATETIME(), %s, %s)""",
                     (user_id, order.order_settings_dict[user_id]['payment'],
                      order.order_settings_dict[user_id]['comment']))
         conn.commit()
