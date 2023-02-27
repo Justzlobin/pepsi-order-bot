@@ -191,9 +191,9 @@ def list_order_for_user(user_id):
                     FROM list l, "order" o 
                     WHERE l.list_id = o.order_id 
                     AND l.user_id = %s
-                    GROUP BY l.date 
-                    GROUP BY l.list_id
-                    ORDER BY l.date
+                    GROUP BY  date 
+                    GROUP BY  list_id
+                    ORDER BY  date
                     """, (user_id,))
     return cur.fetchall()
 
