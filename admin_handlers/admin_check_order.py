@@ -11,7 +11,7 @@ async def admin_test(message: types.Message):
     await message.delete()
     if message.from_user.id == int(ADMIN):
         await message.answer(text='Меню адміністратора',
-                             reply_markup=admin_menu_kb())
+                             reply_markup=admin_menu_kb().add(collapse_message_for_user_kb()))
     else:
         await message.answer('У вас немає доступу!')
 
