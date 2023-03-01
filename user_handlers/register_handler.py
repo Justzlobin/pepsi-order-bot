@@ -15,13 +15,13 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await edit_text(query.message, message_text=main_menu,
-                    reply_markup=menu_kb())
+                    reply_markup=user_register_kb(query.from_user.id).add(back_to_menu_kb()))
 
 
 async def user_register(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Ваші данні:',
                     reply_markup=user_register_kb(
-                        query.from_user.id))
+                        query.from_user.id).add(back_to_menu_kb()))
 
 
 async def user_register_name(query: types.CallbackQuery):
@@ -57,7 +57,7 @@ async def name_enter(message: types.Message, state: FSMContext):
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
                     message_text=main_menu,
-                    reply_markup=menu_kb())
+                    reply_markup=user_register_kb(message.from_user.id).add(back_to_menu_kb()))
 
 
 async def address_enter(message: types.Message, state: FSMContext):
@@ -72,7 +72,7 @@ async def address_enter(message: types.Message, state: FSMContext):
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
                     message_text=main_menu,
-                    reply_markup=menu_kb())
+                    reply_markup=user_register_kb(message.from_user.id).add(back_to_menu_kb()))
 
 
 async def title_enter(message: types.Message, state: FSMContext):
@@ -86,7 +86,7 @@ async def title_enter(message: types.Message, state: FSMContext):
     await state.finish()
     await edit_text(message=register_delete.message_dict['message'],
                     message_text=main_menu,
-                    reply_markup=menu_kb())
+                    reply_markup=user_register_kb(message.from_user.id).add(back_to_menu_kb()))
 
 
 def register_register_handlers(dp: Dispatcher):
