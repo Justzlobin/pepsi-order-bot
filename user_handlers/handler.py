@@ -71,11 +71,18 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
+    # try:
     await message.edit_caption(caption=f'{full_text}\n'
-                                       f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
-                                       f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
-                               reply_markup=keyboard(
-                                   pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
+                                           f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
+                                           f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                                   reply_markup=keyboard(
+                                       pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
+    # except:
+    #     await message.edit_text(text=f'{full_text}\n'
+    #                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
+    #                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+    #                             reply_markup=keyboard(
+    #                                 pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
     print(order.order_dict)
     print(order.pos_dict)
 
@@ -103,7 +110,9 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                                    caption=full_text, reply_markup=keyboard(callback_data['id']).add(
                 back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
-        pass
+        await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
+                                     reply_markup=keyboard(callback_data['id']).add(
+                                         back_to_tasty_from_pos_kb(callback_data['id'])))
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
 
