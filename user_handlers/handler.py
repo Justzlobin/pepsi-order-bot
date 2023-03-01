@@ -93,7 +93,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн.\n" \
+                f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
                 f"Кількість: {value}, Ціна: {dict_desc['price'] * value} uah."
 
     try:
