@@ -4,7 +4,6 @@ from aiogram import types
 from classes import Order, Status, PhotoDelete
 from text.text_in_message import main_menu, menu_order, menu
 
-
 order = Order()
 status = Status()
 photo = PhotoDelete()
@@ -158,7 +157,6 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                                  reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
                                      back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id))),
                                  chat_id=query.message.chat.id)
-    await delete_photo(query.message.chat.id)
 
 
 async def box(query: types.CallbackQuery):
@@ -173,15 +171,6 @@ async def multi(query: types.CallbackQuery):
 
 async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
-
-
-async def delete_photo(chat_id):
-    try:
-        for image in photo.photo_dict[chat_id]:
-            await image.delete()
-        photo.delete(chat_id)
-    except KeyError:
-        pass
 
 
 async def messages(message: types.Message):
