@@ -26,7 +26,9 @@ async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: di
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
+    print(f'{callback_data["id"]} - pos_id?')
     print(f'brand_id {type(brand_id)}  - {brand_id}')
     if status.dialog_status[query.from_user.id] == 'price':
         await query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
@@ -36,12 +38,12 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                              sqlite_db.select_cat_id(brand_id)),
                                          back_to_menu_kb()))
     if status.dialog_status[query.from_user.id] == 'order':
-        await  query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
-                                      reply_markup=position_markup(brand_id,
-                                                                   status.dialog_status[query.from_user.id]).row(
-                                          back_to_brand_from_tasty_kb(
-                                              sqlite_db.select_cat_id(brand_id)),
-                                          back_to_order_kb()))
+        await query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
+                                     reply_markup=position_markup(brand_id,
+                                                                  status.dialog_status[query.from_user.id]).row(
+                                         back_to_brand_from_tasty_kb(
+                                             sqlite_db.select_cat_id(brand_id)),
+                                         back_to_order_kb()))
     try:
         del order.order_dict[query.from_user.id][callback_data['id']]
     except KeyError:
