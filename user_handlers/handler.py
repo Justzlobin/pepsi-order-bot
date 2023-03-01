@@ -3,6 +3,7 @@ from keyboards import *
 from aiogram import types
 from classes import Order, Status, PhotoDelete
 from text.text_in_message import main_menu, menu_order, menu
+from aiogram.utils import exceptions
 
 order = Order()
 status = Status()
@@ -71,18 +72,18 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
-    # try:
-    await message.edit_caption(caption=f'{full_text}\n'
+    try:
+        await message.edit_caption(caption=f'{full_text}\n'
                                            f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                            f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
                                    reply_markup=keyboard(
                                        pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
-    # except:
-    #     await message.edit_text(text=f'{full_text}\n'
-    #                                  f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
-    #                                  f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
-    #                             reply_markup=keyboard(
-    #                                 pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
+    except exceptions.BadRequest:
+        await message.edit_text(text=f'{full_text}\n'
+                                     f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
+                                     f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                                reply_markup=keyboard(
+                                    pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
     print(order.order_dict)
     print(order.pos_dict)
 
