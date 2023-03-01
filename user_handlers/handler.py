@@ -28,7 +28,7 @@ async def order_menu(query: types.CallbackQuery):
 async def new_custom(query: types.CallbackQuery):
     status.current_dialog_status_order(query.from_user.id)
     order.start_order(query.from_user.id)
-    await edit_text(query.message, message_text=menu_order, reply_markup=order_kb().add(back_to_menu_kb()))
+    await edit_text(query.message, message_text=menu_order, reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
 async def last_order(query: types.CallbackQuery):
@@ -70,7 +70,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                f"Ціна за ящик: {dict_desc['price'] * dict_desc['box_size']} грн."
+                f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     await message.edit_caption(caption=f'{full_text}\n'
                                        f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
                                        f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
