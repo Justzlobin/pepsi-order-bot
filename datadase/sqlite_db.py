@@ -54,6 +54,7 @@ def select_product(brand_id) -> list:
 
 
 def select_cat_id(brand_id):
+    print(brand_id)
     cur.execute("""SELECT cat_id FROM brand_cat WHERE brand_id = %s""", (brand_id,))
     return cur.fetchone()[0]
 

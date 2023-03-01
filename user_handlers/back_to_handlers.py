@@ -28,6 +28,7 @@ async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: di
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
     await query.message.delete()
     brand_id = callback_data['id']
+    print(f'brand_id {type(brand_id)}  - {brand_id}')
     if status.dialog_status[query.from_user.id] == 'price':
         await edit_text(query.message, message_text='Смаки:',
                         reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).row(
