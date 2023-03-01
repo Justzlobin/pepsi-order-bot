@@ -150,8 +150,14 @@ async def order_position_finish(query: types.CallbackQuery, callback_data: dict)
                            f'К-ть: {quantity}, Ціна: {amount}')
         order.add_in_order_dict(query.from_user.id, callback_data['id'], quantity)
     if quantity == 0:
-        del order.pos_dict[query.from_user.id][callback_data['id']]
-        del order.order_dict[query.from_user.id][callback_data['id']]
+        try:
+            del order.pos_dict[query.from_user.id][callback_data['id']]
+        except KeyError:
+            pass
+        try:
+            del order.order_dict[query.from_user.id][callback_data['id']]
+        except KeyError:
+            pass
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     await query.bot.send_message(text='Доступні смаки бренду:',
                                  reply_markup=position_markup(brand_id, status.dialog_status[query.from_user.id]).add(
