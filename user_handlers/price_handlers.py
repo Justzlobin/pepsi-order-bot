@@ -19,11 +19,11 @@ async def price_brand(query: types.CallbackQuery, callback_data: dict):
     if status.dialog_status[query.from_user.id] == 'price':
         await edit_text(query.message, message_text='Бренди:',
                         reply_markup=brand_markup(callback_data['id']).add(
-                            back_to_cat_from_brand_kb(), back_to_menu_kb()))
+                            [back_to_cat_from_brand_kb(), back_to_menu_kb()]))
     if status.dialog_status[query.from_user.id] == 'order':
         await edit_text(query.message, message_text='Бренди:',
                         reply_markup=brand_markup(callback_data['id']).add(
-                            back_to_cat_from_brand_kb(), back_to_order_kb()))
+                            [back_to_cat_from_brand_kb(), back_to_order_kb()]))
 
 
 async def price_tasty(query: types.CallbackQuery, callback_data: dict):
