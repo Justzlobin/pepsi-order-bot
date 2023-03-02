@@ -53,3 +53,13 @@ def chose_payment():
                                     callback_data=Order_KB.new(action='bank'))]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def chose_next_move_in_order_kb():
+    buttons = [
+        [types.InlineKeyboardButton(text='Так', callback_data=Order_KB.new(action='next_move_in_order_yes'))],
+        [types.InlineKeyboardButton(text='Ні, повернутись до замовлення',
+                                    callback_data=Order_KB.new(action='next_move_in_order_no'))]
+
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
