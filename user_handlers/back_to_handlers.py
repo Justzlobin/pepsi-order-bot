@@ -60,9 +60,10 @@ async def back_to_order_menu(query: types.CallbackQuery):
     if order.order_dict[query.from_user.id] is True:
         await edit_text(message=query.message, message_text='У вас назбережена заявка',
                         reply_markup=chose_next_move_in_order_kb())
-    await edit_text(query.message,
-                    message_text=menu,
-                    reply_markup=order_menu_kb().add(back_to_menu_kb()))
+    else:
+        await edit_text(query.message,
+                        message_text=menu,
+                        reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
 async def back_to_start_order(query: types.CallbackQuery):
