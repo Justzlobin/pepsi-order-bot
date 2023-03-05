@@ -57,10 +57,15 @@ async def back_to_main_menu(query: types.CallbackQuery):
 
 
 async def back_to_order_menu(query: types.CallbackQuery):
-    if order.order_dict[query.from_user.id]:
-        await edit_text(message=query.message, message_text='У вас назбережена заявка',
-                        reply_markup=chose_next_move_in_order_kb())
-    else:
+    try:
+        if order.order_dict[query.from_user.id]:
+            await edit_text(message=query.message, message_text='У вас назбережена заявка',
+                            reply_markup=chose_next_move_in_order_kb())
+        else:
+            await edit_text(query.message,
+                            message_text=menu,
+                            reply_markup=order_menu_kb().add(back_to_menu_kb()))
+    except KeyError:
         await edit_text(query.message,
                         message_text=menu,
                         reply_markup=order_menu_kb().add(back_to_menu_kb()))
