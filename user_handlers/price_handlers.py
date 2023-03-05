@@ -24,7 +24,10 @@ async def price_brand(query: types.CallbackQuery, callback_data: dict):
         await edit_text(query.message, message_text='Бренди:',
                         reply_markup=brand_markup(callback_data['id']).add(
                             back_to_cat_from_brand_kb(), back_to_order_kb()))
-
+    if status.dialog_status[query.from_user.id] == 'admin':
+        await edit_text(query.message, message_text='Бренди:',
+                        reply_markup=brand_markup(callback_data['id']).add(
+                            back_to_cat_from_brand_kb(), back_to_admin_menu_kb()()))
 
 async def price_tasty(query: types.CallbackQuery, callback_data: dict):
     brand_id = callback_data['id']

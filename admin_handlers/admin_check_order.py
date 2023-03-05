@@ -78,7 +78,7 @@ async def last_order_admin(query: types.CallbackQuery):
 
 async def stock(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Category:',
-                    reply_markup=cat_markup())
+                    reply_markup=cat_markup().add(back_to_admin_menu(query.from_user.id)))
 
 
 async def back_to_admin_menu(query: types.CallbackQuery):
