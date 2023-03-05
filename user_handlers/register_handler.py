@@ -2,7 +2,7 @@ from aiogram.dispatcher import FSMContext
 from states import UserRegisterName
 from aiogram import Dispatcher
 from keyboards import *
-from .handler import edit_text
+from .handler import edit_text, status
 from classes.delete import StateMessage
 from text.text_in_message import main_menu
 
@@ -26,7 +26,7 @@ async def user_register(query: types.CallbackQuery):
 
 async def user_register_name(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Введіть ПІБ ФОП:',
-                    reply_markup=cancel_state(register=True))
+                    reply_markup=cancel_state(status=status.dialog_status[query.from_user.id]))
     register_delete.add_message(query.message)
     await UserRegisterName.user_enter_name.set()
 
@@ -34,14 +34,14 @@ async def user_register_name(query: types.CallbackQuery):
 async def user_register_address(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Введіть адресу:\n'
                                                 'Приклад: м.Вінниця, Пирогова, 100',
-                    reply_markup=cancel_state(register=True))
+                    reply_markup=cancel_state(status=status.dialog_status[query.from_user.id]))
     register_delete.add_message(query.message)
     await UserRegisterName.user_enter_address.set()
 
 
 async def user_register_title(query: types.CallbackQuery):
     await edit_text(message=query.message, message_text='Введіть назву магазина:',
-                    reply_markup=cancel_state(register=True))
+                    reply_markup=cancel_state(status=status.dialog_status[query.from_user.id]))
     register_delete.add_message(query.message)
     await UserRegisterName.user_enter_title.set()
 

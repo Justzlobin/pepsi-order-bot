@@ -86,11 +86,6 @@ async def back_to_admin_menu(query: types.CallbackQuery):
                     reply_markup=admin_menu_kb())
 
 
-
-
-
-
-
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
     text = admin_select_one_position(callback_data['id'])
     full_text = f'{text[0]} {text[1]} {text[2]} {text[3]} {text[4]} {text[5]} {text[6]}'

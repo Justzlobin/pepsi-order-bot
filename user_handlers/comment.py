@@ -2,7 +2,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram import Dispatcher
 from keyboards import *
 from states.comment_states import CommentToOrder
-from user_handlers.handler import edit_text, order
+from user_handlers.handler import edit_text, order, status
 from text.text_in_message import menu_order
 
 comment_message = {}
@@ -11,13 +11,13 @@ comment_message = {}
 async def comment(query: types.CallbackQuery):
     await CommentToOrder.write_comment.set()
     await edit_text(query.message,
-                              message_text='Введіть примітку.\n'
-                                           'Приклад:\n'
-                                           '<b>Дата доставки</b>\n'
-                                           '<b>"Штрих"</b> - штрихкоди\n'
-                                           '<b>"Серт"</b> - сертифікат\n'
-                                           '<b>"ТТН"</b> - товаро-транспортна накладна\n',
-                              reply_markup=cancel_state())
+                    message_text='Введіть примітку.\n'
+                                 'Приклад:\n'
+                                 '<b>Дата доставки</b>\n'
+                                 '<b>"Штрих"</b> - штрихкоди\n'
+                                 '<b>"Серт"</b> - сертифікат\n'
+                                 '<b>"ТТН"</b> - товаро-транспортна накладна\n',
+                    reply_markup=cancel_state(status=status.dialog_status[query.from_user.id]))
     comment_message['message'] = query.message
     print(comment_message)
 
@@ -47,4 +47,3 @@ def comment_order_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(comment, Order_KB.filter(action='comment'), state=None)
     dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')
     dp.register_message_handler(write_comment, state=CommentToOrder.write_comment)
-    dp.register_callback_query_handler(stop_comment, Cat_KB.filter(action='stop_comment'), state='*')

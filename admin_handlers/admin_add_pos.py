@@ -3,32 +3,46 @@ from aiogram import Dispatcher
 from keyboards import *
 from states.admin_states import AdminAddPosition
 from datadase.admin_db import *
+from user_handlers.handler import edit_text, status
+
+
+async def stop_add_position(query: types.CallbackQuery, state: FSMContext):
+    current_state = state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await edit_text(query.message, message_text='admin menu',
+                    reply_markup=admin_menu_kb())
 
 
 async def start_add_position(query: types.CallbackQuery):
     await query.bot.send_message(text=f'Бренди:\n'
-                                      f'{select_id_title_of_brand()}', chat_id=query.message.chat.id)
+                                      f'{select_id_title_of_brand()}', chat_id=query.message.chat.id,
+                                 reply_markup=cancel_state(status.dialog_status[query.from_user.id]))
     await AdminAddPosition.brand.set()
 
 
 async def admin_add_brand(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['brand'] = message.text
-    await message.answer(text=f'{select_id_title_of_tasty(data_position["brand"])}')
+    await message.answer(text=f'{select_id_title_of_tasty(data_position["brand"])}',
+                         reply_markup=cancel_state(status.dialog_status[message.from_user.id]))
     await AdminAddPosition.tasty.set()
 
 
 async def admin_add_tasty(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['tasty'] = message.text
-    await message.answer(text=f'{select_id_title_of_size()}')
+    await message.answer(text=f'{select_id_title_of_size()}',
+                         reply_markup=cancel_state(status.dialog_status[message.from_user.id]))
     await AdminAddPosition.size.set()
 
 
 async def admin_add_size(message: types.Message, state: FSMContext):
     async with state.proxy() as data_position:
         data_position['size'] = message.text
-    await message.answer(text='Введіть ціну')
+    await message.answer(text='Введіть ціну',
+                         reply_markup=cancel_state(status.dialog_status[message.from_user.id]))
     await AdminAddPosition.price.set()
 
 
@@ -43,6 +57,7 @@ async def admin_add_price(message: types.Message, state: FSMContext):
 
 
 def register_admin_add_pos_handlers(dp: Dispatcher):
+    dp.register_callback_query_handler(start_add_position, Cat_KB.filter(action='stop_admin'), state='*')
     dp.register_callback_query_handler(start_add_position, Admin_KB.filter(action='add_new_position'), state=None)
     dp.register_message_handler(admin_add_brand, state=AdminAddPosition.brand)
     dp.register_message_handler(admin_add_tasty, state=AdminAddPosition.tasty)
