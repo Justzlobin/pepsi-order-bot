@@ -11,7 +11,7 @@ async def stop_add_position(query: types.CallbackQuery, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await edit_text(query.message, message_text='admin menu',
+    await edit_text(message=query.message, message_text='admin menu',
                     reply_markup=admin_menu_kb())
 
 
