@@ -9,6 +9,7 @@ from user_handlers.handler import edit_text, status
 
 async def admin_test(message: types.Message):
     await message.delete()
+    status.current_dialog_status_admin(message.from_user.id)
     if message.from_user.id == int(ADMIN):
         await message.answer(text='Меню адміністратора',
                              reply_markup=admin_menu_kb().add(collapse_message_for_user_kb()))
