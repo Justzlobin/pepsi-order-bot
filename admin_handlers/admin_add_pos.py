@@ -12,7 +12,7 @@ async def stop_add_position(query: types.CallbackQuery, state: FSMContext):
         return
     await state.finish()
     await edit_text(message=query.message, message_text='admin menu',
-                    reply_markup=admin_menu_kb())
+                    reply_markup=admin_menu_kb().add(collapse_message_for_user_kb()))
 
 
 async def start_add_position(query: types.CallbackQuery):

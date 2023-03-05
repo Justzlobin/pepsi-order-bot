@@ -83,7 +83,7 @@ async def stock(query: types.CallbackQuery):
 
 async def back_to_admin_menu(query: types.CallbackQuery):
     await edit_text(query.message, message_text='Admin menu',
-                    reply_markup=admin_menu_kb())
+                    reply_markup=admin_menu_kb().add(collapse_message_for_user_kb()))
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
