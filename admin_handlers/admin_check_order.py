@@ -86,15 +86,9 @@ async def back_to_admin_menu(query: types.CallbackQuery):
                     reply_markup=admin_menu_kb())
 
 
-async def stock_brand(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Brands:',
-                    reply_markup=brand_markup(callback_data['id']))
 
 
-async def stock_position(query: types.CallbackQuery, callback_data: dict):
-    await edit_text(query.message, message_text='Positions:',
-                    reply_markup=position_markup(callback_data['id'], status.dialog_status[query.from_user.id]).add(
-                        back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(callback_data['id']))))
+
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
@@ -131,8 +125,6 @@ def register_admin_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(last_order_admin, Admin_KB.filter(action='orders'))
     dp.register_callback_query_handler(stock, Admin_KB.filter(action='stock'))
     dp.register_callback_query_handler(back_to_admin_menu, Admin_KB.filter(action='back_to_admin_menu'))
-    dp.register_callback_query_handler(stock_brand, Cat_KB.filter(action='admin_from_cat_to_brand'))
-    dp.register_callback_query_handler(stock_position, Cat_KB.filter(action='admin_from_brand_to_pos'))
     dp.register_callback_query_handler(stock_single_position, Cat_KB.filter(action='admin_position'))
     dp.register_callback_query_handler(in_stock_true, Admin_cat_KB.filter(action='in_stock_true'))
     dp.register_callback_query_handler(in_stock_false, Admin_cat_KB.filter(action='in_stock_false'))
