@@ -19,6 +19,7 @@ async def stop_register(query: types.CallbackQuery, state: FSMContext):
 
 
 async def user_register(query: types.CallbackQuery):
+    status.current_dialog_status_register(query.from_user.id)
     await edit_text(query.message, message_text='Ваші данні:',
                     reply_markup=user_register_kb(
                         query.from_user.id).add(back_to_order_menu_kb()))

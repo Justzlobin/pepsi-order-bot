@@ -169,13 +169,13 @@ def user_register_kb(user_id):
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def cancel_state(status=None):
-    action = 'stop_register'
-
+def cancel_state(status):
     if status == 'admin':
         action = 'stop_admin'
-    if status == 'order':
+    elif status == 'order':
         action = 'stop_comment'
+    else:
+        action = 'stop_register'
 
     button = [
         [types.InlineKeyboardButton(text='🛑 Відмінити', callback_data=Cat_KB.new(id=1, action=action))]

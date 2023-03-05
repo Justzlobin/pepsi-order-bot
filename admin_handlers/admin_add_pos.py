@@ -16,9 +16,9 @@ async def stop_add_position(query: types.CallbackQuery, state: FSMContext):
 
 
 async def start_add_position(query: types.CallbackQuery):
-    await query.bot.send_message(text=f'Бренди:\n'
-                                      f'{select_id_title_of_brand()}', chat_id=query.message.chat.id,
-                                 reply_markup=cancel_state(status.dialog_status[query.from_user.id]))
+    await edit_text(message=query.message, message_text=f'Бренди:\n'
+                                                        f'{select_id_title_of_brand()}',
+                    reply_markup=cancel_state(status.dialog_status[query.from_user.id]))
     await AdminAddPosition.brand.set()
 
 

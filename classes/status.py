@@ -10,3 +10,6 @@ class Status:
 
     def current_dialog_status_admin(self, user_id):
         self.dialog_status[user_id] = 'admin'
+
+    def current_dialog_status_register(self, user_id):
+        self.dialog_status[user_id] = 'register'
