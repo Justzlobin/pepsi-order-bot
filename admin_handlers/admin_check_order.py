@@ -93,7 +93,8 @@ async def stock_brand(query: types.CallbackQuery, callback_data: dict):
 
 async def stock_position(query: types.CallbackQuery, callback_data: dict):
     await edit_text(query.message, message_text='Positions:',
-                    reply_markup=position_markup(callback_data['id'], status.dialog_status[query.from_user.id]))
+                    reply_markup=position_markup(callback_data['id'], status.dialog_status[query.from_user.id]).add(
+                        back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(callback_data['id']))))
 
 
 async def stock_single_position(query: types.CallbackQuery, callback_data: dict):
@@ -106,14 +107,14 @@ async def in_stock_true(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=True, pos_id=callback_data['id'])
     await edit_text(query.message, message_text='Changed to TRUE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                 status.dialog_status[query.from_user.id]))
+                                                 status.dialog_status[query.from_user.id]).add(back_to_admin_menu_kb()))
 
 
 async def in_stock_false(query: types.CallbackQuery, callback_data: dict):
     check_in_status(value=False, pos_id=callback_data['id'])
     await edit_text(query.message, message_text='Changed to FALSE',
                     reply_markup=position_markup(sqlite_db.select_brand_id(callback_data['id']),
-                                                 status.dialog_status[query.from_user.id]))
+                                                 status.dialog_status[query.from_user.id]).add(back_to_admin_menu_kb()))
 
 
 async def collapse_message_for_user(query: types.CallbackQuery):
