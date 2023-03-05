@@ -57,7 +57,7 @@ async def admin_add_price(message: types.Message, state: FSMContext):
 
 
 def register_admin_add_pos_handlers(dp: Dispatcher):
-    dp.register_callback_query_handler(start_add_position, Cat_KB.filter(action='stop_admin'), state='*')
+    dp.register_callback_query_handler(stop_add_position, Cat_KB.filter(action='stop_admin'), state='*')
     dp.register_callback_query_handler(start_add_position, Admin_KB.filter(action='add_new_position'), state=None)
     dp.register_message_handler(admin_add_brand, state=AdminAddPosition.brand)
     dp.register_message_handler(admin_add_tasty, state=AdminAddPosition.tasty)
