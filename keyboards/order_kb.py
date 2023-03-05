@@ -35,8 +35,8 @@ def order_basket_kb():
 
 def keyboard_settings():
     buttons = [
-        # [types.InlineKeyboardButton(text='Дата доставки',
-        #                             callback_data=cat_cb.new(id=order_id, action='date_deliver'))],
+        [types.InlineKeyboardButton(text='Дата доставки',
+                                    callback_data=Order_KB.new(action='date_deliver'))],
         [types.InlineKeyboardButton(text='💰 Спосіб оплати',
                                     callback_data=Order_KB.new(action='payment'))],
         [types.InlineKeyboardButton(text='💬 Примітка',
