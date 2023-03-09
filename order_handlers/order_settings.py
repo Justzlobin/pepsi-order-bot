@@ -3,6 +3,7 @@ from keyboards import *
 from keyboards.calendar_kb import SimpleCalendar, calendar_callback as simple_cal_callback
 from user_handlers.handler import edit_text, order
 from text.text_in_message import menu_order
+import datetime
 
 
 async def date_deliver_message(query: types.CallbackQuery):
@@ -38,11 +39,15 @@ async def payment_bank(query: types.CallbackQuery):
 async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     selected, date = await SimpleCalendar().process_selection(query, callback_data)
     if selected:
-        order.change_date_deliver(user_id=query.from_user.id, date=date)
-        await query.message.answer(
-            f'You selected {date.strftime("%d/%m/%Y")}',
-            reply_markup=keyboard_settings()
-        )
+        if date <= datetime.today():
+            await query.message.answer(text='un correct date',
+                                       reply_markup=keyboard_settings())
+        else:
+            order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
+            await query.message.answer(
+                f'You selected {date.strftime("%d/%m/%Y")}',
+                reply_markup=keyboard_settings()
+            )
 
 
 def register_order_settings(dp: Dispatcher):
