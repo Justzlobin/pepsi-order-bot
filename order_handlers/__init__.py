@@ -1,2 +1,1 @@
 from order_handlers import order_settings
-from order_handlers import calendar_handler

@@ -21,6 +21,5 @@ admin_add_pos.register_admin_add_pos_handlers(dp)
 back_to_handlers.register_back_to_handlers(dp)
 order_handler.register_order_handlers(dp)
 handler.register_user_handlers(dp)
-calendar_handler.register_calendar_handlers(dp)
 
 executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

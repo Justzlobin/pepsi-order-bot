@@ -1,12 +1,13 @@
 from aiogram import Dispatcher
 from keyboards import *
+from keyboards.calendar_kb import SimpleCalendar
 from user_handlers.handler import edit_text, order
 from text.text_in_message import menu_order
 
 
 async def calendar(query: types.CallbackQuery):
     await edit_text(query.message, message_text='select date',
-                    reply_markup=start_calendar())
+                    reply_markup=await SimpleCalendar.start_calendar())
 
 
 async def payment(query: types.CallbackQuery):
