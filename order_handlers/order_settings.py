@@ -45,7 +45,7 @@ async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
             await query.message.answer(text='un correct date',
                                        reply_markup=keyboard_settings())
         else:
-            order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
+            order.change_date_deliver(query.from_user.id, date)
             await query.message.answer(
                 f'You selected {date.strftime("%d/%m/%Y")}',
                 reply_markup=keyboard_settings()
