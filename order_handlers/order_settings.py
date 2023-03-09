@@ -46,7 +46,7 @@ async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
 
 def register_order_settings(dp: Dispatcher):
     dp.register_callback_query_handler(date_deliver_message, Order_KB.filter(action='date_deliver'))
-    dp.register_callback_query_handler(calendar, Order_KB.filter(action='date_deliver_from'))
+    dp.register_callback_query_handler(calendar, Order_KB.filter(action='date_deliver_change'))
     dp.register_callback_query_handler(payment, Order_KB.filter(action='payment'))
     dp.register_callback_query_handler(payment_cash, Order_KB.filter(action='cash'))
     dp.register_callback_query_handler(payment_bank, Order_KB.filter(action='bank'))
