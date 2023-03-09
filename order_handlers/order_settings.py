@@ -39,7 +39,7 @@ async def payment_bank(query: types.CallbackQuery):
 async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     selected, date = await SimpleCalendar().process_selection(query, callback_data)
     if selected:
-        if date <= datetime.today():
+        if date <= datetime.date.today():
             await query.message.answer(text='un correct date',
                                        reply_markup=keyboard_settings())
         else:
