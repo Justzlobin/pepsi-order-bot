@@ -184,4 +184,3 @@ def cancel_state(status):
     return types.InlineKeyboardMarkup(inline_keyboard=button)
 
 
-calendar_callback = CallbackData('simple_calendar', 'act', 'year', 'month', 'day')

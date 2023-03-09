@@ -1,3 +1,6 @@
+import datetime
+
+
 class Order:
 
     def __init__(self):
@@ -12,6 +15,7 @@ class Order:
         self.pos_dict[user_id] = {}
         self.checkin[user_id] = False
         self.order_settings_dict[user_id] = {'payment': 'Готівка', 'comment': 'Без коментарів'}
+        self.date_deliver[user_id] = datetime.date.today() + datetime.timedelta(days=1)
 
     def add_in_pos_dict(self, user_id, pos_id, value):
         self.pos_dict[user_id][pos_id] = value
@@ -25,3 +29,6 @@ class Order:
 
     def add_payment(self, user_id, payment):
         self.order_settings_dict[user_id]['payment'] = payment
+
+    def change_date_deliver(self, user_id, date):
+        self.date_deliver[user_id] = date

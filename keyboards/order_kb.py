@@ -2,6 +2,7 @@ from aiogram.types import InlineKeyboardMarkup
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
+
 Order_KB = CallbackData('title', 'action')
 
 
@@ -65,9 +66,8 @@ def chose_next_move_in_order_kb():
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def date_deliver_kb(date_from, date_to):
+def date_deliver_kb(date):
     buttons = [
-        [types.InlineKeyboardButton(text=date_from, callback_data=Order_KB.new(action='date_deliver_from'))],
-        [types.InlineKeyboardButton(text=date_to, callback_data=Order_KB.new(action='date_deliver_to'))],
+        [types.InlineKeyboardButton(text=date, callback_data=Order_KB.new(action='date_deliver_change'))],
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
