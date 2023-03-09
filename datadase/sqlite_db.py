@@ -223,9 +223,11 @@ def select_price_of_box(pos_id, amount):
 
 def save_order(user_id, order):
     def add_order_in_list():
-        cur.execute("""INSERT INTO list (user_id, date, payment, comment) VALUES (%s, NOW(), %s, %s)""",
-                    (user_id, order.order_settings_dict[user_id]['payment'],
-                     order.order_settings_dict[user_id]['comment']))
+        cur.execute(
+            """INSERT INTO list (user_id, date, payment, comment, date_deliver) VALUES (%s, NOW(), %s, %s, %s)""",
+            (user_id, order.order_settings_dict[user_id]['payment'],
+             order.order_settings_dict[user_id]['comment'],
+             order.date_deliver[user_id]))
         conn.commit()
         return True
 
