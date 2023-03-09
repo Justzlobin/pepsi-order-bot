@@ -103,4 +103,7 @@ class SimpleCalendar:
             next_date = temp_date + timedelta(days=31)
             await query.message.edit_reply_markup(await self.start_calendar(int(next_date.year), int(next_date.month)))
         # at some point user clicks DAY button, returning date
+        print(return_data)
+        print(type(return_data))
         return return_data
+
