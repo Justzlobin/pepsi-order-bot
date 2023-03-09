@@ -10,5 +10,5 @@ class SelectDate:
     def select_date_from(self, date):
         self.select_date['from'] = date
 
-    def select_date_to(self, user_id, date):
+    def select_date_to(self,   date):
         self.select_date['to'] = date
