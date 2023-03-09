@@ -6,8 +6,9 @@ from text.text_in_message import menu_order
 
 
 async def date_deliver_message(query: types.CallbackQuery):
+    date = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
     await edit_text(query.message, message_text='change_date_deliver',
-                    reply_markup=date_deliver_kb(order.date_deliver[query.from_user.id]).strftime("%d/%m/%Y"))
+                    reply_markup=date_deliver_kb(date=date))
 
 
 async def calendar(query: types.CallbackQuery):
