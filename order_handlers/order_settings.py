@@ -42,14 +42,12 @@ async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     print(datetime.datetime.today())
     if selected:
         if date <= datetime.datetime.today():
-            await query.message.answer(text='un correct date',
-                                       reply_markup=keyboard_settings())
+            await edit_text(message=query.message, message_text='un correct date',
+                            reply_markup=keyboard_settings())
         else:
             order.change_date_deliver(query.from_user.id, date)
-            await query.message.answer(
-                f'You selected {date.strftime("%d/%m/%Y")}',
-                reply_markup=keyboard_settings()
-            )
+            await edit_text(message=query.message, message_text=f'You selected {date.strftime("%d/%m/%Y")}',
+                            reply_markup=keyboard_settings())
 
 
 def register_order_settings(dp: Dispatcher):
