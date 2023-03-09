@@ -67,7 +67,7 @@ def chose_next_move_in_order_kb():
 
 def date_deliver_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='from', callback_data=Order_KB.new(action='date_deliver'))],
-        [types.InlineKeyboardButton(text='to', callback_data=Order_KB.new(action='date_deliver'))],
+        [types.InlineKeyboardButton(text='from', callback_data=Order_KB.new(action='date_deliver_from'))],
+        [types.InlineKeyboardButton(text='to', callback_data=Order_KB.new(action='date_deliver_to'))],
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)

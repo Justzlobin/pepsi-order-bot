@@ -5,6 +5,11 @@ from user_handlers.handler import edit_text, order
 from text.text_in_message import menu_order
 
 
+async def date_deliver_message(query: types.CallbackQuery):
+    await edit_text(query.message, message_text='select date history',
+                    reply_markup=date_deliver_kb())
+
+
 async def calendar(query: types.CallbackQuery):
     await edit_text(query.message, message_text='select date',
                     reply_markup=await SimpleCalendar().start_calendar())
@@ -39,7 +44,8 @@ async def process_simple_calendar(callback_query: CallbackQuery, callback_data: 
 
 
 def register_order_settings(dp: Dispatcher):
-    dp.register_callback_query_handler(calendar, Order_KB.filter(action='date_deliver'))
+    dp.register_callback_query_handler(date_deliver_message, Order_KB.filter(action='date_deliver'))
+    dp.register_callback_query_handler(calendar, Order_KB.filter(action='date_deliver_from'))
     dp.register_callback_query_handler(payment, Order_KB.filter(action='payment'))
     dp.register_callback_query_handler(payment_cash, Order_KB.filter(action='cash'))
     dp.register_callback_query_handler(payment_bank, Order_KB.filter(action='bank'))
