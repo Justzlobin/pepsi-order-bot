@@ -105,6 +105,6 @@ class SimpleCalendar:
         # at some point user clicks DAY button, returning date
         print(return_data)
         print(return_data[1])
-        print(type(return_data))
+        print(type(return_data[1]))
         return return_data
 
