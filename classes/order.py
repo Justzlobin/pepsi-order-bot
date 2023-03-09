@@ -5,6 +5,7 @@ class Order:
         self.pos_dict = {}
         self.checkin = {}
         self.order_settings_dict = {}
+        self.date_deliver = {}
 
     def start_order(self, user_id):
         self.order_dict[user_id] = {}
