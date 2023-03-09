@@ -41,7 +41,7 @@ async def payment_bank(query: types.CallbackQuery):
 async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     selected, date = await SimpleCalendar().process_selection(query, callback_data)
     if selected:
-        date_dict.select_date_from(query.from_user.id, date.strftime("%d/%m/%Y"))
+        date_dict.select_date_from(date.strftime("%d/%m/%Y"))
         await query.message.answer(
             f'You selected {date.strftime("%d/%m/%Y")}',
             reply_markup=keyboard_settings()
