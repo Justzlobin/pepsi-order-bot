@@ -37,10 +37,10 @@ def order_basket_kb():
 
 def keyboard_settings():
     buttons = [
-        [types.InlineKeyboardButton(text='Дата доставки',
+        [types.InlineKeyboardButton(text='📆 Дата доставки',
                                     callback_data=Order_KB.new(action='date_deliver'))],
-        [types.InlineKeyboardButton(text='💰 Спосіб оплати',
-                                    callback_data=Order_KB.new(action='payment'))],
+        # [types.InlineKeyboardButton(text='💰 Спосіб оплати',
+        #                             callback_data=Order_KB.new(action='payment'))],
         [types.InlineKeyboardButton(text='💬 Примітка',
                                     callback_data=Order_KB.new(action='comment'))]
     ]
@@ -59,8 +59,8 @@ def chose_payment():
 
 def chose_next_move_in_order_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='Так', callback_data=Order_KB.new(action='next_move_in_order_yes'))],
-        [types.InlineKeyboardButton(text='Ні, повернутись до замовлення',
+        [types.InlineKeyboardButton(text='❌ Видалити заявку', callback_data=Order_KB.new(action='next_move_in_order_yes'))],
+        [types.InlineKeyboardButton(text='✅ Продовжити замовлення',
                                     callback_data=Order_KB.new(action='next_move_in_order_no'))]
 
     ]
