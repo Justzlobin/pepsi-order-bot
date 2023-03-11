@@ -9,15 +9,14 @@ import datetime
 async def date_deliver_message(query: types.CallbackQuery):
     try:
         date = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
-        await edit_text(query.message, message_text='change_date_deliver',
+        await edit_text(query.message, message_text='Дата доставки:',
                         reply_markup=date_deliver_kb(date=date).add(back_to_order_settings_kb()))
     except KeyError:
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
 
-
 async def calendar(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='select date',
+    await edit_text(query.message, message_text='Оберіть зручну для вас дату:',
                     reply_markup=(await SimpleCalendar().start_calendar()).add(back_to_order_settings_kb()))
 
 
@@ -47,7 +46,7 @@ async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     try:
         if selected:
             if date <= datetime.datetime.today():
-                await edit_text(message=query.message, message_text='un correct date',
+                await edit_text(message=query.message, message_text='‼ Некоректна дата ‼',
                                 reply_markup=date_deliver_kb(
                                     date=order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")).add(
                                     back_to_order_settings_kb()))
