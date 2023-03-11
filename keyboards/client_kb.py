@@ -101,7 +101,7 @@ def keyboard(pos_id, order=False):
 def order_for_admin():
     order_to_admin_markup = InlineKeyboardMarkup()
     for i in sqlite_db.list_order_to_admin():
-        order_to_admin_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {i[2]} {i[3]}',
+        order_to_admin_markup.add(InlineKeyboardButton(text=f'{i[0]} {i[1]} {i[2]} {i[3]} - {i[4]}',
                                                        callback_data=Cat_KB.new(id=i[0],
                                                                                 action='order_admin')))
     order_to_admin_markup.add(InlineKeyboardButton(text='Згорнути', callback_data=Menu_KB.new(action='close_admin')))

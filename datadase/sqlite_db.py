@@ -181,7 +181,7 @@ def update_payment(user_id, payment):
 
 
 def list_order_to_admin():
-    cur.execute("""SELECT list_id, user_full_name, date, payment
+    cur.execute("""SELECT list_id, user_full_name, date, payment, status
                     FROM list, users
                     WHERE list.user_id = users.user_id""")
     return cur.fetchall()[-20:]

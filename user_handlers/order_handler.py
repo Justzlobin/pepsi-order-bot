@@ -7,10 +7,13 @@ from text.text_in_message import menu, menu_order, main_menu
 
 
 async def order_basket_confirm(query: types.CallbackQuery):
-    save_order(user_id=query.from_user.id, order=order)
-    await query.answer(text='Додано')
-    await edit_text(message=query.message, message_text=menu,
-                    reply_markup=order_menu_kb().add(back_to_menu_kb()))
+    try:
+        save_order(user_id=query.from_user.id, order=order)
+        await query.answer(text='Додано')
+        await edit_text(message=query.message, message_text=menu,
+                        reply_markup=order_menu_kb().add(back_to_menu_kb()))
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
 
 async def order_basket_cancel(query: types.CallbackQuery):
