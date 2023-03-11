@@ -13,6 +13,10 @@ def back_to_order_menu_kb():
     return types.InlineKeyboardButton('🔙 Меню', callback_data=Back_to.new(action='back_to_order_menu'))
 
 
+def back_to_order_settings_kb():
+    return types.InlineKeyboardButton('🔙 Налаштування', callback_data=Back_to.new(action='back_to_order_settings'))
+
+
 def back_to_admin_menu_kb():
     return types.InlineKeyboardButton('🔙 Адмін меню', callback_data=Back_to.new(action='back_to_admin_menu'))
 
@@ -35,4 +39,3 @@ def back_to_brand_from_tasty_kb(cat_id):
 def back_to_tasty_from_pos_kb(brand_id):
     return types.InlineKeyboardButton('⬅ Назад', callback_data=Back_to_id.new(id=brand_id,
                                                                               action='back_to_tasty_from_pos'))
-

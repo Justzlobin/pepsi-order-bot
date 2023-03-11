@@ -83,6 +83,11 @@ async def back_to_start_order(query: types.CallbackQuery):
                     reply_markup=order_kb().add(back_to_order_menu_kb()))
 
 
+async def back_to_order_settings(query: types.CallbackQuery):
+    await edit_text(message=query.message, message_text='⚙ Налаштування замовлення:',
+                    reply_markup=keyboard_settings().add(back_to_order_kb()))
+
+
 def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_tasty_from_pos, Back_to_id.filter(action='back_to_tasty_from_pos'))
     dp.register_callback_query_handler(back_to_cat_from_brand, Back_to.filter(action='back_to_cat_from_brand'))
@@ -90,3 +95,4 @@ def register_back_to_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(back_to_order_menu, Back_to.filter(action='back_to_order_menu'))
     dp.register_callback_query_handler(back_to_start_order, Back_to.filter(action='back_to_start_order'))
     dp.register_callback_query_handler(back_to_main_menu, Back_to.filter(action='back_to_menu'))
+    dp.register_callback_query_handler(back_to_order_settings, Back_to.filter(action='back_to_order_settings'))
