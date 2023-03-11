@@ -45,8 +45,8 @@ async def order_product_list(query: types.CallbackQuery):
 async def order_basket(query: types.CallbackQuery):
     if order.order_dict[query.from_user.id]:
         date_deliver_order = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
-        payment = order.order_settings_dict['payment']
-        comment = order.order_settings_dict['comment']
+        payment = order.order_settings_dict[query.from_user.id]['payment']
+        comment = order.order_settings_dict[query.from_user.id]['comment']
         full_text = 'Ваше замовлення.\n' \
                     f'Дата доставки: {date_deliver_order}\n' \
                     f'Спосіб оплати: {payment}\n' \
