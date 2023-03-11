@@ -9,12 +9,15 @@ from text.text_in_message import main_menu
 
 async def price_cat(query: types.CallbackQuery):
     status.current_dialog_status_price(query.from_user.id)
-    if status.dialog_status[query.from_user.id] == 'price':
-        await edit_text(message=query.message, message_text='Категорії:',
-                        reply_markup=cat_markup().add(back_to_menu_kb()))
-    if status.dialog_status[query.from_user.id] == 'order':
-        await edit_text(message=query.message, message_text='Категорії:',
-                        reply_markup=cat_markup().add(back_to_order_kb()))
+    try:
+        if status.dialog_status[query.from_user.id] == 'price':
+            await edit_text(message=query.message, message_text='Категорії:',
+                            reply_markup=cat_markup().add(back_to_menu_kb()))
+        if status.dialog_status[query.from_user.id] == 'order':
+            await edit_text(message=query.message, message_text='Категорії:',
+                            reply_markup=cat_markup().add(back_to_order_kb()))
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
 
 async def price_brand(query: types.CallbackQuery, callback_data: dict):
