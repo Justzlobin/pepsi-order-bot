@@ -44,7 +44,13 @@ async def order_product_list(query: types.CallbackQuery):
 
 async def order_basket(query: types.CallbackQuery):
     if order.order_dict[query.from_user.id]:
-        full_text = 'Ваше замовлення.\n'
+        date_deliver_order = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
+        payment = order.order_settings_dict['payment']
+        comment = order.order_settings_dict['comment']
+        full_text = 'Ваше замовлення.\n' \
+                    f'Дата доставки: {date_deliver_order}\n' \
+                    f'Спосіб оплати: {payment}\n' \
+                    f'Примітки: {comment}\n'
         print(order.order_dict)
         for key, value in order.order_dict[query.from_user.id].items():
             dict_desc = sqlite_db.select_one_position(int(key))
