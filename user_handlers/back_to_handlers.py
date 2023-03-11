@@ -44,7 +44,7 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                          back_to_brand_from_tasty_kb(
                                              sqlite_db.select_cat_id(brand_id)),
                                          back_to_order_kb()))
-    if status.dialog_statusp[query.from_user.id] == 'admin':
+    if status.dialog_status[query.from_user.id] == 'admin':
         await query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
                                      reply_markup=position_markup(brand_id,
                                                                   status.dialog_status[query.from_user.id]).row(
