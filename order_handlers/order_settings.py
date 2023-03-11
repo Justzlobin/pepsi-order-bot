@@ -2,14 +2,18 @@ from aiogram import Dispatcher
 from keyboards import *
 from keyboards.calendar_kb import SimpleCalendar, calendar_callback as simple_cal_callback
 from user_handlers.handler import edit_text, order
-from text.text_in_message import menu_order
+from text.text_in_message import menu_order, main_menu
 import datetime
 
 
 async def date_deliver_message(query: types.CallbackQuery):
-    date = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
-    await edit_text(query.message, message_text='change_date_deliver',
-                    reply_markup=date_deliver_kb(date=date).add(back_to_order_settings_kb()))
+    try:
+        date = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
+        await edit_text(query.message, message_text='change_date_deliver',
+                        reply_markup=date_deliver_kb(date=date).add(back_to_order_settings_kb()))
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+
 
 
 async def calendar(query: types.CallbackQuery):
@@ -40,18 +44,22 @@ async def process_simple_calendar(query: CallbackQuery, callback_data: dict):
     selected, date = await SimpleCalendar().process_selection(query, callback_data)
     print(date)
     print(datetime.datetime.today())
-    if selected:
-        if date <= datetime.datetime.today():
-            await edit_text(message=query.message, message_text='un correct date',
-                            reply_markup=date_deliver_kb(
-                                date=order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")).add(
-                                back_to_order_settings_kb()))
-        else:
-            order.change_date_deliver(query.from_user.id, date)
-            await edit_text(message=query.message, message_text=f'You selected {date.strftime("%d/%m/%Y")}',
-                            reply_markup=date_deliver_kb(
-                                date=order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")).add(
-                                back_to_order_settings_kb()))
+    try:
+        if selected:
+            if date <= datetime.datetime.today():
+                await edit_text(message=query.message, message_text='un correct date',
+                                reply_markup=date_deliver_kb(
+                                    date=order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")).add(
+                                    back_to_order_settings_kb()))
+            else:
+                order.change_date_deliver(query.from_user.id, date)
+                await edit_text(message=query.message, message_text=f'You selected {date.strftime("%d/%m/%Y")}',
+                                reply_markup=date_deliver_kb(
+                                    date=order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")).add(
+                                    back_to_order_settings_kb()))
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+
 
 def register_order_settings(dp: Dispatcher):
     dp.register_callback_query_handler(date_deliver_message, Order_KB.filter(action='date_deliver'))
