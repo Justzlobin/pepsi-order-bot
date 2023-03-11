@@ -159,27 +159,6 @@ def select_last_order(user_id):
     return cur.fetchone()[0]
 
 
-def update_order_pos_id(quantity, order_id, pos_id):
-    if quantity == 0:
-        cur.execute("""DELETE FROM "order" WHERE order_id= %s AND pos_id= %s""", (order_id, pos_id))
-        return conn.commit()
-    else:
-        cur.execute("""SELECT price FROM position WHERE pos_id = %s""", (pos_id,))
-        amount = cur.fetchone()[0] * quantity
-        cur.execute("""
-                UPDATE "order"
-                SET quantity = %s, full_price = %s
-                WHERE order_id = %s
-                AND pos_id = %s""", (quantity, amount, order_id, pos_id))
-        return conn.commit()
-
-
-def update_payment(user_id, payment):
-    cur.execute("""UPDATE list SET payment = %s WHERE list_id = %s AND user_id = %s""",
-                (payment, select_last_order(user_id), user_id))
-    return conn.commit()
-
-
 def list_order_to_admin():
     cur.execute("""SELECT list_id, user_full_name, date, payment, status
                     FROM list, users
@@ -191,7 +170,6 @@ def list_order_for_user(user_id):
     cur.execute("""SELECT date, list_id
                     FROM list 
                     WHERE user_id = %s
-  
                     """, (user_id,))
     return cur.fetchall()
 
