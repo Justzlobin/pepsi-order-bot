@@ -21,6 +21,9 @@ async def command_start(message: types.Message):
                                                                         f'{main_menu}',
                                              reply_markup=menu_kb(), parse_mode='HTML')
     delete_message.change_message(user_id=message.from_user.id, message_id=message)
+    print(f'message_dict = {delete_message.delete_message_dict}')
+    print(f'message = {message}')
+
 
 
 async def order_menu(query: types.CallbackQuery):
