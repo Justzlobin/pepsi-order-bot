@@ -4,6 +4,7 @@ from aiogram import types
 from datadase.sqlite_db import save_order
 from .handler import order, edit_text
 from text.text_in_message import menu, menu_order, main_menu
+from config import ADMIN
 
 
 async def order_basket_confirm(query: types.CallbackQuery):
@@ -13,6 +14,8 @@ async def order_basket_confirm(query: types.CallbackQuery):
         await edit_text(message=query.message, message_text=menu,
                         reply_markup=order_menu_kb().add(back_to_menu_kb()))
         del order.order_dict[query.from_user.id]
+        await query.bot.send_message(chat_id=ADMIN, text='Нове замовлення!',
+                                     reply_markup=types.InlineKeyboardMarkup.add(collapse_message_for_user_kb()))
     except KeyError:
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
