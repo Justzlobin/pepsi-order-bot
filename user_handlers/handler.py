@@ -130,7 +130,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
         message = await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
                                                reply_markup=keyboard(callback_data['id']).add(
                                                    back_to_tasty_from_pos_kb(callback_data['id'])))
-    delete_message.change_message(user_id=message.from_user.id, message_id=message)
+    delete_message.change_message(user_id=query.from_user.id, message_id=message)
     print(f'pos_id {callback_data["id"]}')
 
 

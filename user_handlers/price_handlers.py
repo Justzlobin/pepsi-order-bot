@@ -82,7 +82,7 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                                                reply_markup=types.InlineKeyboardMarkup().add(
                                                    back_to_tasty_from_pos_kb(
                                                        callback_data['id'])))
-    delete_message.change_message(user_id=message.from_user.id, message_id=message)
+    delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
 
 
