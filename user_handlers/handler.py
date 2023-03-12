@@ -215,10 +215,6 @@ async def messages(message: types.Message):
     await message.delete()
 
 
-async def sticker(sticker: types.Sticker):
-    await sticker.delete_from_set()
-
-
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
@@ -243,4 +239,3 @@ def register_user_handlers(dp: Dispatcher):
     #
     #
     dp.register_message_handler(messages)
-    dp.register_message_handler(sticker)
