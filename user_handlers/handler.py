@@ -14,17 +14,16 @@ delete_message = DeleteMessage()
 async def command_start(message: types.Message):
     await message.delete()
     try:
-        await delete_message.delete_message_dict[message.from_user.id].delete()
+        await delete_message.delete_message_dict[message.chat.id].delete()
     except KeyError:
         pass
     message = await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
                                                                         f'{main_menu}',
                                              reply_markup=menu_kb(), parse_mode='HTML')
-    delete_message.change_message(user_id=message.from_user.id, message_id=message)
+    delete_message.change_message(user_id=message.chat.id, message_id=message)
     print(f'message_dict = {delete_message.delete_message_dict}')
     print(f'message = {message}')
     print(f'user_id = {message.from_user.id}')
-
 
 
 async def order_menu(query: types.CallbackQuery):
