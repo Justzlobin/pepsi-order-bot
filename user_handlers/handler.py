@@ -23,7 +23,7 @@ async def command_start(message: types.Message):
     delete_message.change_message(user_id=message.chat.id, message_id=message)
     print(f'message_dict = {delete_message.delete_message_dict}')
     print(f'message = {message}')
-    print(f'user_id = {message.from_user.id}')
+    print(f'user_id = {message.chat.id}')
 
 
 async def order_menu(query: types.CallbackQuery):
