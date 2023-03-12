@@ -221,5 +221,10 @@ def save_order(user_id, order):
         return True
 
 
+def update_barcode(pos_id, barcode):
+    cur.execute("""UPDATE position SET barcode = %s WHERE pos_id = %s""", (barcode, pos_id))
+    conn.commit()
+
+
 def close(self):
     self.close()
