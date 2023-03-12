@@ -85,7 +85,6 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
     delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
 
-
 def register_price_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(price_cat, Menu_KB.filter(action='price'))
     dp.register_callback_query_handler(price_brand, Cat_KB.filter(action='from_cat_to_brand'))
