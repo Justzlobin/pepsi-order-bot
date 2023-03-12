@@ -52,30 +52,34 @@ async def order_product_list(query: types.CallbackQuery):
 
 
 async def order_basket(query: types.CallbackQuery):
-    if order.order_dict[query.from_user.id]:
-        date_deliver_order = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
-        payment = order.order_settings_dict[query.from_user.id]['payment']
-        comment = order.order_settings_dict[query.from_user.id]['comment']
-        full_text = 'Ваше замовлення.\n' \
-                    f'Дата доставки: {date_deliver_order}\n' \
-                    f'Спосіб оплати: {payment}\n' \
-                    f'Примітки: {comment}\n'
-        total = 0
-        print(order.order_dict)
-        for key, value in order.order_dict[query.from_user.id].items():
-            dict_desc = sqlite_db.select_one_position(int(key))
-            full_text += ' '.join(
-                [f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
-                 f" {round(dict_desc['price'] * value, 2)}\n"])
-            total += round(dict_desc["price"] * value, 2)
+    try:
+        if order.order_dict[query.from_user.id]:
+            date_deliver_order = order.date_deliver[query.from_user.id].strftime("%d/%m/%Y")
+            payment = order.order_settings_dict[query.from_user.id]['payment']
+            comment = order.order_settings_dict[query.from_user.id]['comment']
+            full_text = 'Ваше замовлення.\n' \
+                        f'Дата доставки: {date_deliver_order}\n' \
+                        f'Спосіб оплати: {payment}\n' \
+                        f'Примітки: {comment}\n'
+            total = 0
+            print(order.order_dict)
+            for key, value in order.order_dict[query.from_user.id].items():
+                dict_desc = sqlite_db.select_one_position(int(key))
+                full_text += ' '.join(
+                    [f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
+                     f" {round(dict_desc['price'] * value, 2)}\n"])
+                total += round(dict_desc["price"] * value, 2)
 
-        full_text += f'Сума замовлення: {total}'
-        await edit_text(message=query.message, message_text=full_text,
-                        reply_markup=order_basket_kb().add(back_to_order_kb()))
-    else:
-        await query.answer(text='Корзина пуста')
-        await edit_text(message=query.message, message_text=menu_order,
-                        reply_markup=order_kb().add(back_to_order_menu_kb()))
+            full_text += f'Сума замовлення: {total}'
+            await edit_text(message=query.message, message_text=full_text,
+                            reply_markup=order_basket_kb().add(back_to_order_kb()))
+        else:
+            await query.answer(text='Корзина пуста')
+            await edit_text(message=query.message, message_text=menu_order,
+                            reply_markup=order_kb().add(back_to_order_menu_kb()))
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+
 
 
 async def order_settings(query: types.CallbackQuery):
