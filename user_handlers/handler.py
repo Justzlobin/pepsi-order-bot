@@ -67,9 +67,9 @@ async def order_basket(query: types.CallbackQuery):
             full_text += ' '.join(
                 [f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
                  f" {dict_desc['price'] * value}\n"])
-            total += f'{dict_desc["price"] * value}'
+            total += dict_desc["price"] * value
 
-        full_text += total
+        full_text += f'{total}'
         await edit_text(message=query.message, message_text=full_text,
                         reply_markup=order_basket_kb().add(back_to_order_kb()))
     else:
