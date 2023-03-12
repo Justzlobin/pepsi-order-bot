@@ -3,7 +3,7 @@ from keyboards.client_kb import *
 from keyboards.menu_kb import *
 from keyboards.back_to import *
 from aiogram import types
-from user_handlers.handler import edit_text, status
+from user_handlers.handler import edit_text, status, delete_message
 from text.text_in_message import main_menu
 
 
@@ -60,6 +60,8 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
 
 
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
+
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
@@ -67,20 +69,21 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(
-                                       fr"image/{callback_data['id']}.png"),
-                                   caption=full_text,
-                                   reply_markup=types.InlineKeyboardMarkup().add(
-                                       back_to_tasty_from_pos_kb(
-                                           callback_data['id'])))
+        message = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                             photo=types.InputFile(
+                                                 fr"image/{callback_data['id']}.png"),
+                                             caption=full_text,
+                                             reply_markup=types.InlineKeyboardMarkup().add(
+                                                 back_to_tasty_from_pos_kb(
+                                                     callback_data['id'])))
     except FileNotFoundError:
-        await query.bot.send_message(chat_id=query.message.chat.id,
-                                     text=full_text,
-                                     reply_markup=types.InlineKeyboardMarkup().add(
-                                         back_to_tasty_from_pos_kb(
-                                             callback_data['id'])))
-    await query.message.delete()
+        message = await query.bot.send_message(chat_id=query.message.chat.id,
+                                               text=full_text,
+                                               reply_markup=types.InlineKeyboardMarkup().add(
+                                                   back_to_tasty_from_pos_kb(
+                                                       callback_data['id'])))
+    delete_message.change_message(user_id=message.from_user.id, message_id=message)
+
 
 
 def register_price_handlers(dp: Dispatcher):

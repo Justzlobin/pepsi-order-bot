@@ -1,20 +1,22 @@
 from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
-from classes import Order, Status, PhotoDelete
+from classes import Order, Status
+from classes.delete import DeleteMessage
 from text.text_in_message import main_menu, menu_order, menu
 from aiogram.utils import exceptions
 
 order = Order()
 status = Status()
-photo = PhotoDelete()
+delete_message = DeleteMessage()
 
 
 async def command_start(message: types.Message):
-    await message.delete()
-    await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
-                                                              f'{main_menu}',
-                                   reply_markup=menu_kb(), parse_mode='HTML')
+    await delete_message.delete_message_dict[message.from_user.id].delete()
+    message = await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
+                                                                        f'{main_menu}',
+                                             reply_markup=menu_kb(), parse_mode='HTML')
+    delete_message.change_message(user_id=message.from_user.id, message_id=message)
 
 
 async def order_menu(query: types.CallbackQuery):
@@ -95,6 +97,8 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def position(query: types.CallbackQuery, callback_data: dict):
+    await query.message.delete()
+
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
         order.pos_dict[query.from_user.id][callback_data['id']] = value
@@ -110,18 +114,17 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"Кількість: {value}, Ціна: {dict_desc['price'] * value} uah."
 
     try:
-        await query.bot.send_photo(chat_id=query.message.chat.id,
-                                   photo=types.InputFile(
-                                       fr"image/{callback_data['id']}.png"),
-                                   caption=full_text, reply_markup=keyboard(callback_data['id']).add(
+        message = await query.bot.send_photo(chat_id=query.message.chat.id,
+                                             photo=types.InputFile(
+                                                 fr"image/{callback_data['id']}.png"),
+                                             caption=full_text, reply_markup=keyboard(callback_data['id']).add(
                 back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
-        await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
-                                     reply_markup=keyboard(callback_data['id']).add(
-                                         back_to_tasty_from_pos_kb(callback_data['id'])))
-    await query.message.delete()
+        message = await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
+                                               reply_markup=keyboard(callback_data['id']).add(
+                                                   back_to_tasty_from_pos_kb(callback_data['id'])))
+    delete_message.change_message(user_id=message.from_user.id, message_id=message)
     print(f'pos_id {callback_data["id"]}')
-    print(photo.photo_dict)
 
 
 async def order_position_plus(query: types.CallbackQuery, callback_data: dict):

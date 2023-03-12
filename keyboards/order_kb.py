@@ -2,8 +2,6 @@ from aiogram.types import InlineKeyboardMarkup
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 
-
-
 Order_KB = CallbackData('title', 'action')
 
 
@@ -59,7 +57,8 @@ def chose_payment():
 
 def chose_next_move_in_order_kb():
     buttons = [
-        [types.InlineKeyboardButton(text='❌ Видалити заявку', callback_data=Order_KB.new(action='next_move_in_order_yes'))],
+        [types.InlineKeyboardButton(text='❌ Видалити заявку',
+                                    callback_data=Order_KB.new(action='next_move_in_order_yes'))],
         [types.InlineKeyboardButton(text='✅ Продовжити замовлення',
                                     callback_data=Order_KB.new(action='next_move_in_order_no'))]
 
