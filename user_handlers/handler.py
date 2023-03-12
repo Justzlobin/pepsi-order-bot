@@ -66,10 +66,10 @@ async def order_basket(query: types.CallbackQuery):
             dict_desc = sqlite_db.select_one_position(int(key))
             full_text += ' '.join(
                 [f"{dict_desc['brand_title']} {dict_desc['tasty_title']} {dict_desc['size']} --"
-                 f" {dict_desc['price'] * value}\n"])
-            total += dict_desc["price"] * value
+                 f" {round(dict_desc['price'] * value, 2)}\n"])
+            total += round(dict_desc["price"] * value, 2)
 
-        full_text += f'{total}'
+        full_text += f'Сума замовлення: {total}'
         await edit_text(message=query.message, message_text=full_text,
                         reply_markup=order_basket_kb().add(back_to_order_kb()))
     else:
