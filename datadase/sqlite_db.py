@@ -134,10 +134,12 @@ def select_order_to_user_or_admin(order_id=None, admin=False):
     if admin:
         liste.append(f'{comment[1]}\n'
                      f'{comment[2]}\n'
-                     f'{comment[0]}\n')
+                     f'{comment[0]}\n'
+                     f'{comment[3]}\n')
     else:
         liste.append(f'{comment[1]}\n'
-                     f'{comment[2]}\n')
+                     f'{comment[2]}\n'
+                     f'{comment[3]}\n')
     cur.execute("""SELECT SUM(full_price) FROM  "order" WHERE order_id= %s""", (order_id,))
     liste.append(
         f'Сумма: {cur.fetchone()[0]}'
@@ -148,7 +150,7 @@ def select_order_to_user_or_admin(order_id=None, admin=False):
 
 def order_user_name_and_comment(order_id):
     cur.execute("""
-                        SELECT user_full_name, comment, status FROM users, list
+                        SELECT user_full_name, comment, status, date_deliver FROM users, list
                         WHERE list.user_id = users.user_id
                         AND list.list_id = %s""", (order_id,))
     return cur.fetchone()
@@ -219,11 +221,6 @@ def save_order(user_id, order):
                         (int(pos_id), quantity, price * quantity, order_id))
             conn.commit()
         return True
-
-
-def update_barcode(pos_id, barcode):
-    cur.execute("""UPDATE position SET barcode = %s WHERE pos_id = %s""", (barcode, pos_id))
-    conn.commit()
 
 
 def close(self):
