@@ -95,7 +95,6 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def position(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
     if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
         value = order.order_dict[query.from_user.id][callback_data['id']]
         order.pos_dict[query.from_user.id][callback_data['id']] = value
@@ -120,6 +119,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
         await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
                                      reply_markup=keyboard(callback_data['id']).add(
                                          back_to_tasty_from_pos_kb(callback_data['id'])))
+    await query.message.delete()
     print(f'pos_id {callback_data["id"]}')
     print(photo.photo_dict)
 

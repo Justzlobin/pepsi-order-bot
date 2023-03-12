@@ -26,7 +26,6 @@ async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: di
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
     brand_id = sqlite_db.select_brand_id(callback_data['id'])
     print(f'{callback_data["id"]} - pos_id?')
     print(f'brand_id {type(brand_id)}  - {brand_id}')
@@ -51,10 +50,7 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                          back_to_brand_from_tasty_kb(
                                              sqlite_db.select_cat_id(brand_id)),
                                          back_to_admin_menu_kb()))
-    # try:
-    #     del order.order_dict[query.from_user.id][callback_data['id']]
-    # except KeyError:
-    #     pass
+    await query.message.delete()
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
