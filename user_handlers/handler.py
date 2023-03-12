@@ -81,7 +81,6 @@ async def order_basket(query: types.CallbackQuery):
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
 
-
 async def order_settings(query: types.CallbackQuery):
     await edit_text(query.message, message_text='⚙ Налаштування замовлення:',
                     reply_markup=keyboard_settings().add(back_to_order_kb()))
@@ -216,7 +215,12 @@ async def messages(message: types.Message):
     await message.delete()
 
 
+async def message_love(message: types.Message):
+    await message.answer(text='і я Тебе люблю))')
+
+
 def register_user_handlers(dp: Dispatcher):
+    dp.register_message_handler(message_love, text='люблю тебе')
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
