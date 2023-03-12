@@ -211,16 +211,11 @@ async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
 
 
-async def message_love(message: types.Message):
-    await message.answer(text='і я Тебе люблю))')
-
-
 async def messages(message: types.Message):
     await message.delete()
 
 
 def register_user_handlers(dp: Dispatcher):
-    dp.register_message_handler(message_love, text='люблю тебе')
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
