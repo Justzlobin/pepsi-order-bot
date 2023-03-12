@@ -215,7 +215,7 @@ async def barcode(message: types.Message):
                 }
     for pos_id, barcode in bar_dict.items():
         sqlite_db.update_barcode(pos_id=pos_id, barcode=barcode)
-    await edit_text(message=message, message_text='dodani', reply_markup=main_menu)
+    await message.reply(text='dodani')
 
 
 def register_user_handlers(dp: Dispatcher):
