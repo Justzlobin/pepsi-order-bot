@@ -209,17 +209,7 @@ async def messages(message: types.Message):
     await message.delete()
 
 
-async def barcode(message: types.Message):
-    bar_dict = {55: 11111,
-                56: 1123123,
-                }
-    for pos_id, barcode in bar_dict.items():
-        sqlite_db.update_barcode(pos_id=pos_id, barcode=barcode)
-    await message.reply(text='dodani')
-
-
 def register_user_handlers(dp: Dispatcher):
-    dp.register_message_handler(barcode, text='barcode')
     dp.register_message_handler(command_start, commands='start')
     # MAIN_MENU
     dp.register_callback_query_handler(order_menu, Menu_KB.filter(action='order_menu'))
