@@ -60,7 +60,6 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
 
 
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):
-    await query.message.delete()
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
@@ -81,6 +80,7 @@ async def price_show_position(query: types.CallbackQuery, callback_data: dict):
                                      reply_markup=types.InlineKeyboardMarkup().add(
                                          back_to_tasty_from_pos_kb(
                                              callback_data['id'])))
+    await query.message.delete()
 
 
 def register_price_handlers(dp: Dispatcher):

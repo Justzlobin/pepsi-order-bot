@@ -39,7 +39,10 @@ async def write_comment(message: types.Message, state: FSMContext):
     async with state.proxy() as data_comment:
         data_comment['comment'] = message.text
         print(tuple(data_comment.values()))
-    order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
+    try:
+        order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
+    except KeyError:
+        await edit_text(message=message, message_text=main_menu, reply_markup=menu_kb())
     await state.finish()
     await edit_text(message=comment_message['message'],
                     message_text=menu_order,
