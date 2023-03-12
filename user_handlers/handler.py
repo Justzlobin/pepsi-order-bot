@@ -211,12 +211,12 @@ async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
 
 
-async def messages(message: types.Message):
-    await message.delete()
-
-
 async def message_love(message: types.Message):
     await message.answer(text='і я Тебе люблю))')
+
+
+async def messages(message: types.Message):
+    await message.delete()
 
 
 def register_user_handlers(dp: Dispatcher):
