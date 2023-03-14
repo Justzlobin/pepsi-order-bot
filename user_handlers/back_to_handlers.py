@@ -46,6 +46,8 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                                        back_to_brand_from_tasty_kb(
                                                            sqlite_db.select_cat_id(brand_id)),
                                                        back_to_menu_kb()))
+            delete_message.change_message(user_id=query.from_user.id, message_id=message)
+
         if status.dialog_status[query.from_user.id] == 'order':
             message = await query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
                                                    reply_markup=position_markup(brand_id,
@@ -54,6 +56,8 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                                        back_to_brand_from_tasty_kb(
                                                            sqlite_db.select_cat_id(brand_id)),
                                                        back_to_order_kb()))
+            delete_message.change_message(user_id=query.from_user.id, message_id=message)
+
         if status.dialog_status[query.from_user.id] == 'admin':
             message = await query.bot.send_message(chat_id=query.message.chat.id, text='Смаки:',
                                                    reply_markup=position_markup(brand_id,
@@ -62,10 +66,11 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
                                                        back_to_brand_from_tasty_kb(
                                                            sqlite_db.select_cat_id(brand_id)),
                                                        back_to_admin_menu_kb()))
+            delete_message.change_message(user_id=query.from_user.id, message_id=message)
+
     except KeyError:
         message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
-    delete_message.change_message(user_id=query.from_user.id, message_id=message)
-
+        delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
 
 async def back_to_main_menu(query: types.CallbackQuery):

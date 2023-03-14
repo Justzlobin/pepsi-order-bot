@@ -18,6 +18,7 @@ async def price_cat(query: types.CallbackQuery):
                             reply_markup=cat_markup().add(back_to_order_kb()))
     except KeyError:
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+    print(f'user_name = {query.from_user.first_name} {query.from_user.last_name}')
 
 
 async def price_brand(query: types.CallbackQuery, callback_data: dict):

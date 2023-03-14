@@ -24,6 +24,7 @@ async def command_start(message: types.Message):
     print(f'message_dict = {delete_message.delete_message_dict}')
     print(f'message = {message}')
     print(f'user_id = {message.chat.id}')
+    print(f'user_name = {message.from_user.first_name} {message.from_user.last_name}')
 
 
 async def order_menu(query: types.CallbackQuery):
