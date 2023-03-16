@@ -17,6 +17,8 @@ async def command_start(message: types.Message):
         await delete_message.delete_message_dict[message.chat.id].delete()
     except KeyError:
         pass
+    except exceptions.MessageToDeleteNotFound:
+        pass
     message = await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
                                                                         f'{main_menu}',
                                              reply_markup=menu_kb(), parse_mode='HTML')
