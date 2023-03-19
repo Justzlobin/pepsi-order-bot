@@ -7,6 +7,7 @@ cur = conn.cursor()
 
 def start_db():
     if conn:
+        print(DB_TOKEN)
         print('Data base connected OK!')
 
 
