@@ -30,7 +30,7 @@ def select_brand(cat_id) -> list:
     return cur.fetchall()
 
 
-def select_position(brand_id):
+def select_position(brand_id) -> list:
     cur.execute("""             SELECT tasty_id , tasty_title
                                 FROM   tasty
                                 WHERE brand_id = %s  ORDER BY tasty_title""", (brand_id,))
