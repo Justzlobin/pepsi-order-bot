@@ -214,7 +214,7 @@ async def multi(query: types.CallbackQuery, callback_data: dict):
             return True
 
     order.checkin[query.from_user.id] = multi_bool()
-    order.pos_dict[query.from_user.id] = 0
+    order.pos_dict[query.from_user.id][callback_data['id']] = 0
     try:
         await update_num_text(query.message, 0, callback_data['id'])
     except exceptions.BadRequest:
