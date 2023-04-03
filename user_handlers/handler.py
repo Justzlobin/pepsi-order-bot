@@ -101,7 +101,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                                            f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)},'
                                            f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
                                    reply_markup=keyboard(
-                                       pos_id, box=order.checkin[message.from_user.id]).add(
+                                       pos_id, box=order.checkin[message.chat.id]).add(
                                        back_to_tasty_from_pos_kb(pos_id)))
     except exceptions.BadRequest:
         await message.edit_text(text=f'{full_text}\n'
