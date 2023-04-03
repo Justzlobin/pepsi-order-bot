@@ -80,18 +80,17 @@ def keyboard(pos_id, order=False):
         list_commands = ['update_' + i for i in list_commands]
     buttons = [
         [
-            types.InlineKeyboardButton(text=f'➖ {values[0]}',
+            types.InlineKeyboardButton(text=f'- {values[0]}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[0])),
-            types.InlineKeyboardButton(text='0⃣',
+            types.InlineKeyboardButton(text='0',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[1])),
-            types.InlineKeyboardButton(text=f'➕ {values[1]}',
+            types.InlineKeyboardButton(text=f'+ {values[0]}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[2]))
         ],
         [
-            types.InlineKeyboardButton(text='Шт',
-                                       callback_data=Cat_KB.new(id=pos_id, action='multi')),
-            types.InlineKeyboardButton(text='Ящ',
-                                       callback_data=Cat_KB.new(id=pos_id, action='box'))],
+            types.InlineKeyboardButton(text=f'Кратність х{values[0]}',
+                                       callback_data=Cat_KB.new(id=pos_id, action='multi'))
+        ],
         [types.InlineKeyboardButton(text='✅ Підтвердити',
                                     callback_data=Cat_KB.new(id=pos_id, action=list_commands[3]))]
     ]
