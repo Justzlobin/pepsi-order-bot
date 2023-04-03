@@ -98,8 +98,8 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     try:
         await message.edit_caption(caption=f'{full_text}\n'
-                                           f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)}, '
-                                           f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                                   f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)},'
+                                   f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
                                    reply_markup=keyboard(
                                        pos_id).add(back_to_tasty_from_pos_kb(pos_id)))
     except exceptions.BadRequest:
@@ -134,7 +134,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                                              photo=types.InputFile(
                                                  fr"image/{callback_data['id']}.png"),
                                              caption=full_text, reply_markup=keyboard(callback_data['id']).add(
-                back_to_tasty_from_pos_kb(callback_data['id'])))
+                                                back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
         message = await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
                                                reply_markup=keyboard(callback_data['id']).add(

@@ -74,16 +74,17 @@ def keyboard_order(order_id, user_id):
 
 
 def keyboard(pos_id, order=False):
+    values = sqlite_db.select_multiplicity_and_box_size(pos_id)
     list_commands = ['desc', 'zero', 'incr', 'finish']
     if order:
         list_commands = ['update_' + i for i in list_commands]
     buttons = [
         [
-            types.InlineKeyboardButton(text='➖',
+            types.InlineKeyboardButton(text=f'➖ {values[0]}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[0])),
             types.InlineKeyboardButton(text='0⃣',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[1])),
-            types.InlineKeyboardButton(text='➕',
+            types.InlineKeyboardButton(text=f'➕ {values[1]}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[2]))
         ],
         [
