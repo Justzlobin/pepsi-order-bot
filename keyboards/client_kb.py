@@ -75,9 +75,11 @@ def keyboard_order(order_id, user_id):
 
 def keyboard(pos_id, order=False, box=False):
     values = sqlite_db.select_multiplicity_and_box_size(pos_id)[0]
+    key = f'x{values}'
     list_commands = ['desc', 'zero', 'incr', 'finish']
     if box:
         values = sqlite_db.select_multiplicity_and_box_size(pos_id)[1]
+        key = values
     if order:
         list_commands = ['update_' + i for i in list_commands]
 
@@ -91,12 +93,12 @@ def keyboard(pos_id, order=False, box=False):
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[2]))
         ],
         [
-            types.InlineKeyboardButton(text=f'Кратність х{values}',
+            types.InlineKeyboardButton(text=f'Кратність {key}',
                                        callback_data=Cat_KB.new(id=pos_id, action='multi'))
         ],
         [types.InlineKeyboardButton(text='✅ Підтвердити',
                                     callback_data=Cat_KB.new(id=pos_id, action=list_commands[3]))]
-        ]
+    ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
