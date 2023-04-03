@@ -205,6 +205,8 @@ async def box(query: types.CallbackQuery):
 
 
 async def multi(query: types.CallbackQuery, callback_data: dict):
+    order.pos_dict[query.from_user.id][callback_data['id']] = 0
+
     await update_num_text(query.message, 0, callback_data['id'])
 
 
