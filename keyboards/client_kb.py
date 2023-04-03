@@ -73,27 +73,30 @@ def keyboard_order(order_id, user_id):
     return keyboard_order_markup
 
 
-def keyboard(pos_id, order=False):
-    values = sqlite_db.select_multiplicity_and_box_size(pos_id)
+def keyboard(pos_id, order=False, box=False):
+    values = sqlite_db.select_multiplicity_and_box_size(pos_id)[0]
     list_commands = ['desc', 'zero', 'incr', 'finish']
+    if box:
+        values = sqlite_db.select_multiplicity_and_box_size(pos_id)[1]
     if order:
         list_commands = ['update_' + i for i in list_commands]
+
     buttons = [
         [
-            types.InlineKeyboardButton(text=f'- {values[0]}',
+            types.InlineKeyboardButton(text=f'- {values}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[0])),
             types.InlineKeyboardButton(text='0',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[1])),
-            types.InlineKeyboardButton(text=f'+ {values[0]}',
+            types.InlineKeyboardButton(text=f'+ {values}',
                                        callback_data=Cat_KB.new(id=pos_id, action=list_commands[2]))
         ],
         [
-            types.InlineKeyboardButton(text=f'Кратність х{values[0]}',
+            types.InlineKeyboardButton(text=f'Кратність х{values}',
                                        callback_data=Cat_KB.new(id=pos_id, action='multi'))
         ],
         [types.InlineKeyboardButton(text='✅ Підтвердити',
                                     callback_data=Cat_KB.new(id=pos_id, action=list_commands[3]))]
-    ]
+        ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -109,7 +112,7 @@ def order_for_admin():
 
 
 def order_for_user(user_id):
-    order_to_user_markup = InlineKeyboardMarkup()   
+    order_to_user_markup = InlineKeyboardMarkup()
     for i in sqlite_db.list_order_for_user(user_id):
         order_to_user_markup.add(InlineKeyboardButton(text=f'{i[0]} - {sqlite_db.sum_order(i[1])}',
                                                       callback_data=Cat_KB.new(id=i[1], action='order_user')))
@@ -182,5 +185,3 @@ def cancel_state(status):
     ]
 
     return types.InlineKeyboardMarkup(inline_keyboard=button)
-
-
