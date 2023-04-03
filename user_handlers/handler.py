@@ -205,9 +205,15 @@ async def box(query: types.CallbackQuery):
 
 
 async def multi(query: types.CallbackQuery, callback_data: dict):
-    order.pos_dict[query.from_user.id][callback_data['id']] = 0
+    def multi_bool():
+        if order.checkin[query.from_user.id] == True:
+            return False
+        else:
+            return True
 
+    order.order_dict[query.from_user.id] = multi_bool()
     await update_num_text(query.message, 0, callback_data['id'])
+    print(order.checkin[query.from_user.id])
 
 
 async def edit_text(message: types.Message, message_text, reply_markup):
