@@ -131,7 +131,6 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
-                f"Кількість: {value}, Ціна: {dict_desc['price'] * value} uah."
 
     try:
         message = await query.bot.send_photo(chat_id=query.message.chat.id,
