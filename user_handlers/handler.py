@@ -115,12 +115,16 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
 
 
 async def position(query: types.CallbackQuery, callback_data: dict):
-    if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
-        value = order.order_dict[query.from_user.id][callback_data['id']]
-        order.pos_dict[query.from_user.id][callback_data['id']] = value
-    else:
-        order.add_in_pos_dict(query.from_user.id, callback_data['id'], 0)
-        value = 0
+    value = 0
+    try:
+        if str(callback_data['id']) in order.order_dict[query.from_user.id].keys():
+            value = order.order_dict[query.from_user.id][callback_data['id']]
+            order.pos_dict[query.from_user.id][callback_data['id']] = value
+        else:
+            order.add_in_pos_dict(query.from_user.id, callback_data['id'], 0)
+    except KeyError:
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
                 f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
