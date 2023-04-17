@@ -79,7 +79,7 @@ def keyboard(pos_id, order=False, box=False):
     list_commands = ['desc', 'zero', 'incr', 'finish']
     if box:
         values = sqlite_db.select_multiplicity_and_box_size(pos_id)[1]
-        key = values
+        key = f'x{values}'
     if order:
         list_commands = ['update_' + i for i in list_commands]
 
