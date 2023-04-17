@@ -98,8 +98,9 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     try:
         await message.edit_caption(caption=f'{full_text}\n'
-                                           f'К-ть: {new_value}, Ціна: {round(float(dict_desc["price"]) * new_value, 2)},'
-                                           f'Уп: {sqlite_db.select_price_of_box(pos_id, new_value)} ',
+                                           f"-------------------------\n"\
+                                           f"К-ть: {new_value}, Ціна: {new_value * dict_desc['price']},"
+                                           f" к-ть уп: {new_value / dict_desc['box_size']}",
                                    reply_markup=keyboard(
                                        pos_id, box=order.checkin[message.chat.id]).add(
                                        back_to_tasty_from_pos_kb(pos_id)))
@@ -131,8 +132,8 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
-                f"______________________________" \
-                f"К-ть: {value}, Ціна: {value*dict_desc['price']}, к-ть уп: {value/dict_desc['box_size']}"
+                f"-------------------------\n" \
+                f"К-ть: {value}, Ціна: {value * dict_desc['price']}, к-ть уп: {value / dict_desc['box_size']}"
 
     try:
         message = await query.bot.send_photo(chat_id=query.message.chat.id,
@@ -141,7 +142,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                                              caption=full_text, reply_markup=keyboard(callback_data['id'],
                                                                                       box=order.checkin[
                                                                                           query.from_user.id]).add(
-                                                    back_to_tasty_from_pos_kb(callback_data['id'])))
+                                             back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
         message = await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
                                                reply_markup=keyboard(callback_data['id'],
