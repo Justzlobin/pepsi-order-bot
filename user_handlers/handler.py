@@ -6,6 +6,7 @@ from classes.delete import DeleteMessage
 from text.text_in_message import main_menu, menu_order, menu
 from aiogram.utils import exceptions
 
+
 order = Order()
 status = Status()
 delete_message = DeleteMessage()
@@ -90,25 +91,13 @@ async def order_settings(query: types.CallbackQuery):
 
 
 async def update_num_text(message: types.Message, new_value: int, pos_id):
-    dict_desc = sqlite_db.select_one_position(pos_id)
-    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
-                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-                f"Ціна: {dict_desc['price']} грн.\n" \
-                f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     try:
-        await message.edit_caption(caption=f'{full_text}\n'
-                                           f"__________________________________\n" \
-                                           f"К-ть: {new_value}, Ціна: {new_value * dict_desc['price']}, "
-                                           f"к-ть уп: {new_value / dict_desc['box_size']}",
+        await message.edit_caption(caption=update_message(pos_id=pos_id, value=new_value),
                                    reply_markup=keyboard(
                                        pos_id, box=order.checkin[message.chat.id]).add(
                                        back_to_tasty_from_pos_kb(pos_id)))
     except exceptions.BadRequest:
-        await message.edit_text(text=f'{full_text}\n'
-                                     f"__________________________________\n" \
-                                     f"К-ть: {new_value}, Ціна: {new_value * dict_desc['price']}, "
-                                     f"к-ть уп: {new_value / dict_desc['box_size']}",
+        await message.edit_text(text=update_message(pos_id=pos_id, value=new_value),
                                 reply_markup=keyboard(
                                     pos_id, box=order.checkin[message.chat.id]).add(
                                     back_to_tasty_from_pos_kb(pos_id)))
@@ -127,25 +116,18 @@ async def position(query: types.CallbackQuery, callback_data: dict):
     except KeyError:
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
 
-    dict_desc = sqlite_db.select_one_position(callback_data['id'])
-    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
-                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
-                f"Ціна: {dict_desc['price']} грн.\n" \
-                f"В ящику: {dict_desc['box_size']} ящ.\n" \
-                f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
-                f"__________________________________\n" \
-                f"К-ть: {value}, Ціна: {value * dict_desc['price']}, к-ть уп: {value / dict_desc['box_size']}"
-
     try:
         message = await query.bot.send_photo(chat_id=query.message.chat.id,
                                              photo=types.InputFile(
                                                  fr"image/{callback_data['id']}.png"),
-                                             caption=full_text, reply_markup=keyboard(callback_data['id'],
-                                                                                      box=order.checkin[
-                                                                                          query.from_user.id]).add(
-                back_to_tasty_from_pos_kb(callback_data['id'])))
+                                             caption=update_message(callback_data['id'], value=value),
+                                             reply_markup=keyboard(callback_data['id'],
+                                                                   box=order.checkin[
+                                                                       query.from_user.id]).add(
+                                                 back_to_tasty_from_pos_kb(callback_data['id'])))
     except FileNotFoundError:
-        message = await query.bot.send_message(chat_id=query.message.chat.id, text=full_text,
+        message = await query.bot.send_message(chat_id=query.message.chat.id,
+                                               text=update_message(callback_data['id'], value=value),
                                                reply_markup=keyboard(callback_data['id'],
                                                                      box=order.checkin[
                                                                          query.from_user.id]).add(
@@ -240,6 +222,17 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 
 async def messages(message: types.Message):
     await message.delete()
+
+def update_message(pos_id, value) -> str:
+    dict_desc = sqlite_db.select_one_position(pos_id)
+    full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
+                f"{dict_desc['tasty_title']} {dict_desc['tasty_desc']}\n" \
+                f"Ціна: {dict_desc['price']} грн.\n" \
+                f"В ящику: {dict_desc['box_size']} ящ.\n" \
+                f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
+                f"__________________________________\n" \
+                f"К-ть: {value}, Ціна: {value * dict_desc['price']}, к-ть уп: {value / dict_desc['box_size']}"
+    return full_text
 
 
 def register_user_handlers(dp: Dispatcher):
