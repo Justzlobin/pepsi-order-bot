@@ -6,7 +6,6 @@ from classes.delete import DeleteMessage
 from text.text_in_message import main_menu, menu_order, menu
 from aiogram.utils import exceptions
 
-
 order = Order()
 status = Status()
 delete_message = DeleteMessage()
@@ -223,6 +222,7 @@ async def edit_text(message: types.Message, message_text, reply_markup):
 async def messages(message: types.Message):
     await message.delete()
 
+
 def update_message(pos_id, value) -> str:
     dict_desc = sqlite_db.select_one_position(pos_id)
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
@@ -231,7 +231,8 @@ def update_message(pos_id, value) -> str:
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
                 f"__________________________________\n" \
-                f"К-ть: {value}, Ціна: {value * dict_desc['price']}, к-ть уп: {value / dict_desc['box_size']}"
+                f"К-ть: {value}, Ціна: {round(value * dict_desc['price'], 2)}," \
+                f" к-ть уп: {round(value / dict_desc['box_size'], 1)}"
     return full_text
 
 
