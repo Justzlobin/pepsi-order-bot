@@ -98,7 +98,7 @@ async def update_num_text(message: types.Message, new_value: int, pos_id):
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн."
     try:
         await message.edit_caption(caption=f'{full_text}\n'
-                                           f"-------------------------\n"\
+                                           f"_______________________________________________________\n"\
                                            f"К-ть: {new_value}, Ціна: {new_value * dict_desc['price']},"
                                            f" к-ть уп: {new_value / dict_desc['box_size']}",
                                    reply_markup=keyboard(
@@ -132,7 +132,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
                 f"Ціна: {dict_desc['price']} грн.\n" \
                 f"В ящику: {dict_desc['box_size']} ящ.\n" \
                 f"Ціна за ящик: {round(dict_desc['price'] * dict_desc['box_size'], 2)} грн.\n" \
-                f"-------------------------\n" \
+                f"_______________________________________________________\n" \
                 f"К-ть: {value}, Ціна: {value * dict_desc['price']}, к-ть уп: {value / dict_desc['box_size']}"
 
     try:
