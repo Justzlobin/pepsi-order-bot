@@ -79,7 +79,7 @@ def keyboard(pos_id, box=False):
     list_commands = ['desc', 'zero', 'incr', 'finish']
     if box:
         values = sqlite_db.select_multiplicity_and_box_size(pos_id)[1]
-        key = f'x{values}'
+        key = f'x{values} (Ящик)'
 
     buttons = [
         [
