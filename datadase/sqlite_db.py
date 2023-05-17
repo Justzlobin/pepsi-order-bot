@@ -224,6 +224,5 @@ def save_order(user_id, order):
         return True
 
 
-
 def close(self):
     self.close()
