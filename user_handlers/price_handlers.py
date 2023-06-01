@@ -7,6 +7,7 @@ from user_handlers.handler import edit_text, status, delete_message
 from text.text_in_message import main_menu
 from aiogram.utils import exceptions
 
+
 async def price_cat(query: types.CallbackQuery):
     status.current_dialog_status_price(query.from_user.id)
     try:
@@ -63,7 +64,7 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):
     try:
         await query.message.delete()
-    except exceptions.MessageToDeleteNotFound:
+    except exceptions.MessageCantBeDeleted:
         await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
     dict_desc = sqlite_db.select_one_position(callback_data['id'])
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
