@@ -70,12 +70,13 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
             delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
     except KeyError:
-        message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
-        delete_message.change_message(user_id=query.from_user.id, message_id=message)
-    except exceptions.MessageToEditNotFound:
-        message = await query.bot.send_message(text=main_menu, reply_markup=menu_kb(), chat_id=query.message.chat.id)
-        delete_message.change_message(user_id=query.from_user.id, message_id=message)
-
+        try:
+            message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+            delete_message.change_message(user_id=query.from_user.id, message_id=message)
+        except exceptions.MessageToEditNotFound:
+            message = await query.bot.send_message(text=main_menu, reply_markup=menu_kb(),
+                                                   chat_id=query.message.chat.id)
+            delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
