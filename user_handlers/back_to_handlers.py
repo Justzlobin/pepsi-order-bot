@@ -3,6 +3,7 @@ from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text, order, status, delete_message
 from text.text_in_message import main_menu, menu_order, menu
+from aiogram.utils import exceptions
 
 
 async def back_to_cat_from_brand(query: types.CallbackQuery):
@@ -71,6 +72,10 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
     except KeyError:
         message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
         delete_message.change_message(user_id=query.from_user.id, message_id=message)
+    except exceptions.MessageToEditNotFound:
+        message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        delete_message.change_message(user_id=query.from_user.id, message_id=message)
+
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
