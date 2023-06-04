@@ -223,9 +223,6 @@ async def messages(message):
     await message.delete()
 
 
-async def sticker(stickers):
-    await stickers.delete()
-
 
 def update_message(pos_id, value) -> str:
     dict_desc = sqlite_db.select_one_position(pos_id)
@@ -263,5 +260,12 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
     #
     #
-    dp.register_message_handler(sticker, content_types=types.ContentType.STICKER)
+    dp.register_message_handler(messages, content_types=types.ContentType.STICKER)
+    dp.register_message_handler(messages, content_types=types.ContentType.ANIMATION)
+    dp.register_message_handler(messages, content_types=types.ContentType.AUDIO)
+    dp.register_message_handler(messages, content_types=types.ContentType.VIDEO)
+    dp.register_message_handler(messages, content_types=types.ContentType.VOICE)
+
+
+
     dp.register_message_handler(messages)
