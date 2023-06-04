@@ -219,9 +219,15 @@ async def edit_text(message: types.Message, message_text, reply_markup):
     await message.edit_text(text=message_text, reply_markup=reply_markup, parse_mode='HTML')
 
 
-async def messages(message: types.Message):
+async def message_audio(message: types.Audio):
     await message.delete()
 
+
+async def message_text(message: types.Message):
+    await message.delete()
+
+async def message_sticker(message: types.Sticker):
+    await message.delete()
 
 def update_message(pos_id, value) -> str:
     dict_desc = sqlite_db.select_one_position(pos_id)
@@ -259,4 +265,7 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
     #
     #
-    dp.register_message_handler(messages)
+    dp.register_message_handler(message_audio)
+    dp.register_message_handler(message_text)
+    dp.register_message_handler(message_sticker)
+
