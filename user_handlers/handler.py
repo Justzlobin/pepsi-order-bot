@@ -265,6 +265,11 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(messages, content_types=types.ContentType.AUDIO)
     dp.register_message_handler(messages, content_types=types.ContentType.VIDEO)
     dp.register_message_handler(messages, content_types=types.ContentType.VOICE)
+    dp.register_message_handler(messages, content_types=types.ContentType.PHOTO)
+    dp.register_message_handler(messages, content_types=types.ContentType.DOCUMENT)
+
+
+
 
 
 
