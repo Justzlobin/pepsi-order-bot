@@ -223,8 +223,8 @@ async def messages(message):
     await message.delete()
 
 
-async def sticker(sticker):
-    await sticker.delete()
+async def sticker(stickers):
+    await stickers.delete()
 
 
 def update_message(pos_id, value) -> str:
