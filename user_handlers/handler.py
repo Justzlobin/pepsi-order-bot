@@ -223,6 +223,10 @@ async def messages(message):
     await message.delete()
 
 
+async def sticker(sticker):
+    await sticker.delete()
+
+
 def update_message(pos_id, value) -> str:
     dict_desc = sqlite_db.select_one_position(pos_id)
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
@@ -260,4 +264,4 @@ def register_user_handlers(dp: Dispatcher):
     #
     #
     dp.register_message_handler(messages)
-
+    dp.register_message_handler(sticker)
