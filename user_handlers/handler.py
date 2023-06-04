@@ -263,5 +263,5 @@ def register_user_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
     #
     #
-    dp.register_message_handler(messages)
     dp.register_message_handler(sticker)
+    dp.register_message_handler(messages)
