@@ -11,4 +11,4 @@ def accountant_keyboard():
         [types.InlineKeyboardButton('Додати операцію', callback_data=Menu_KB.new('add_operation'))],
         [types.InlineKeyboardButton('Статистика', callback_data=Menu_KB.new('stat'))]
     ]
-    return buttons
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)
