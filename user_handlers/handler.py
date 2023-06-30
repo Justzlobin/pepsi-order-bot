@@ -223,7 +223,6 @@ async def messages(message):
     await message.delete()
 
 
-
 def update_message(pos_id, value) -> str:
     dict_desc = sqlite_db.select_one_position(pos_id)
     full_text = f"{dict_desc['brand_title']} {dict_desc['size']} {dict_desc['type']} " \
