@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text
-from accounter_kb import accountant_keyboard
+from accounter.accounter_kb import accountant_keyboard
 
 
 async def accountant_start(query: types.CallbackQuery):
