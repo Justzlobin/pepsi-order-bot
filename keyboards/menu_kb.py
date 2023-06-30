@@ -12,7 +12,7 @@ def menu_kb(user_id):
         [types.InlineKeyboardButton('🛒 Меню замовлень', callback_data=Menu_KB.new(action='order_menu'))],
         # [types.InlineKeyboardButton('🗃 Історія замовлень', callback_data=Menu_KB.new(action='last_orders'))],
     ]
-    if user_id == ADMIN:
+    if str(user_id) == ADMIN:
         buttons += [types.InlineKeyboardButton('Accounter', callback_data=Menu_KB.new(action='#'))]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
