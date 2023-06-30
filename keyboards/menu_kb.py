@@ -1,16 +1,19 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
+from config import ADMIN
 
 Menu_KB = CallbackData('title', 'action')
 
 
-def menu_kb():
+def menu_kb(user_id):
     buttons = [
         [types.InlineKeyboardButton('🧃 Прайс', callback_data=Menu_KB.new(action='price'))],
         [types.InlineKeyboardButton('🛒 Меню замовлень', callback_data=Menu_KB.new(action='order_menu'))],
         # [types.InlineKeyboardButton('🗃 Історія замовлень', callback_data=Menu_KB.new(action='last_orders'))],
     ]
+    if user_id == ADMIN:
+        buttons += [types.InlineKeyboardButton('Accounter', callback_data=Menu_KB.new(action='#'))]
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 

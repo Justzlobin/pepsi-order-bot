@@ -21,7 +21,7 @@ async def command_start(message: types.Message):
         pass
     message = await message.bot.send_message(message.from_user.id, text='<b>PEPSIBOT</b>\n'
                                                                         f'{main_menu}',
-                                             reply_markup=menu_kb(), parse_mode='HTML')
+                                             reply_markup=menu_kb(message.from_user.id), parse_mode='HTML')
     delete_message.change_message(user_id=message.chat.id, message_id=message)
     print(f'message_dict = {delete_message.delete_message_dict}')
     print(f'message = {message}')
@@ -81,7 +81,7 @@ async def order_basket(query: types.CallbackQuery):
             await edit_text(message=query.message, message_text=menu_order,
                             reply_markup=order_kb().add(back_to_order_menu_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def order_settings(query: types.CallbackQuery):
@@ -113,7 +113,7 @@ async def position(query: types.CallbackQuery, callback_data: dict):
         else:
             order.add_in_pos_dict(query.from_user.id, callback_data['id'], 0)
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
     try:
         message = await query.bot.send_photo(chat_id=query.message.chat.id,
@@ -258,14 +258,5 @@ def register_user_handlers(dp: Dispatcher):
     #
     dp.register_callback_query_handler(box, Cat_KB.filter(action='box'))
     dp.register_callback_query_handler(multi, Cat_KB.filter(action='multi'))
-    # #
-    # dp.register_message_handler(messages, content_types=types.ContentType.STICKER)
-    # dp.register_message_handler(messages, content_types=types.ContentType.ANIMATION)
-    # dp.register_message_handler(messages, content_types=types.ContentType.AUDIO)
-    # dp.register_message_handler(messages, content_types=types.ContentType.VIDEO)
-    # dp.register_message_handler(messages, content_types=types.ContentType.VOICE)
-    # dp.register_message_handler(messages, content_types=types.ContentType.PHOTO)
-    # dp.register_message_handler(messages, content_types=types.ContentType.DOCUMENT)
-    # dp.register_message_handler(messages, content_types=types.ContentType.LOCATION)
+    #
     dp.register_message_handler(messages, content_types=types.ContentType.ANY)
-    # dp.register_message_handler(messages)
