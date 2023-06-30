@@ -7,7 +7,8 @@ from datadase.admin_db import *
 
 
 def accountant_keyboard():
-    return [
+    buttons = [
         [types.InlineKeyboardButton('Додати операцію', callback_data=Menu_KB.new('add_operation'))],
         [types.InlineKeyboardButton('Статистика', callback_data=Menu_KB.new('stat'))]
     ]
+    return buttons
