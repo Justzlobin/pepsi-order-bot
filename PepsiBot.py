@@ -1,6 +1,7 @@
 from aiogram.utils import executor
 from admin_handlers import *
 from order_handlers import *
+from accounter import *
 from create_bot import dp
 from user_handlers import *
 from datadase import sqlite_db
@@ -21,5 +22,5 @@ admin_add_pos.register_admin_add_pos_handlers(dp)
 back_to_handlers.register_back_to_handlers(dp)
 order_handler.register_order_handlers(dp)
 handler.register_user_handlers(dp)
-
+accounter_handlers.register_accountant_handlers(dp)
 executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
