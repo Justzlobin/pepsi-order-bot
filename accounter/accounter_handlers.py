@@ -3,7 +3,7 @@ from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text
 from aiogram.dispatcher import FSMContext
-from datadase.sqlite_db import accountant_add_record_in_db
+from accounter.accountant_db import accountant_add_record_in_db
 from accounter.accounter_other import AddRecordAccountant
 from accounter.accounter_kb import accountant_keyboard, cancel_add_record
 

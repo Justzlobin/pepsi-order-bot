@@ -224,16 +224,5 @@ def save_order(user_id, order):
         return True
 
 
-def accountant_add_record_in_db(text):
-    record = text.split()
-    print(record)
-    cur.execute(
-        """INSERT INTO accountant (type_record, value_record, desc_record, time_record)
-         VALUES (%s, %s, %s, NOW())""",
-        (record[0], record[1], record[2]))
-    conn.commit()
-    return True
-
-
 def close(self):
     self.close()
