@@ -13,7 +13,7 @@ async def accountant_start(query: types.CallbackQuery):
 
 
 async def accountant_record_from_user(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Додайте операцію', reply_markup='Відмінити')
+    await edit_text(query.message, message_text='Додайте операцію', reply_markup=accountant_keyboard())
     await AddRecordAccountant.add_record.set()
 
 
