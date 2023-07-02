@@ -12,3 +12,10 @@ def accountant_keyboard():
         [types.InlineKeyboardButton('Статистика', callback_data=Menu_KB.new('stat'))]
     ]
     return types.InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def cancel_add_record():
+    buttons = [
+        [types.InlineKeyboardButton('Cancel', callback_data=Menu_KB.new('cancel_record'))]
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=buttons)

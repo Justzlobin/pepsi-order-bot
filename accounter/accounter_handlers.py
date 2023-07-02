@@ -6,6 +6,7 @@ from accounter.accounter_kb import accountant_keyboard
 from aiogram.dispatcher import FSMContext
 from datadase.sqlite_db import accountant_add_record_in_db
 from accounter.accounter_other import AddRecordAccountant
+from accounter_kb import *
 
 
 async def accountant_start(query: types.CallbackQuery):
@@ -13,7 +14,7 @@ async def accountant_start(query: types.CallbackQuery):
 
 
 async def accountant_record_from_user(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='Додайте операцію', reply_markup=accountant_keyboard())
+    await edit_text(query.message, message_text='Додайте операцію', reply_markup=cancel_add_record())
     await AddRecordAccountant.add_record.set()
 
 
@@ -30,7 +31,17 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
         pass
 
 
+async def stop_record(query: types.CallbackQuery, state: FSMContext):
+    current_state = state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await edit_text(query.message, message_text='main_menu',
+                    reply_markup=accountant_keyboard())
+
+
 def register_accountant_handlers(dp: Dispatcher):
+    dp.register_callback_query_handler(stop_record, Menu_KB.filter(action='stop_record'), state='*')
     dp.register_callback_query_handler(accountant_start, Menu_KB.filter(action='accountant'))
     dp.register_callback_query_handler(accountant_record_from_user, Menu_KB.filter(action='add_operation'), state=None)
     dp.register_message_handler(accountant_add_record, state=AddRecordAccountant.add_record)
