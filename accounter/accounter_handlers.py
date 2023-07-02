@@ -6,7 +6,7 @@ from accounter.accounter_kb import accountant_keyboard
 from aiogram.dispatcher import FSMContext
 from datadase.sqlite_db import accountant_add_record_in_db
 from accounter.accounter_other import AddRecordAccountant
-from accounter_kb import *
+from accounter.accounter_kb import *
 
 
 async def accountant_start(query: types.CallbackQuery):
