@@ -2,7 +2,6 @@ from aiogram import Dispatcher
 from keyboards import *
 from aiogram import types
 from user_handlers.handler import edit_text
-from accounter.accounter_kb import accountant_keyboard
 from aiogram.dispatcher import FSMContext
 from datadase.sqlite_db import accountant_add_record_in_db
 from accounter.accounter_other import AddRecordAccountant
