@@ -9,6 +9,15 @@ from accounter.accounter_other import AddRecordAccountant
 from accounter.accounter_kb import accountant_keyboard, cancel_add_record
 
 
+async def stop_record(query: types.CallbackQuery, state: FSMContext):
+    current_state = state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await edit_text(query.message, message_text='main_menu',
+                    reply_markup=accountant_keyboard())
+
+
 async def accountant_start(query: types.CallbackQuery):
     await edit_text(query.message, message_text='nothing', reply_markup=accountant_keyboard())
 
@@ -29,15 +38,6 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
             await message.answer('error!')
     except:
         pass
-
-
-async def stop_record(query: types.CallbackQuery, state: FSMContext):
-    current_state = state.get_state()
-    if current_state is None:
-        return
-    await state.finish()
-    await edit_text(query.message, message_text='main_menu',
-                    reply_markup=accountant_keyboard())
 
 
 def register_accountant_handlers(dp: Dispatcher):
