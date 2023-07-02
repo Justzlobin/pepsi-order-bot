@@ -17,8 +17,8 @@ def accountant_add_record_in_db(text):
 
 
 def sum_record():
-    cur.execute("SELECT * FROM accountant")
-    return str(cur.fetchall())
+    cur.execute("SELECT type_record, value_record, desc_record  FROM accountant")
+    return cur.fetchall()
 
 
 def close(self):
