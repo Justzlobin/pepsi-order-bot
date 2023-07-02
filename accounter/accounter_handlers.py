@@ -22,8 +22,10 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['record'] = message.text
     try:
-        accountant_add_record_in_db(data['record'])
-        await message.answer('done!')
+        if accountant_add_record_in_db(data['record']):
+            await message.answer('done!')
+        else:
+            await message.answer('error!')
     except:
         pass
 
