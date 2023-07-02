@@ -1,4 +1,7 @@
-text = '-200 робота'
+from aiogram.dispatcher.filters.state import StatesGroup, State
 
 
-print(text.split())
+class AddRecordAccountant(StatesGroup):
+    add_record = State()
+
+
