@@ -38,10 +38,11 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
             await message.answer('error!')
     except:
         pass
+    await state.finish()
 
 
 def register_accountant_handlers(dp: Dispatcher):
-    dp.register_callback_query_handler(stop_record, Menu_KB.filter(action='stop_record'), state='*')
+    dp.register_callback_query_handler(stop_record, Menu_KB.filter(action='cancel_record'), state='*')
     dp.register_callback_query_handler(accountant_start, Menu_KB.filter(action='accountant'))
     dp.register_callback_query_handler(accountant_record_from_user, Menu_KB.filter(action='add_operation'), state=None)
     dp.register_message_handler(accountant_add_record, state=AddRecordAccountant.add_record)
