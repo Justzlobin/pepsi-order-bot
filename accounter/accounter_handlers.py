@@ -6,6 +6,10 @@ from aiogram.dispatcher import FSMContext
 from accounter.accountant_db import accountant_add_record_in_db, sum_record
 from accounter.accounter_other import AddRecordAccountant, det_stat_for_user, gen_stat_for_user
 from accounter.accounter_kb import accountant_keyboard, cancel_add_record
+from classes.delete import StateMessage
+from keyboards.back_to import back_to_menu_kb
+
+register_delete = StateMessage()
 
 
 async def stop_record(query: types.CallbackQuery, state: FSMContext):
@@ -18,10 +22,11 @@ async def stop_record(query: types.CallbackQuery, state: FSMContext):
 
 
 async def accountant_start(query: types.CallbackQuery):
-    await edit_text(query.message, message_text='nothing', reply_markup=accountant_keyboard())
+    await edit_text(query.message, message_text='nothing', reply_markup=accountant_keyboard().add(back_to_menu_kb()))
 
 
 async def accountant_record_from_user(query: types.CallbackQuery):
+    register_delete.add_message(query.message)
     await edit_text(query.message, message_text='Додайте операцію', reply_markup=cancel_add_record())
     await AddRecordAccountant.add_record.set()
 
@@ -32,9 +37,11 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
         data['record'] = message.text
     try:
         if accountant_add_record_in_db(data['record']):
-            await message.answer('done!')
+            await edit_text(message=register_delete.message_dict['message'], message_text='Done!',
+                            reply_markup=accountant_keyboard().add(back_to_menu_kb()))
         else:
-            await message.answer('error!')
+            await edit_text(message=register_delete.message_dict['message'], message_text='Error!',
+                            reply_markup=accountant_keyboard().add(back_to_menu_kb()))
     except:
         pass
     await state.finish()
