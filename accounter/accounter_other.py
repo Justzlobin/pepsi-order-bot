@@ -6,19 +6,19 @@ class AddRecordAccountant(StatesGroup):
 
 
 def stat_for_user(stat):
-    positive = []
-    negative = []
-    set_desc = {}
+    set_plus = {}
+    set_minus = {}
+
     for i in stat:
         if i[0] == '+':
-            positive.append((i[1], i[2]))
-            set_desc[i[2]] = 0
-            for a in positive:
-                set_desc[i[2]] += i[1]
+            set_plus[i[2]] = 0
         if i[0] == '-':
-            negative.append((i[1], i[2]))
-            set_desc[i[2]] = 0
-            for a in negative:
-                set_desc[i[2]] -= i[1]
+            set_minus[i[2]] = 0
 
-    return set_desc
+    for i in stat:
+        if i[0] == '+':
+            set_plus[i[2]] += i[1]
+        if i[0] == '-':
+            set_minus[i[2]] -= i[1]
+
+    return set_plus, set_minus
