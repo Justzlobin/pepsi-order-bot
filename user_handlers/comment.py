@@ -20,7 +20,7 @@ async def comment(query: types.CallbackQuery):
                                      '<b>"ТТН"</b> - товаро-транспортна накладна\n',
                         reply_markup=cancel_state(status=status.dialog_status[query.from_user.id]))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
     comment_message['message'] = query.message
     print(comment_message)
 
@@ -42,7 +42,7 @@ async def write_comment(message: types.Message, state: FSMContext):
     try:
         order.add_comment(user_id=message.from_user.id, comment=data_comment['comment'])
     except KeyError:
-        await edit_text(message=message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
     await state.finish()
     await edit_text(message=comment_message['message'],
                     message_text=menu_order,

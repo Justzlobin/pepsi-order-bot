@@ -15,7 +15,7 @@ async def back_to_cat_from_brand(query: types.CallbackQuery):
             await edit_text(message=query.message, message_text='Категорії:',
                             reply_markup=cat_markup().add(back_to_order_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: dict):
@@ -29,7 +29,7 @@ async def back_to_brand_from_tasty(query: types.CallbackQuery, callback_data: di
                             reply_markup=brand_markup(callback_data['id']).add(
                                 back_to_cat_from_brand_kb(), back_to_order_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict):
@@ -71,16 +71,17 @@ async def back_to_tasty_from_pos(query: types.CallbackQuery, callback_data: dict
 
     except KeyError:
         try:
-            message = await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+            message = await edit_text(message=query.message, message_text=main_menu,
+                                      reply_markup=menu_kb(query.from_user.id))
             delete_message.change_message(user_id=query.from_user.id, message_id=message)
         except exceptions.MessageToEditNotFound:
-            message = await query.bot.send_message(text=main_menu, reply_markup=menu_kb(),
+            message = await query.bot.send_message(text=main_menu, reply_markup=menu_kb(query.from_user.id),
                                                    chat_id=query.message.chat.id)
             delete_message.change_message(user_id=query.from_user.id, message_id=message)
 
 
 async def back_to_main_menu(query: types.CallbackQuery):
-    await edit_text(query.message, reply_markup=menu_kb(),
+    await edit_text(query.message, reply_markup=menu_kb(query.from_user.id),
                     message_text='<b>PEPSIBOT</b>\n'
                                  f'{main_menu}')
 

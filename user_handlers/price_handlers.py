@@ -5,7 +5,6 @@ from keyboards.back_to import *
 from aiogram import types
 from user_handlers.handler import edit_text, status, delete_message
 from text.text_in_message import main_menu
-from aiogram.utils import exceptions
 
 
 async def price_cat(query: types.CallbackQuery):
@@ -18,7 +17,7 @@ async def price_cat(query: types.CallbackQuery):
             await edit_text(message=query.message, message_text='Категорії:',
                             reply_markup=cat_markup().add(back_to_order_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
     print(f'user_name = {query.from_user.first_name} {query.from_user.last_name}')
 
 
@@ -37,7 +36,7 @@ async def price_brand(query: types.CallbackQuery, callback_data: dict):
                             reply_markup=brand_markup(callback_data['id']).add(
                                 back_to_cat_from_brand_kb(), back_to_admin_menu_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def price_tasty(query: types.CallbackQuery, callback_data: dict):
@@ -58,7 +57,7 @@ async def price_tasty(query: types.CallbackQuery, callback_data: dict):
                                 back_to_brand_from_tasty_kb(sqlite_db.select_cat_id(brand_id)),
                                 back_to_admin_menu_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def price_show_position(query: types.CallbackQuery, callback_data: dict):

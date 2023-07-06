@@ -17,14 +17,14 @@ async def order_basket_confirm(query: types.CallbackQuery):
         await query.bot.send_message(chat_id=ADMIN, text='Нове замовлення!',
                                      reply_markup=types.InlineKeyboardMarkup.add(collapse_message_for_user_kb()))
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
 
 
 async def order_basket_cancel(query: types.CallbackQuery):
     try:
         del order.order_dict[query.from_user.id]
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
     await edit_text(message=query.message, message_text=menu,
                     reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
@@ -33,7 +33,7 @@ async def next_move_in_order_yes(query: types.CallbackQuery):
     try:
         del order.order_dict[query.from_user.id]
     except KeyError:
-        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb())
+        await edit_text(message=query.message, message_text=main_menu, reply_markup=menu_kb(query.from_user.id))
     await edit_text(message=query.message, message_text=menu, reply_markup=order_menu_kb().add(back_to_menu_kb()))
 
 
