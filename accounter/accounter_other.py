@@ -5,7 +5,7 @@ class AddRecordAccountant(StatesGroup):
     add_record = State()
 
 
-def stat_for_user(stat):
+def det_stat_for_user(stat):
     set_plus = {}
     set_minus = {}
 
@@ -25,7 +25,7 @@ def stat_for_user(stat):
         [f'{st[0]} {st[1]}' for st in set_plus.items()] and [f'{st[0]} {st[1]}' for st in set_minus.items()])
 
 
-def dif_stat_for_user(stat):
+def gen_stat_for_user(stat):
     set_stat = {}
 
     for i in stat:

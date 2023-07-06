@@ -4,7 +4,7 @@ from aiogram import types
 from user_handlers.handler import edit_text
 from aiogram.dispatcher import FSMContext
 from accounter.accountant_db import accountant_add_record_in_db, sum_record
-from accounter.accounter_other import AddRecordAccountant, stat_for_user
+from accounter.accounter_other import AddRecordAccountant, det_stat_for_user, gen_stat_for_user
 from accounter.accounter_kb import accountant_keyboard, cancel_add_record
 
 
@@ -40,13 +40,18 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-async def stat_accountant(query: types.CallbackQuery):
-    await edit_text(query.message, message_text=stat_for_user(sum_record()), reply_markup=accountant_keyboard())
+async def det_stat_accountant(query: types.CallbackQuery):
+    await edit_text(query.message, message_text=det_stat_for_user(sum_record()), reply_markup=accountant_keyboard())
+
+
+async def gen_stat_accountant(query: types.CallbackQuery):
+    await edit_text(query.message, message_text=gen_stat_for_user(sum_record()), reply_markup=accountant_keyboard())
 
 
 def register_accountant_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(stop_record, Menu_KB.filter(action='cancel_record'), state='*')
     dp.register_callback_query_handler(accountant_start, Menu_KB.filter(action='accountant'))
-    dp.register_callback_query_handler(stat_accountant, Menu_KB.filter(action='stat'))
+    dp.register_callback_query_handler(det_stat_accountant, Menu_KB.filter(action='def_stat'))
+    dp.register_callback_query_handler(gen_stat_accountant, Menu_KB.filter(action='gen_stat'))
     dp.register_callback_query_handler(accountant_record_from_user, Menu_KB.filter(action='add_operation'), state=None)
     dp.register_message_handler(accountant_add_record, state=AddRecordAccountant.add_record)
