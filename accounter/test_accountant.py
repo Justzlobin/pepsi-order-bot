@@ -20,7 +20,7 @@ def det_stat_for_user(stat):
             set_minus[i[2]] -= i[1]
 
     return '\n'.join(
-        [f'{st[0]} {st[1]}' for st in set_plus.items()] + [f'{st[0]} {st[1]}' for st in set_minus.items()])
+        [f'{st[0]} {st[1]}' for st in set_plus.items()] )
 
 
 print(det_stat_for_user(stat))
