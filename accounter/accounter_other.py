@@ -21,9 +21,10 @@ def det_stat_for_user(stat):
         if i[0] == '-':
             set_minus[i[2]] -= i[1]
 
-    return '\n'.join(
-        [f'{st[0]} {st[1]}' for st in set_plus.items()] + [f'{st[0]} {st[1]}' for st in set_minus.items()])
-
+    text = '\n'.join(
+        [f'{st[0]} {st[1]}' for st in set_plus.items()])
+    text += '\n'.join([f'{st[0]} {st[1]}' for st in set_minus.items()])
+    return  text
 
 def gen_stat_for_user(stat):
     set_stat = {}
