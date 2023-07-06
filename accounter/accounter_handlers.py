@@ -4,7 +4,7 @@ from aiogram import types
 from user_handlers.handler import edit_text
 from aiogram.dispatcher import FSMContext
 from accounter.accountant_db import accountant_add_record_in_db, sum_record
-from accounter.accounter_other import AddRecordAccountant
+from accounter.accounter_other import AddRecordAccountant, stat_for_user
 from accounter.accounter_kb import accountant_keyboard, cancel_add_record
 
 
@@ -41,7 +41,7 @@ async def accountant_add_record(message: types.Message, state: FSMContext):
 
 
 async def stat_accountant(query: types.CallbackQuery):
-    await edit_text(query.message, message_text=sum_record(), reply_markup=accountant_keyboard())
+    await edit_text(query.message, message_text=stat_for_user(sum_record()), reply_markup=accountant_keyboard())
 
 
 def register_accountant_handlers(dp: Dispatcher):
