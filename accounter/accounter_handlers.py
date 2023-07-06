@@ -58,7 +58,7 @@ async def gen_stat_accountant(query: types.CallbackQuery):
 def register_accountant_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(stop_record, Menu_KB.filter(action='cancel_record'), state='*')
     dp.register_callback_query_handler(accountant_start, Menu_KB.filter(action='accountant'))
-    dp.register_callback_query_handler(det_stat_accountant, Menu_KB.filter(action='def_stat'))
+    dp.register_callback_query_handler(det_stat_accountant, Menu_KB.filter(action='det_stat'))
     dp.register_callback_query_handler(gen_stat_accountant, Menu_KB.filter(action='gen_stat'))
     dp.register_callback_query_handler(accountant_record_from_user, Menu_KB.filter(action='add_operation'), state=None)
     dp.register_message_handler(accountant_add_record, state=AddRecordAccountant.add_record)
